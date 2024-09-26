@@ -1,6 +1,6 @@
 {-# OPTIONS --prop #-}
 
-module I where
+module I (PropVar : Set) where
 
    data For : Set
    data Con : Set
@@ -8,6 +8,7 @@ module I where
    data Pf  : Con → For → Prop
 
    data For where
+      propVar : PropVar → For
       _⊃_  : For → For → For
       _∧_  : For → For → For
       _∨_ : For → For → For

@@ -1,9 +1,54 @@
 {-# OPTIONS --prop #-}
 
 open import Agda.Primitive
+open import Agda.Builtin.Nat renaming (Nat to ℕ)
+open import Agda.Builtin.Sigma
 -- import I
 
-module model where
+module model
+  (funar : ℕ → Set)
+  (relar : ℕ → Set)
+  where
+
+data _≡_ {A : Set}(a : A) : A → Prop where
+  refl : a ≡ a
+
+infix 4 _≡_
+
+record 𝟙 : Set where
+
+_×_ : Set → Set → Set
+A × B = Σ A λ _ → B
+
+-- A ^ n = n hosszu vektor A-elemekkel
+_^_ : Set → ℕ → Set
+A ^ zero = 𝟙
+A ^ (suc n) = A × (A ^ n)
+
+map : ∀{A B n} → (A → B) → A ^ n → B ^ n
+map {n = zero}  f _        = _
+map {n = suc n} f (a , as) = f a , map f as
+
+-- funar 0 = konstansszimbólumok halmaza
+-- funar 1 = 1-paraméteres függvényszimbólumok halmaza
+-- funar 2 = 2-paraméteres függvényszimbólumok halmaza
+-- ...
+-- relar 0 = alapállítások halmaza
+-- relar 1 = predikátumszimbólumok halmaza
+-- relar 2 = bináris relációszimbólumok halmaza
+-- ...
+
+-- pl. Peano aritmetika:
+-- funar 0 = 1    zero : Nat
+-- funar 1 = 1    suc  : Nat → Nat
+-- funar 2 = 3    _+_, _*_, _^_ : Nat → Nat → Nat
+-- funar _ = 0
+-- relar 0 = 0
+-- relar 1 = 0
+-- relar 2 = 2    _<_, _=_ : Nat → Nat → Prop
+
+-- 
+
 
 record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    field
@@ -59,7 +104,28 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       -- ∃ : {!   !}
       -- ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
       -- ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) C → Pf Γ (∃ A) → Pf Γ C
-    
+
+      Rel   : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
+      Rel[] : ∀{Γ n}{ar : relar n}{ts : Tm Γ ^ n}{Δ}{γ : Sub Δ Γ} → Rel ar ts [ γ ]ᶠ ≡ Rel ar (map _[ γ ]ᵗ ts)
+
+      fun   : ∀{Γ}{n : ℕ} → funar n → Tm Γ ^ n → Tm Γ
+      fun[] : ∀{Γ n}{ar : funar n}{ts : Tm Γ ^ n}{Δ}{γ : Sub Δ Γ} → fun ar ts [ γ ]ᵗ ≡ fun ar (map _[ γ ]ᵗ ts)
+
+{-
+      Rel : {n : ℕ} → relar n → Tm Γ → Tm Γ → ... → Tm Γ → For Γ
+                                \______________________/
+                                          n db
+
+      Rel : {n : ℕ} → relar n → For (◇ ▹ₜ ▹ₜ ... ▹ₜ)
+
+      Tms : Con → ℕ → Set
+
+      Rel : {n : ℕ} → relar n → Tms Γ n → For Γ
+
+      Tms Γ 0 ≅ ⊤
+      Tms Γ (1+n) ≅ Tms Γ n × Tm Γ
+-}
+
    infixl 5 _▹ₚ_
    infixl 5 _,ₚ_
    infixl 5 _▹ₜ

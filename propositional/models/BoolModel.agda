@@ -6,11 +6,12 @@ open import model
 
 -- Bool modell (klasszikus)
 
-module models.BoolModel where
+module models.BoolModel (PropVar : Set)(propVar : PropVar → Bool) where
 
-    BoolM : Model
+    BoolM : Model PropVar
     BoolM = record
        { For = Bool
+       ; propVar = propVar
        ; Con = Bool
        ; Sub = λ Γ A → (Γ => A) ≡ true
        ; Pf = λ Γ A → (Γ => A) ≡ true

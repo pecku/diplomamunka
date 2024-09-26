@@ -1,9 +1,10 @@
 {-# OPTIONS --prop #-}
 
 open import Agda.Primitive
-import I
 
-module model where
+module model (PropVar : Set) where
+
+import I PropVar as I
 
 record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    field
@@ -11,6 +12,8 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       Con : Set i
       Sub : Con → Con → Prop j
       Pf  : Con → For → Prop j
+
+      propVar : PropVar → For
 
       ◇   : Con
       ε   : ∀{Γ} → Sub Γ ◇
@@ -54,7 +57,8 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    ⟦_⟧C : I.Con → Con
    ⟦_⟧S : {C₁ C₂ : I.Con} → I.Sub C₁ C₂ → Sub ⟦ C₁ ⟧C ⟦ C₂ ⟧C
    ⟦_⟧P : {C : I.Con}{F : I.For} → I.Pf C F → Pf ⟦ C ⟧C ⟦ F ⟧F
-   
+
+   ⟦ I.propVar X ⟧F = propVar X
    ⟦ f₁ I.⊃ f₂ ⟧F = ⟦ f₁ ⟧F ⊃ ⟦ f₂ ⟧F
    ⟦ f₁ I.∧ f₂ ⟧F = ⟦ f₁ ⟧F ∧ ⟦ f₂ ⟧F
    ⟦ f₁ I.∨ f₂ ⟧F = ⟦ f₁ ⟧F ∨ ⟦ f₂ ⟧F
