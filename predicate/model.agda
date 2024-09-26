@@ -1,29 +1,12 @@
 {-# OPTIONS --prop #-}
 
 open import Agda.Primitive
-open import Agda.Builtin.Nat renaming (Nat to ℕ)
-open import Agda.Builtin.Sigma
 open import Lib
--- import I
 
 module model
   (funar : ℕ → Set)
   (relar : ℕ → Set)
   where
-
-record 𝟙 : Set where
-
-_×_ : Set → Set → Set
-A × B = Σ A λ _ → B
-
--- A ^ n = n hosszu vektor A-elemekkel
-_^_ : Set → ℕ → Set
-A ^ zero = 𝟙
-A ^ (suc n) = A × (A ^ n)
-
-map : ∀{A B n} → (A → B) → A ^ n → B ^ n
-map {n = zero}  f _        = _
-map {n = suc n} f (a , as) = f a , map f as
 
 -- funar 0 = konstansszimbólumok halmaza
 -- funar 1 = 1-paraméteres függvényszimbólumok halmaza
@@ -42,9 +25,6 @@ map {n = suc n} f (a , as) = f a , map f as
 -- relar 0 = 0
 -- relar 1 = 0
 -- relar 2 = 2    _<_, _=_ : Nat → Nat → Prop
-
--- 
-
 
 record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    field
@@ -74,30 +54,37 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       pₜ   : ∀{Γ} → Sub (Γ ▹ₜ) Γ
 
       _⊃_   : ∀{Γ} → For Γ → For Γ → For Γ
+      ⊃[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ⊃ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
       ⊃in   : ∀{Γ A B} → Pf (Γ ▹ₚ A) (B [ pₚ ]ᶠ)→ Pf Γ ((A ⊃ B))
       ⊃out  : ∀{Γ A B} → Pf Γ (A ⊃ B) → Pf Γ A → Pf Γ B
 
       _∧_   : ∀{Γ} → For Γ → For Γ → For Γ
+      ∧[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∧ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∧ B [ γ ]ᶠ
       ∧in   : ∀{Γ A B} → Pf Γ A → Pf Γ B → Pf Γ (A ∧ B)
       ∧out₁ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ A
       ∧out₂ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ B
 
       ⊤     : ∀{Γ} → For Γ
+      ⊤[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊤ [ γ ]ᶠ ≡ ⊤
       ⊤in   : ∀{Γ} → Pf Γ ⊤
 
       _∨_   : ∀{Γ} → For Γ → For Γ → For Γ
+      ∨[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∨ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∨ B [ γ ]ᶠ
       ∨in₁  : ∀{Γ A B} → Pf Γ A → Pf Γ (A ∨ B)
       ∨in₂  : ∀{Γ A B} → Pf Γ B → Pf Γ (A ∨ B)
       ∨out  : ∀{Γ A B C} → Pf (Γ ▹ₚ A) (C [ pₚ ]ᶠ) → Pf (Γ ▹ₚ B) (C [ pₚ ]ᶠ) → Pf Γ (A ∨ B) → Pf Γ C
 
       ⊥     : ∀{Γ} → For Γ
+      ⊥[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊥ [ γ ]ᶠ ≡ ⊥
       ⊥out  : ∀{Γ A} → Pf Γ ⊥ → Pf Γ A
 
       Forall : ∀{Γ} → For (Γ ▹ₜ ) → For Γ
+      Forall[] : ∀{Γ A Δ}{γ : Sub Δ Γ} → Forall A [ γ ]ᶠ ≡ Forall (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
       ∀in : ∀{Γ A} → Pf (Γ ▹ₜ ) A → Pf Γ (Forall A)
       ∀out : ∀{Γ A} → Pf Γ (Forall A) → Pf (Γ ▹ₜ ) A
 
       ∃ : ∀{Γ} → For (Γ ▹ₜ ) → For Γ
+      ∃[] : ∀{Γ A Δ}{γ : Sub Δ Γ} → ∃ A [ γ ]ᶠ ≡ ∃ (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
       ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
       ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) (C [ pₜ ∘ pₚ ]ᶠ) → Pf Γ (∃ A) → Pf Γ C
       
@@ -107,7 +94,7 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       [id]ᵗ : ∀{Γ}{t : Tm Γ} → t [ id ]ᵗ ≡ t
 
       ▹ₚβ₁ : ∀ {Γ Δ A}{γ : Sub Δ Γ}{a : Pf Δ (A [ γ ]ᶠ)} → pₚ ∘ (γ ,ₚ a) ≡ γ
-      ▹ₚη  : ∀ {Γ Δ A}{γa : Sub Δ (Γ ▹ₚ A)} → γa ≡ (pₚ ∘ γa ,ₚ (qₚ [ γa ]ᵖ))
+      ▹ₚη  : ∀ {Γ Δ A}{γa : Sub Δ (Γ ▹ₚ A)} → γa ≡ (pₚ ∘ γa ,ₚ substP (Pf Δ) ([∘]ᶠ ⁻¹) (qₚ [ γa ]ᵖ))
 
       ▹ₜβ₁ : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → pₜ ∘ (γ ,ₜ t) ≡ γ
       ▹ₜβ₂ : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → qₜ [ γ ,ₜ t ]ᵗ ≡ t
@@ -139,9 +126,9 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    infixl 5 _▹ₜ
    infixl 5 _,ₜ_
    infixr 6 _∘_
-   infixl 8 _[_]ᶠ
-   infixl 8 _[_]ᵖ
-   infixl 8 _[_]ᵗ
+   infixl 9 _[_]ᶠ
+   infixl 9 _[_]ᵖ
+   infixl 9 _[_]ᵗ
    infixr 6 _⊃_
    infixr 8 _∧_
    infixr 7 _∨_
