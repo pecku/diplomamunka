@@ -3,17 +3,13 @@
 open import Agda.Primitive
 open import Agda.Builtin.Nat renaming (Nat to ℕ)
 open import Agda.Builtin.Sigma
+open import Lib
 -- import I
 
 module model
   (funar : ℕ → Set)
   (relar : ℕ → Set)
   where
-
-data _≡_ {A : Set}(a : A) : A → Prop where
-  refl : a ≡ a
-
-infix 4 _≡_
 
 record 𝟙 : Set where
 
@@ -101,9 +97,21 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       ∀in : ∀{Γ A} → Pf (Γ ▹ₜ ) A → Pf Γ (Forall A)
       ∀out : ∀{Γ A} → Pf Γ (Forall A) → Pf (Γ ▹ₜ ) A
 
-      -- ∃ : {!   !}
-      -- ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
-      -- ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) C → Pf Γ (∃ A) → Pf Γ C
+      ∃ : ∀{Γ} → For (Γ ▹ₜ ) → For Γ
+      ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
+      ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) (C [ pₜ ∘ pₚ ]ᶠ) → Pf Γ (∃ A) → Pf Γ C
+      
+      [∘]ᶠ  : ∀{Γ Δ θ}{A : For Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → A [ γ ∘ δ ]ᶠ ≡ A [ γ ]ᶠ [ δ ]ᶠ
+      [id]ᶠ : ∀{Γ}{A : For Γ} → A [ id ]ᶠ ≡ A
+      [∘]ᵗ  : ∀{Γ Δ θ}{t : Tm Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → t [ γ ∘ δ ]ᵗ ≡ t [ γ ]ᵗ [ δ ]ᵗ
+      [id]ᵗ : ∀{Γ}{t : Tm Γ} → t [ id ]ᵗ ≡ t
+
+      ▹ₚβ₁ : ∀ {Γ Δ A}{γ : Sub Δ Γ}{a : Pf Δ (A [ γ ]ᶠ)} → pₚ ∘ (γ ,ₚ a) ≡ γ
+      ▹ₚη  : ∀ {Γ Δ A}{γa : Sub Δ (Γ ▹ₚ A)} → γa ≡ (pₚ ∘ γa ,ₚ (qₚ [ γa ]ᵖ))
+
+      ▹ₜβ₁ : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → pₜ ∘ (γ ,ₜ t) ≡ γ
+      ▹ₜβ₂ : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → qₜ [ γ ,ₜ t ]ᵗ ≡ t
+      ▹ₜη  : ∀{Γ Δ} → (γt : Sub Δ (Γ ▹ₜ)) → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
 
       Rel   : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
       Rel[] : ∀{Γ n}{ar : relar n}{ts : Tm Γ ^ n}{Δ}{γ : Sub Δ Γ} → Rel ar ts [ γ ]ᶠ ≡ Rel ar (map _[ γ ]ᵗ ts)
