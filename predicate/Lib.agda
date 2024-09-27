@@ -29,3 +29,8 @@ A ^ (suc n) = A × (A ^ n)
 map : ∀{A B n} → (A → B) → A ^ n → B ^ n
 map {n = zero}  f _        = _
 map {n = suc n} f (a , as) = f a , map f as
+
+record Lift {ℓ}(A : Prop ℓ) : Set ℓ where
+  constructor mk
+  field
+    un : A
