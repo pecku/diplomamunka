@@ -112,82 +112,78 @@ data Pf : (Γ : Con)(Γₚ : Conp Γ) → For Γ → Prop
 data Subp : (Γ : Con) → Conp Γ → Conp Γ → Prop where
   idp : ∀{Γ Γₚ} → Subp Γ Γₚ Γₚ
   ε  : ∀{Γ Γₚ} → Subp Γ Γₚ ◇ₚ
-  _,p_ : ∀{Δ Γₚ Δₚ A} → Subp Δ Δₚ Γₚ → Pf Δ Δₚ A → Subp Δ Δₚ (Γₚ ▹ₚ A)
+  _,ₚ_ : ∀{Δ Γₚ Δₚ A} → Subp Δ Δₚ Γₚ → Pf Δ Δₚ A → Subp Δ Δₚ (Γₚ ▹ₚ A)
 
 data Pf where
   _[_]ᵖ : ∀{Γ Γₚ Δ A} → Pf Γ Γₚ A → (γ : Sub Δ Γ) → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
   qₚ    : ∀{Γ Γₚ A} → Pf Γ (Γₚ ▹ₚ A) A
   ⊃in   : ∀{Γ Γₚ A B} → Pf Γ (Γₚ ▹ₚ A) B → Pf Γ Γₚ (A ⊃ B)
   ⊃out  : ∀{Γ Γₚ A B} → Pf Γ Γₚ (A ⊃ B) → Pf Γ Γₚ A → Pf Γ Γₚ B
-  {-
-  ∧in   : ∀{Γ A B} → Pf Γ A → Pf Γ B → Pf Γ (A ∧ B)
-  ∧out₁ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ A
-  ∧out₂ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ B
-  ⊤in   : ∀{Γ} → Pf Γ ⊤
-  ∨in₁  : ∀{Γ A B} → Pf Γ A → Pf Γ (A ∨ B)
-  ∨in₂  : ∀{Γ A B} → Pf Γ B → Pf Γ (A ∨ B)
-  ∨out  : ∀{Γ A B C} → Pf (Γ ▹ₚ A) (C [ pₚ ]ᶠ) → Pf (Γ ▹ₚ B) (C [ pₚ ]ᶠ) → Pf Γ (A ∨ B) → Pf Γ C
-  ⊥out  : ∀{Γ A} → Pf Γ ⊥ → Pf Γ A
-  -}
+  ∧in   : ∀{Γ Γₚ A B} → Pf Γ Γₚ A → Pf Γ Γₚ B → Pf Γ Γₚ (A ∧ B)
+  ∧out₁ : ∀{Γ Γₚ A B} → Pf Γ Γₚ  (A ∧ B) → Pf Γ Γₚ A
+  ∧out₂ : ∀{Γ Γₚ A B} → Pf Γ Γₚ (A ∧ B) → Pf Γ Γₚ B
+  ⊤in   : ∀{Γ Γₚ} → Pf Γ Γₚ ⊤
+  ∨in₁  : ∀{Γ Γₚ A B} → Pf Γ Γₚ A → Pf Γ Γₚ (A ∨ B)
+  ∨in₂  : ∀{Γ Γₚ A B} → Pf Γ Γₚ B → Pf Γ Γₚ (A ∨ B)
+  ∨out  : ∀{Γ Γₚ A B C} → Pf Γ (Γₚ ▹ₚ A) C → Pf Γ (Γₚ ▹ₚ B) C → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C
+  ⊥out  : ∀{Γ Γₚ A} → Pf Γ Γₚ ⊥ → Pf Γ Γₚ A
   ∀in : ∀{Γ Γₚ A} → Pf (Γ ▹ₜ) (Γₚ [ p ]Conp) A → Pf Γ Γₚ (Forall A)
   ∀out : ∀{Γ Γₚ A} → Pf Γ Γₚ (Forall A) → Pf (Γ ▹ₜ) (Γₚ [ p ]Conp) A
-  {-
-  ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
-  ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) (C [ pₜ ∘ pₚ ]ᶠ) → Pf Γ (∃ A) → Pf Γ C
-  -}
+  ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ id ,ₜ t ]ᶠ) → Pf Γ Γₚ (∃ A)
+  ∃out : ∀{Γ Γₚ A C} → Pf Γ (Γₚ ▹ₚ A) C → Pf Γ Γₚ (∃ (A [ p ]ᶠ)) → Pf Γ Γₚ C
 
 open import model funar relar
 
-M : Model
-M = record
+I : Model
+I = record
      { Con = Σ Con Conp
      ; For = λ (Γ , Γₚ) → For Γ
-     ; Pf = {!!}
+     ; Pf = λ (Γ , Γₚ) A → Pf Γ Γₚ A
      ; Sub = λ (Δ , Δₚ) (Γ , Γₚ) → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
      ; Tm = λ (Γ , Γₚ) → Tm Γ
      ; ◇ = ◇ , ◇ₚ
-     ; ε = {!!}
-     ; id = {!!}
-     ; _∘_ = {!!}
-     ; _[_]ᶠ = {!!}
+     ; ε = ε , mk ε
+     ; id = {!   !} , mk {!   !}
+     ; _∘_ = {!   !}
+     ; _[_]ᶠ = λ f s → {!   !}
      ; _[_]ᵖ = {!!}
      ; _[_]ᵗ = {!!}
      ; _▹ₚ_ = λ (Γ , Γₚ) A → Γ , Γₚ ▹ₚ A
      ; _,ₚ_ = {!!}
-     ; pₚ = {!!}
+     ; pₚ = {!   !}
      ; qₚ = {!!}
      ; _▹ₜ = λ (Γ , Γₚ) → Γ ▹ₜ , Γₚ [ p ]Conp
      ; _,ₜ_ = {!!}
      ; qₜ = {!!}
      ; pₜ = {!!}
-     ; _⊃_ = {!!}
+     ; _⊃_ = _⊃_
      ; ⊃[] = {!!}
      ; ⊃in = {!!}
      ; ⊃out = {!!}
-     ; _∧_ = {!!}
+     ; _∧_ = _∧_
      ; ∧[] = {!!}
-     ; ∧in = {!!}
-     ; ∧out₁ = {!!}
-     ; ∧out₂ = {!!}
-     ; ⊤ = {!!}
+     ; ∧in = ∧in
+     ; ∧out₁ = ∧out₁
+     ; ∧out₂ = ∧out₂
+     ; ⊤ = ⊤
      ; ⊤[] = {!!}
-     ; ⊤in = {!!}
-     ; _∨_ = {!!}
+     ; ⊤in = ⊤in
+     ; _∨_ = _∨_
      ; ∨[] = {!!}
-     ; ∨in₁ = {!!}
-     ; ∨in₂ = {!!}
-     ; ∨out = {!!}
-     ; ⊥ = {!!}
+     ; ∨in₁ = ∨in₁
+     ; ∨in₂ = ∨in₂
+     ; ∨out = λ { {Γ , Γₚ}{A}{B}{C} p q → ∨out {Γ}{Γₚ}{A}{B}{C} p q }
+     ; ⊥ = ⊥
      ; ⊥[] = {!!}
-     ; ⊥out = {!!}
-     ; Forall = {!!}
+     ; ⊥out = ⊥out
+     ; Forall = Forall
      ; Forall[] = {!!}
-     ; ∀in = {!!}
-     ; ∀out = {!!}
-     ; ∃ = {!!}
+     ; ∀in = ∀in
+     ; ∀out = ∀out
+     ; ∃ = ∃
      ; ∃[] = {!!}
-     ; ∃in = {!!}
-     ; ∃out = {!!}
+     ; ∃in = {! ∃in  !}
+     ; ∃out = {!∃out!}
      ; [∘]ᶠ = {!!}
      ; [id]ᶠ = {!!}
      ; [∘]ᵗ = {!!}
@@ -197,10 +193,11 @@ M = record
      ; ▹ₜβ₁ = {!!}
      ; ▹ₜβ₂ = {!!}
      ; ▹ₜη = {!!}
-     ; Rel = {!!}
+     ; Rel = Rel
      ; Rel[] = {!!}
-     ; fun = {!!}
+     ; fun = fun
      ; fun[] = {!!}
      }
 
 -- TODO: iterator, induction principle
+           

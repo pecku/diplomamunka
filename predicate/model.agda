@@ -55,7 +55,7 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
 
       _⊃_   : ∀{Γ} → For Γ → For Γ → For Γ
       ⊃[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ⊃ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
-      ⊃in   : ∀{Γ A B} → Pf (Γ ▹ₚ A) (B [ pₚ ]ᶠ)→ Pf Γ ((A ⊃ B))
+      ⊃in   : ∀{Γ A B} → Pf (Γ ▹ₚ A) (B [ pₚ ]ᶠ) → Pf Γ ((A ⊃ B))
       ⊃out  : ∀{Γ A B} → Pf Γ (A ⊃ B) → Pf Γ A → Pf Γ B
 
       _∧_   : ∀{Γ} → For Γ → For Γ → For Γ
@@ -126,9 +126,9 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
    infixl 5 _▹ₜ
    infixl 5 _,ₜ_
    infixr 6 _∘_
+   infixr 6 _⊃_
+   infixr 7 _∨_
+   infixr 8 _∧_
    infixl 9 _[_]ᶠ
    infixl 9 _[_]ᵖ
    infixl 9 _[_]ᵗ
-   infixr 6 _⊃_
-   infixr 8 _∧_
-   infixr 7 _∨_
