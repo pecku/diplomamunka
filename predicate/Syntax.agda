@@ -43,8 +43,8 @@ data For where
   _∨_   : ∀{Γ} → For Γ → For Γ → For Γ
   ⊥     : ∀{Γ} → For Γ
   Forall : ∀{Γ} → For (Γ ▹ₜ) → For Γ
-  ∃ : ∀{Γ} → For (Γ ▹ₜ) → For Γ
-  Rel   : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
+  ∃      : ∀{Γ} → For (Γ ▹ₜ) → For Γ
+  Rel    : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
 
 data VTm : Con → Set where
   vz : ∀{Γ} → VTm (Γ ▹ₜ)
@@ -283,7 +283,7 @@ data Pf where
   ∀in : ∀{Γ Γₚ A} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A → Pf Γ Γₚ (Forall A)
   ∀out : ∀{Γ Γₚ A} → Pf Γ Γₚ (Forall A) → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A
   ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ idₜ ,ₜ t ]ᶠ) → Pf Γ Γₚ (∃ A)
-  ∃out : ∀{Γ Γₚ A C} → Pf Γ (Γₚ ▹ₚ A) C → Pf Γ Γₚ (∃ (A [ pₜ ]ᶠ)) → Pf Γ Γₚ C
+  ∃out : ∀{Γ Γₚ A C} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp ▹ₚ A) (C [ pₜ ]ᶠ) → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
 
 open import model funar relar
 
@@ -356,9 +356,7 @@ I = record
   ; ∃ = ∃
   ; ∃[] = cong (λ z → ∃ (_ [ z ,ₜ var vz ]ᶠ)) (∘p ⁻¹)
   ; ∃in = ∃in
-  ; ∃out = {!   !}
+  ; ∃out = λ {(Γ , Γₚ)}{A}{C} w p → ∃out {Γ}{Γₚ}{A}{C} (substP (λ z → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ)) idr w) p
   }
 
 -- TODO: iterator, induction principle
-                               
-     
