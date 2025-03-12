@@ -147,11 +147,13 @@ _∘_ : ∀{Γ Δ Θ} → Sub Δ Γ → Sub Θ Δ → Sub Θ Γ
 (s ,ₜ t) ∘ s₁ = s ∘ s₁ ,ₜ t [ s₁ ]ᵗ
 
 [∘]ᵗ  : ∀{Γ Δ θ}{t : Tm Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → t [ γ ∘ δ ]ᵗ ≡ t [ γ ]ᵗ [ δ ]ᵗ
-[∘]ᵗ = {!   !}
+[∘]ᵗ {t = var vz} {γ = γ ,ₜ t} = refl
+[∘]ᵗ {t = var (vs x)}{γ = γ ,ₜ t} = [∘]ᵗ {t = var x}
+[∘]ᵗ {t = fun i ts} = {!!}
 
 ass : ∀{Γ Δ Θ Ξ}{γ : Sub Δ Γ}{δ : Sub Θ Δ}{θ : Sub Ξ Θ} → (γ ∘ δ) ∘ θ ≡ γ ∘ (δ ∘ θ)
 ass {γ = ε} {δ = δ} {θ = θ} = refl
-ass {γ = γ ,ₜ x} {δ = δ} {θ = θ} = cong (_,ₜ x [ δ ]ᵗ [ θ ]ᵗ) ass ◾ cong (γ ∘ δ ∘ θ ,ₜ_) ([∘]ᵗ {t = x}{γ = δ}{δ = θ} ⁻¹)
+ass {γ = γ ,ₜ t} {δ = δ} {θ = θ} = cong (_,ₜ t [ δ ]ᵗ [ θ ]ᵗ) ass ◾ cong (γ ∘ δ ∘ θ ,ₜ_) ([∘]ᵗ {t = t}{γ = δ}{δ = θ} ⁻¹)
 
 
 _[_]ᶠ : ∀{Γ Δ} → For Γ → Sub Δ Γ → For Δ
@@ -164,13 +166,15 @@ Forall A [ γ ]ᶠ = Forall (A [ γ ⁺ ]ᶠ)
 ∃ A [ γ ]ᶠ = ∃ (A [ γ ⁺ ]ᶠ)
 Rel ar ts [ γ ]ᶠ = Rel ar (ts [ γ ]ᵗs)
 
+-- wkSub (γ ∘ δ) ≡ wkSub γ ∘ (δ ⁺) -- γ szerinti indukcio
+
 [∘]ᶠ : ∀{Γ Δ θ}{A : For Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → A [ γ ∘ δ ]ᶠ ≡ A [ γ ]ᶠ [ δ ]ᶠ
 [∘]ᶠ {A = A ⊃ A₁} = cong₂ _⊃_ [∘]ᶠ [∘]ᶠ
 [∘]ᶠ {A = A ∧ A₁} = cong₂ _∧_ [∘]ᶠ [∘]ᶠ
 [∘]ᶠ {A = ⊤} = refl
 [∘]ᶠ {A = A ∨ A₁} = cong₂ _∨_ [∘]ᶠ [∘]ᶠ
 [∘]ᶠ {A = ⊥} = refl
-[∘]ᶠ {A = Forall A} = {!cong Forall [∘]ᶠ !}
+[∘]ᶠ {A = Forall A} = cong Forall (cong (λ z → A [ z ,ₜ var vz ]ᶠ) {!!} ◾ [∘]ᶠ {A = A})
 [∘]ᶠ {A = ∃ A} = {!   !}
 [∘]ᶠ {A = Rel ar ts} = {!   !}
 
@@ -283,21 +287,24 @@ data Pf where
 
 open import model funar relar
 
+cong, : ∀{Δ Γ Δₚ Γₚ}{γ γ' : Sub Δ Γ}{γₚ : Subp Δ Δₚ (Γₚ [ γ ]Conp)}{γ'ₚ : Subp Δ Δₚ (Γₚ [ γ' ]Conp)} → γ ≡ γ' → (γ , mk γₚ) ≡ (γ' , mk γ'ₚ)
+cong, refl = refl
+
 I : Model
 I = record
   { Con = Σ Con Conp
   ; Sub = λ (Δ , Δₚ) (Γ , Γₚ) → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
   ; _∘_ = λ {(Γ , Γₚ) (Δ , Δₚ) (Θ , Θₚ)}(γ , mk γₚ) (δ , mk δₚ) → (γ ∘ δ) , mk (substP (Subp Θ Θₚ) ([∘]Conp ⁻¹) ((γₚ [ δ ]ᵖ) ∘ₚ δₚ))
-  ; ass = {!  !} --cong (_, mk _) ass
+  ; ass = cong, ass
   ; id = λ {(Γ , Γₚ)} → idₜ , mk (substP (λ x → Subp Γ Γₚ x) ([id]Conp ⁻¹) idp)
-  ; idl = cong (_, mk _) idl
-  ; idr = cong (_, mk _) idr
+  ; idl = cong, idl
+  ; idr = cong, idr
   ; ◇ = ◇ , ◇ₚ
   ; ε = ε , mk ε
   ; ◇η = cong (_, mk _) ◇η
   ; Tm = λ (Γ , Γₚ) → Tm Γ
   ; _[_]ᵗ = λ t (s , sₚ)  → t [ s ]ᵗ
-  ; [∘]ᵗ = {! [∘]ᵗ  !}
+  ; [∘]ᵗ = {![∘]ᵗ  !}
   ; [id]ᵗ = t[id]ᵗ
   ; _▹ₜ = λ (Γ , Γₚ) → Γ ▹ₜ , Γₚ [ pₜ ]Conp
   ; _,ₜ_ = λ (γ , mk γₚ) t → (γ ,ₜ t) , mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
