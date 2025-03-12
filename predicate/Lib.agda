@@ -16,6 +16,19 @@ substP P refl p = p
 _⁻¹ : ∀{ℓ}{A : Set ℓ}{a a' : A} → a ≡ a' → a' ≡ a
 refl ⁻¹ = refl
 
+cong : ∀{ℓ}{A : Set ℓ}{ℓ'}{B : Set ℓ'}(f : A → B){a a' : A} → a ≡ a' → f a ≡ f a'
+cong f refl = refl
+
+cong₂ : ∀{ℓ ℓ' ℓ''}{A : Set ℓ}{B : Set ℓ'}{C : Set ℓ''}
+        {a c : A}{b d : B}(f : A → B → C)(p : a ≡ c)(q : b ≡ d) →
+        f a b ≡ f c d
+cong₂ f refl refl = refl
+
+_◾_ : ∀{ℓ}{A : Set ℓ}{a a' : A} → a ≡ a' → ∀{a''} → a' ≡ a'' → a ≡ a''
+refl ◾ refl = refl
+
+infixl 2 _◾_
+
 record 𝟙 : Set where
 
 _×_ : Set → Set → Set
