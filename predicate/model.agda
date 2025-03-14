@@ -26,11 +26,11 @@ module model
 -- relar 1 = 0
 -- relar 2 = 2    _<_, _=_ : Nat → Nat → Prop
 
-record Model : Set₁ where
+record Model {i}{j}{k} : Set (lsuc (i ⊔ j ⊔ k)) where
    field
       -- kategoria:
-      Con : Set
-      Sub : Con → Con → Set
+      Con : Set i
+      Sub : Con → Con → Set (j ⊔ k)
       _∘_ : ∀{Γ Δ Θ} → Sub Δ Γ → Sub Θ Δ → Sub Θ Γ
       ass : ∀{Γ Δ Θ Ξ}{γ : Sub Δ Γ}{δ : Sub Θ Δ}{θ : Sub Ξ Θ} → (γ ∘ δ) ∘ θ ≡ γ ∘ (δ ∘ θ)
       id  : ∀{Γ} → Sub Γ Γ
@@ -43,7 +43,7 @@ record Model : Set₁ where
       ◇η  : ∀{Γ}{σ : Sub Γ ◇} → σ ≡ ε
 
       -- termek
-      Tm    : Con → Set -- kornyezettol fuggo termek halmaza
+      Tm    : Con → Set j -- kornyezettol fuggo termek halmaza
       _[_]ᵗ : ∀{Γ Δ} → Tm Γ → Sub Δ Γ → Tm Δ -- termek helyettesitese (szabad valtozoknak tudunk vele erteket adni)
       [∘]ᵗ  : ∀{Γ Δ θ}{t : Tm Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → t [ γ ∘ δ ]ᵗ ≡ t [ γ ]ᵗ [ δ ]ᵗ  -- a helyettesites funktor
       [id]ᵗ : ∀{Γ}{t : Tm Γ} → t [ id ]ᵗ ≡ t
@@ -63,7 +63,7 @@ record Model : Set₁ where
       ▹ₜη   : ∀{Γ Δ} → {γt : Sub Δ (Γ ▹ₜ)} → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
 
       -- formulak:
-      For : Con → Set
+      For : Con → Set i
       _[_]ᶠ : ∀{Γ Δ} → For Γ → Sub Δ Γ → For Δ
       [∘]ᶠ  : ∀{Γ Δ θ}{A : For Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → A [ γ ∘ δ ]ᶠ ≡ A [ γ ]ᶠ [ δ ]ᶠ
       [id]ᶠ : ∀{Γ}{A : For Γ} → A [ id ]ᶠ ≡ A
@@ -78,7 +78,7 @@ record Model : Set₁ where
       --   Eq (u v : Tm Γ) := Rel {n = 2} false (u , v , tt)
       -- (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
       -- ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
-      Pf  : (Γ : Con) → For Γ → Prop
+      Pf  : (Γ : Con) → For Γ → Prop k
       _[_]ᵖ : ∀{Γ Δ A} → Pf Γ A → (γ : Sub Δ Γ) → Pf Δ (A [ γ ]ᶠ)
       -- bizonyitas-valtozok:
       _▹ₚ_ : (Γ : Con) → For Γ → Con
