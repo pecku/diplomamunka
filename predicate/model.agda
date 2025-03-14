@@ -26,7 +26,7 @@ module model
 -- relar 1 = 0
 -- relar 2 = 2    _<_, _=_ : Nat → Nat → Prop
 
-record Model {i j} : Set (lsuc i ⊔ lsuc j) where
+record Model : Set₁ where
    field
       -- kategoria:
       Con : Set
@@ -60,7 +60,7 @@ record Model {i j} : Set (lsuc i ⊔ lsuc j) where
       qₜ    : ∀{Γ} → Tm (Γ ▹ₜ)
       ▹ₜβ₁  : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → pₜ ∘ (γ ,ₜ t) ≡ γ
       ▹ₜβ₂  : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → qₜ [ γ ,ₜ t ]ᵗ ≡ t
-      ▹ₜη   : ∀{Γ Δ} → (γt : Sub Δ (Γ ▹ₜ)) → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
+      ▹ₜη   : ∀{Γ Δ} → {γt : Sub Δ (Γ ▹ₜ)} → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
 
       -- formulak:
       For : Con → Set

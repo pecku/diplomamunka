@@ -147,14 +147,18 @@ _∘_ : ∀{Γ Δ Θ} → Sub Δ Γ → Sub Θ Δ → Sub Θ Γ
 (s ,ₜ t) ∘ s₁ = s ∘ s₁ ,ₜ t [ s₁ ]ᵗ
 
 [∘]ᵗ  : ∀{Γ Δ θ}{t : Tm Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → t [ γ ∘ δ ]ᵗ ≡ t [ γ ]ᵗ [ δ ]ᵗ
+[∘]ᵗs  : ∀{Γ Δ θ n}{ts : Tm Γ ^ n}{γ : Sub Δ Γ}{δ : Sub θ Δ} → ts [ γ ∘ δ ]ᵗs ≡ ts [ γ ]ᵗs [ δ ]ᵗs
+
+[∘]ᵗs {n = zero} = refl
+[∘]ᵗs {n = suc n} {t , ts} = cong₂ (_,_) ([∘]ᵗ {t = t}) [∘]ᵗs
+
 [∘]ᵗ {t = var vz} {γ = γ ,ₜ t} = refl
 [∘]ᵗ {t = var (vs x)}{γ = γ ,ₜ t} = [∘]ᵗ {t = var x}
-[∘]ᵗ {t = fun i ts} = {!!}
+[∘]ᵗ {t = fun ar ts} = cong (fun ar) [∘]ᵗs
 
 ass : ∀{Γ Δ Θ Ξ}{γ : Sub Δ Γ}{δ : Sub Θ Δ}{θ : Sub Ξ Θ} → (γ ∘ δ) ∘ θ ≡ γ ∘ (δ ∘ θ)
 ass {γ = ε} {δ = δ} {θ = θ} = refl
 ass {γ = γ ,ₜ t} {δ = δ} {θ = θ} = cong (_,ₜ t [ δ ]ᵗ [ θ ]ᵗ) ass ◾ cong (γ ∘ δ ∘ θ ,ₜ_) ([∘]ᵗ {t = t}{γ = δ}{δ = θ} ⁻¹)
-
 
 _[_]ᶠ : ∀{Γ Δ} → For Γ → Sub Δ Γ → For Δ
 (A ⊃ B) [ γ ]ᶠ = A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
@@ -166,7 +170,22 @@ Forall A [ γ ]ᶠ = Forall (A [ γ ⁺ ]ᶠ)
 ∃ A [ γ ]ᶠ = ∃ (A [ γ ⁺ ]ᶠ)
 Rel ar ts [ γ ]ᶠ = Rel ar (ts [ γ ]ᵗs)
 
--- wkSub (γ ∘ δ) ≡ wkSub γ ∘ (δ ⁺) -- γ szerinti indukcio
+wkvar : ∀{Γ Δ}{γ : Sub Δ Γ}{x : VTm Γ} → wkₜ (var x [ γ ]ᵗ) ≡ var x [ wkSub γ ]ᵗ
+wkvar {.(_ ▹ₜ)} {Δ} {γ ,ₜ x} {vz} = refl
+wkvar {.(_ ▹ₜ)} {Δ} {γ ,ₜ x₁} {vs x} = wkvar {γ = γ} {x = x}
+
+wkx+ : ∀{Γ Δ}{γ : Sub Δ Γ}{t : Tm Γ} → wkₜ (t [ γ ]ᵗ) ≡ wkₜ t [ γ ⁺ ]ᵗ
+
+wkx+s : ∀{Γ Δ n}{γ : Sub Δ Γ}{ts : Tm Γ ^ n} → wkₜs (ts [ γ ]ᵗs) ≡ wkₜs ts [ γ ⁺ ]ᵗs
+wkx+s {n = zero} = refl
+wkx+s {n = suc n} {ts = t , ts} = cong₂ (_,_) (wkx+ {t = t}) wkx+s
+
+wkx+ {t = var x} = wkvar {x = x}
+wkx+ {t = fun ar ts} = cong (fun ar) wkx+s
+
+wk∘+ : ∀{Γ Δ Θ}{γ : Sub Δ Γ} {δ : Sub Θ Δ} → wkSub (γ ∘ δ) ≡ wkSub γ ∘ (δ ⁺)
+wk∘+ {γ = ε} = refl
+wk∘+ {γ = γ ,ₜ t} {δ} = cong (_,ₜ wkₜ (t [ δ ]ᵗ)) wk∘+ ◾ cong (wkSub γ ∘ (δ ⁺) ,ₜ_) ((wkx+ {γ = δ}{t = t}))
 
 [∘]ᶠ : ∀{Γ Δ θ}{A : For Γ}{γ : Sub Δ Γ}{δ : Sub θ Δ} → A [ γ ∘ δ ]ᶠ ≡ A [ γ ]ᶠ [ δ ]ᶠ
 [∘]ᶠ {A = A ⊃ A₁} = cong₂ _⊃_ [∘]ᶠ [∘]ᶠ
@@ -174,9 +193,9 @@ Rel ar ts [ γ ]ᶠ = Rel ar (ts [ γ ]ᵗs)
 [∘]ᶠ {A = ⊤} = refl
 [∘]ᶠ {A = A ∨ A₁} = cong₂ _∨_ [∘]ᶠ [∘]ᶠ
 [∘]ᶠ {A = ⊥} = refl
-[∘]ᶠ {A = Forall A} = cong Forall (cong (λ z → A [ z ,ₜ var vz ]ᶠ) {!!} ◾ [∘]ᶠ {A = A})
-[∘]ᶠ {A = ∃ A} = {!   !}
-[∘]ᶠ {A = Rel ar ts} = {!   !}
+[∘]ᶠ {A = Forall A} = cong Forall (cong (λ z → A [ z ,ₜ var vz ]ᶠ) wk∘+ ◾ [∘]ᶠ {A = A})
+[∘]ᶠ {A = ∃ A} = cong ∃ (cong (λ z → A [ z ,ₜ var vz ]ᶠ) wk∘+ ◾ [∘]ᶠ {A = A})
+[∘]ᶠ {A = Rel ar ts} = cong (Rel ar) [∘]ᵗs
 
 ⌜wk⌝∘ : ∀{Γ Δ}{γ : VSub Δ Γ}{Θ}{δ : Sub Θ Δ}{t : Tm Θ} → ⌜ wkVSub γ ⌝ ∘ (δ ,ₜ t) ≡ ⌜ γ ⌝ ∘ δ
 ⌜wk⌝∘ {γ = ε} = refl
@@ -188,6 +207,9 @@ idl {Γ ▹ₜ}{γ = γ ,ₜ t} = cong (_,ₜ t) ((⌜wk⌝∘ {γ = idV}) ◾ (
 
 ▹ₜβ₁ : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → pₜ ∘ (γ ,ₜ t) ≡ γ
 ▹ₜβ₁ = ⌜wk⌝∘ ◾ idl
+
+▹ₜη : ∀{Γ Δ} → {γt : Sub Δ (Γ ▹ₜ)} → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
+▹ₜη {γt = γt ,ₜ x} = cong (_,ₜ x) ▹ₜβ₁ ⁻¹
 
 ⌜⌝⁺≡⌜⁺ᵛ⌝ : ∀{Δ Γ}{γ : VSub Δ Γ} → ⌜ γ ⌝ ⁺ ≡ ⌜ γ ⁺ᵛ ⌝
 ⌜⌝⁺≡⌜⁺ᵛ⌝ {Δ} {Γ} {ε} = refl
@@ -204,7 +226,7 @@ t[id]ᵗ : ∀{Γ}{t : Tm Γ} → t [ idₜ ]ᵗ ≡ t
 t[id]ᵗs : ∀{Γ n}{ts : Tm Γ ^ n} → ts [ idₜ ]ᵗs ≡ ts
 
 t[id]ᵗ {Γ} {var x} = [⌜⌝] {x = x} ◾ cong var ([id]v {x = x})
-t[id]ᵗ {Γ} {fun ar ts} = cong (λ x → fun ar x) t[id]ᵗs
+t[id]ᵗ {Γ} {fun ar ts} = cong (fun ar) t[id]ᵗs
 
 t[id]ᵗs {Γ} {zero} {ts} = refl
 t[id]ᵗs {Γ} {suc n} {ts} = cong₂ (λ x xs → x , xs) t[id]ᵗ t[id]ᵗs
@@ -244,17 +266,11 @@ _[_]Conp : ∀{Γ Δ} → Conp Γ → Sub Δ Γ → Conp Δ
 
 [id]Conp : ∀{Γ}{c : Conp Γ} → c [ idₜ ]Conp ≡ c
 [id]Conp {Γ} {◇ₚ} = refl
-[id]Conp {Γ} {c ▹ₚ A ⊃ B} = cong₂ (λ a b → _ ▹ₚ a ⊃ b) f[id]ᶠ f[id]ᶠ ◾ cong (λ x → x ▹ₚ A ⊃ B) [id]Conp
-[id]Conp {Γ} {c ▹ₚ A ∧ B} = cong₂ (λ a b → _ ▹ₚ a ∧ b) f[id]ᶠ f[id]ᶠ ◾ cong (λ x → x ▹ₚ A ∧ B) [id]Conp
-[id]Conp {Γ} {c ▹ₚ ⊤} = cong (_▹ₚ ⊤) [id]Conp
-[id]Conp {Γ} {c ▹ₚ A ∨ B} = cong₂ (λ a b → _ ▹ₚ a ∨ b) f[id]ᶠ f[id]ᶠ ◾ cong (λ x → x ▹ₚ A ∨ B) [id]Conp
-[id]Conp {Γ} {c ▹ₚ ⊥} = cong (_▹ₚ ⊥) [id]Conp
-[id]Conp {Γ} {c ▹ₚ Forall A} = cong (λ x → x ▹ₚ Forall (A [ idₜ ⁺ ]ᶠ)) [id]Conp ◾ cong (λ x → c ▹ₚ Forall (A [ x ]ᶠ)) id+≡id ◾ cong (λ x → c ▹ₚ Forall x) f[id]ᶠ
-[id]Conp {Γ} {c ▹ₚ ∃ A} = cong (λ x → x ▹ₚ ∃ (A [ idₜ ⁺ ]ᶠ)) [id]Conp ◾ cong (λ x → c ▹ₚ ∃ (A [ x ]ᶠ)) id+≡id ◾ cong (λ x → c ▹ₚ ∃ x) f[id]ᶠ
-[id]Conp {Γ} {c ▹ₚ Rel ar A} = cong (λ x → x ▹ₚ Rel ar (A [ idₜ ]ᵗs)) [id]Conp ◾ cong (λ x → c ▹ₚ Rel ar x) t[id]ᵗs
+[id]Conp {Γ} {c ▹ₚ A} = cong₂ (_▹ₚ_) [id]Conp f[id]ᶠ
 
 [∘]Conp : ∀{Γ Δ Θ}{Δₚ : Conp Γ}{γ : Sub Δ Γ}{δ : Sub Θ Δ} → Δₚ [ γ ∘ δ ]Conp ≡ Δₚ [ γ ]Conp [ δ ]Conp
-[∘]Conp = {!!}
+[∘]Conp {Δₚ = ◇ₚ} = refl
+[∘]Conp {Δₚ = Δₚ ▹ₚ A} = cong₂ (_▹ₚ_) [∘]Conp [∘]ᶠ
 
 data Pf : (Γ : Con)(Γₚ : Conp Γ) → For Γ → Prop
 
@@ -285,12 +301,12 @@ data Pf where
   ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ idₜ ,ₜ t ]ᶠ) → Pf Γ Γₚ (∃ A)
   ∃out : ∀{Γ Γₚ A C} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp ▹ₚ A) (C [ pₜ ]ᶠ) → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
 
-open import model funar relar
-
 cong, : ∀{Δ Γ Δₚ Γₚ}{γ γ' : Sub Δ Γ}{γₚ : Subp Δ Δₚ (Γₚ [ γ ]Conp)}{γ'ₚ : Subp Δ Δₚ (Γₚ [ γ' ]Conp)} → γ ≡ γ' → (γ , mk γₚ) ≡ (γ' , mk γ'ₚ)
 cong, refl = refl
 
-I : Model
+open import model funar relar
+
+I : Model -- {lzero} {lzero}
 I = record
   { Con = Σ Con Conp
   ; Sub = λ (Δ , Δₚ) (Γ , Γₚ) → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
@@ -304,18 +320,18 @@ I = record
   ; ◇η = cong (_, mk _) ◇η
   ; Tm = λ (Γ , Γₚ) → Tm Γ
   ; _[_]ᵗ = λ t (s , sₚ)  → t [ s ]ᵗ
-  ; [∘]ᵗ = {![∘]ᵗ  !}
+  ; [∘]ᵗ = λ {Γ Δ Θ t (γ , γₚ) (δ , δₚ)} → [∘]ᵗ {t = t}
   ; [id]ᵗ = t[id]ᵗ
   ; _▹ₜ = λ (Γ , Γₚ) → Γ ▹ₜ , Γₚ [ pₜ ]Conp
   ; _,ₜ_ = λ (γ , mk γₚ) t → (γ ,ₜ t) , mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
   ; pₜ = pₜ , mk idp
   ; qₜ = qₜ
-  ; ▹ₜβ₁ = {!   !}
+  ; ▹ₜβ₁ = cong, ▹ₜβ₁
   ; ▹ₜβ₂ = refl
-  ; ▹ₜη = {!   !}
+  ; ▹ₜη = cong, ▹ₜη
   ; For = λ (Γ , Γₚ) → For Γ
   ; _[_]ᶠ = λ A (s , sₚ) → A [ s ]ᶠ
-  ; [∘]ᶠ = {! !}
+  ; [∘]ᶠ = [∘]ᶠ
   ; [id]ᶠ = f[id]ᶠ
   ; Pf = λ (Γ , Γₚ) A → Pf Γ Γₚ A
   ; _[_]ᵖ = λ { {Γ , Γₚ}{Δ , Δₚ}{A} a (γ , mk γₚ) → (a [ γ ]ᵖ) [ γₚ ]ᵖᵖ }
@@ -323,8 +339,8 @@ I = record
   ; _,ₚ_ = λ (s , (mk sₚ)) p → s , mk (sₚ ,ₚ p)
   ; pₚ = idₜ , mk pₚ
   ; qₚ = λ {(Γ , Γₚ)}{A} → substP (λ x → Pf Γ (Γₚ ▹ₚ A) x) (f[id]ᶠ ⁻¹) qₚ
-  ; ▹ₚβ₁ = {!   !}
-  ; ▹ₚη = {!   !}
+  ; ▹ₚβ₁ = cong, idl
+  ; ▹ₚη = cong, idl ⁻¹
   ; Rel = Rel 
   ; Rel[] = λ {Γ n ar} → cong (λ x → Rel ar x) s≡map
   ; fun = fun

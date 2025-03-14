@@ -31,7 +31,7 @@ infixl 2 _◾_
 
 record 𝟙 : Set where
 
-_×_ : Set → Set → Set
+_×_ : ∀{i j} → Set i → Set j → Set _
 A × B = Σ A λ _ → B
 
 -- A ^ n = n hosszu vektor A-elemekkel
