@@ -3,6 +3,7 @@
 module Lib where
 
 open import Agda.Primitive
+open import Agda.Builtin.Bool
 open import Agda.Builtin.Nat public renaming (Nat to ℕ) public
 open import Agda.Builtin.Sigma public
 
@@ -92,3 +93,9 @@ infixr 4 _,sp_
 
 casesp : ∀{A B}{C : Prop} → ((a : A) → B a → C) → Σsp A B → C
 casesp f (a ,sp b) = f a b
+
+
+_=>_ : Bool → Bool → Bool
+_ => true = true
+true => false = false
+false => false = true

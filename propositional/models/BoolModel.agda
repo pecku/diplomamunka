@@ -13,7 +13,7 @@ module models.BoolModel (PropVar : Set)(propVar : PropVar → Bool) where
        { For = Bool
        ; propVar = propVar
        ; Con = Bool
-       ; Sub = λ Γ A → (Γ => A) ≡ true
+       ; Sub = λ Γ Δ → (Γ => Δ) ≡ true
        ; Pf = λ Γ A → (Γ => A) ≡ true
        ; ◇ = true
        ; ε = refl
