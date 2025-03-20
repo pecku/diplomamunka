@@ -14,7 +14,7 @@ data relar : ℕ → Set where
 
 open import model
 
-module workInAnyModel {i}{j}{k}(M : Model funar relar {i}{j}{k}) where
+module workInAnyModel {i}{j}{k}{l}(M : Model funar relar {i}{j}{k}{l}) where
   open Model M
   
   zero' : ∀{Γ} → Tm Γ
@@ -79,7 +79,7 @@ module workInSyntax where
   
   -- (x,p:x=3) ⊢ ∀y.y=3⊃y=x
   p : Pf Γ (Forall {Γ} (_⊃_ {Γ ▹ₜ} (Eq {Γ ▹ₜ} (qₜ {Γ}) (three {Γ ▹ₜ})) (Eq {Γ ▹ₜ} (qₜ {Γ}) (qₜ {◇} [ pₚ {◇ ▹ₜ}{Eq {◇ ▹ₜ} (qₜ {◇}) (three {◇ ▹ₜ})} ]ᵗ [ pₜ {◇ ▹ₜ} ]ᵗ))))
-  p = ∀in (⊃in (∀out {! qₚ  !}))
+  p = {!   !} --∀in (⊃in (∀out {! qₚ  !}))
 
   A⊃A : {A : For ◇} → Pf ◇ (_⊃_ {◇} A A)
   A⊃A = ⊃in qₚ

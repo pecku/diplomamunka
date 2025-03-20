@@ -8,8 +8,8 @@ open import Syntax
 module Iterator
   (funar : ℕ → Set)
   (relar : ℕ → Set)
-  {i}{j}{k}
-  (M : Model funar relar {i}{j}{k})
+  {i}{j}{k}{l}
+  (M : Model funar relar {i}{j}{k}{l})
   where
 
 module M = Model M
