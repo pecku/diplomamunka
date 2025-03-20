@@ -11,6 +11,7 @@ data _≡_ {ℓ}{A : Set ℓ}(a : A) : A → Prop ℓ where
    instance refl : a ≡ a
 
 infix 4 _≡_
+{-# BUILTIN EQUALITY _≡_ #-}
 
 substP : ∀{ℓ ℓ'}{A : Set ℓ}(P : A → Prop ℓ'){a a' : A} → a ≡ a' → P a → P a'
 substP P refl p = p
@@ -83,6 +84,14 @@ data _⊎p_ (A B : Prop) : Prop where
   inl : A → A ⊎p B
   inr : B → A ⊎p B
 
+data _⊎_ (A B : Prop) : Set where
+  inl : A → A ⊎ B
+  inr : B → A ⊎ B
+
+case : ∀{ℓ}{A B : Prop}{C : Set ℓ} → (A → C) → (B → C) → A ⊎ B → C
+case f g (inl a) = f a
+case f g (inr b) = g b
+
 casep : {A B C : Prop} → (A → C) → (B → C) → A ⊎p B → C
 casep f g (inl a) = f a
 casep f g (inr b) = g b
@@ -99,3 +108,15 @@ _=>_ : Bool → Bool → Bool
 _ => true = true
 true => false = false
 false => false = true
+
+_&&_ : Bool → Bool → Bool
+true && true = true
+true && false = false
+false && true = false
+false && false = false
+
+_||_ : Bool → Bool → Bool
+true || false = true
+true || true = true
+false || true = true
+false || false = false
