@@ -1,2 +1,4 @@
 *.agdai
 MAlonzo/**
+latex_aux
+*.synctex.gz

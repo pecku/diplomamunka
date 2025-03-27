@@ -1,4 +1,5 @@
 
+\begin{code}[hide]
 {-# OPTIONS --prop #-}
 
 open import Agda.Primitive
@@ -22,12 +23,18 @@ infixl 9 _[_]vᵗ
 infixr 6 _⊃_
 infixr 8 _∧_
 infixr 7 _∨_
+\end{code}
 
+A szintaxisunk az iniciális modell. A szortokat algebrai adattípusokkal definiáljuk:
+\begin{code}
 data Con  : Set
-data For  : Con → Set
 data Sub  : Con → Con → Set
+data For  : Con → Set
 data Tm   : Con → Set
+\end{code}
 
+A konstruktorokat megadjuk intuitívan a \AgdaField{Con} és \AgdaField{For} szortokhoz:
+\begin{code}
 data Con where
   ◇    : Con
   _▹ₜ  : Con → Con
@@ -41,7 +48,10 @@ data For where
   Forall : ∀{Γ} → For (Γ ▹ₜ) → For Γ
   ∃      : ∀{Γ} → For (Γ ▹ₜ) → For Γ
   Rel    : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
+\end{code}
 
+Mivel a nyelvünk változókat is tartalmazhat, ezért be kell vezetnünk két további adattípust, a termváltozókat és a hozzá tartozó behelyettesítésteket:
+\begin{code}
 data VTm : Con → Set where
   vz : ∀{Γ} → VTm (Γ ▹ₜ)
   vs : ∀{Γ} → VTm Γ → VTm (Γ ▹ₜ)
@@ -49,7 +59,9 @@ data VTm : Con → Set where
 data VSub : Con → Con → Set where
   ε     : ∀{Γ} → VSub Γ ◇
   _,ᵥ_ : ∀{Γ Δ} → VSub Δ Γ → VTm Δ → VSub Δ (Γ ▹ₜ)
+\end{code}
 
+\begin{code}[hide]
 _[_]vᵗ : ∀{Γ Δ} → VTm Γ → VSub Δ Γ → VTm Δ
 vz [ s ,ᵥ x ]vᵗ = x
 vs x [ s ,ᵥ _ ]vᵗ = x [ s ]vᵗ
@@ -75,7 +87,10 @@ wkvs {Δ} {.(_ ▹ₜ)} {γ ,ᵥ x₁} {vs x} = wkvs {x = x}
 
 _⁺ᵛ : ∀{Γ Δ} → VSub Δ Γ → VSub (Δ ▹ₜ) (Γ ▹ₜ)
 γ ⁺ᵛ = wkVSub γ ,ᵥ vz
+\end{code}
 
+Az előbbiek segítségével már meg tudjuk adni a \AgdaField{Tm} és \AgdaField{Sub} szortokat is:
+\begin{code}
 data Tm where
   var : ∀{Γ} → VTm Γ → Tm Γ
   fun : ∀{Γ}{n : ℕ} → funar n → Tm Γ ^ n → Tm Γ
@@ -83,7 +98,9 @@ data Tm where
 data Sub where
   ε     : ∀{Γ} → Sub Γ ◇
   _,ₜ_  : ∀{Γ Δ} → Sub Δ Γ → Tm Δ → Sub Δ (Γ ▹ₜ)
+\end{code}
 
+\begin{code}[hide]
 ◇η  : ∀{Γ}{σ : Sub Γ ◇} → σ ≡ ε
 ◇η {Γ} {ε} = refl
 
@@ -251,11 +268,16 @@ f[id]ᶠ {Γ} {⊥} = refl
 f[id]ᶠ {Γ} {Forall A} = cong (λ a → Forall a) (cong (λ x → A [ x ]ᶠ) id+≡id ◾ f[id]ᶠ)
 f[id]ᶠ {Γ} {∃ A} = cong (λ a → ∃ a) (cong (λ x → A [ x ]ᶠ) id+≡id ◾ f[id]ᶠ)
 f[id]ᶠ {Γ} {Rel ar ts} = cong (λ x → Rel ar x) t[id]ᵗs
+\end{code}
 
+A bizonyítások miatt azonban szükségünk van mégegy összetevőre, ez lesz a bizonyítások kontextusa:
+\begin{code}
 data Conp : Con → Set where
   ◇ₚ : ∀{Γ} → Conp Γ
   _▹ₚ_ : ∀{Γ} → Conp Γ → For Γ → Conp Γ
+\end{code}
 
+\begin{code}[hide]
 _[_]Conp : ∀{Γ Δ} → Conp Γ → Sub Δ Γ → Conp Δ
 ◇ₚ [ γ ]Conp = ◇ₚ
 (Γₚ ▹ₚ A) [ γ ]Conp = Γₚ [ γ ]Conp ▹ₚ A [ γ ]ᶠ
@@ -267,7 +289,10 @@ _[_]Conp : ∀{Γ Δ} → Conp Γ → Sub Δ Γ → Conp Δ
 [∘]Conp : ∀{Γ Δ Θ}{Δₚ : Conp Γ}{γ : Sub Δ Γ}{δ : Sub Θ Δ} → Δₚ [ γ ∘ δ ]Conp ≡ Δₚ [ γ ]Conp [ δ ]Conp
 [∘]Conp {Δₚ = ◇ₚ} = refl
 [∘]Conp {Δₚ = Δₚ ▹ₚ A} = cong₂ (_▹ₚ_) [∘]Conp [∘]ᶠ
+\end{code}
 
+Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is, hogy a bizonyítások szortját meg tudjuk adni:
+\begin{code}
 data Pf : (Γ : Con)(Γₚ : Conp Γ) → For Γ → Prop
 
 data Subp : (Γ : Con) → Conp Γ → Conp Γ → Prop where
@@ -276,10 +301,12 @@ data Subp : (Γ : Con) → Conp Γ → Conp Γ → Prop where
   _,ₚ_ : ∀{Δ Γₚ Δₚ A} → Subp Δ Δₚ Γₚ → Pf Δ Δₚ A → Subp Δ Δₚ (Γₚ ▹ₚ A)
   pₚ : ∀{Γ Γₚ A} → Subp Γ (Γₚ ▹ₚ A) (Γₚ [ idₜ ]Conp)
   _∘ₚ_ : ∀{Ξ Θₚ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → Subp Ξ Θₚ Δₚ → Subp Ξ Θₚ Γₚ
-  _[_]ᵖ : ∀{Ξ Ψ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → (ξ : Sub Ψ Ξ) → Subp Ψ (Δₚ [ ξ ]Conp) (Γₚ [ ξ ]Conp)
+  _[_]ᵖ : ∀{Ξ Ψ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → (ξ : Sub Ψ Ξ)
+          → Subp Ψ (Δₚ [ ξ ]Conp) (Γₚ [ ξ ]Conp)
 
 data Pf where
-  _[_]ᵖ  : ∀{Γ Γₚ Δ A} → Pf Γ Γₚ A → (γ : Sub Δ Γ) → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
+  _[_]ᵖ  : ∀{Γ Γₚ Δ A} → Pf Γ Γₚ A → (γ : Sub Δ Γ)
+           → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
   _[_]ᵖᵖ : ∀{Ξ Γₚ Δₚ A} → Pf Ξ Γₚ A → (γₚ : Subp Ξ Δₚ Γₚ) → Pf Ξ Δₚ A
   qₚ    : ∀{Γ Γₚ A} → Pf Γ (Γₚ ▹ₚ A) A
   ⊃in   : ∀{Γ Γₚ A B} → Pf Γ (Γₚ ▹ₚ A) B → Pf Γ Γₚ (A ⊃ B)
@@ -290,23 +317,32 @@ data Pf where
   ⊤in   : ∀{Γ Γₚ} → Pf Γ Γₚ ⊤
   ∨in₁  : ∀{Γ Γₚ A B} → Pf Γ Γₚ A → Pf Γ Γₚ (A ∨ B)
   ∨in₂  : ∀{Γ Γₚ A B} → Pf Γ Γₚ B → Pf Γ Γₚ (A ∨ B)
-  ∨out  : ∀{Γ Γₚ A B C} → Pf Γ (Γₚ ▹ₚ A) (C) → Pf Γ (Γₚ ▹ₚ B) (C) → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C
+  ∨out  : ∀{Γ Γₚ A B C} → Pf Γ (Γₚ ▹ₚ A) (C) → Pf Γ (Γₚ ▹ₚ B) (C)
+          → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C
   ⊥out  : ∀{Γ Γₚ A} → Pf Γ Γₚ ⊥ → Pf Γ Γₚ A
   ∀in : ∀{Γ Γₚ A} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A → Pf Γ Γₚ (Forall A)
   ∀out : ∀{Γ Γₚ A} → Pf Γ Γₚ (Forall A) → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A
   ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ idₜ ,ₜ t ]ᶠ) → Pf Γ Γₚ (∃ A)
-  ∃out : ∀{Γ Γₚ A C} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp ▹ₚ A) (C [ pₜ ]ᶠ) → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
+  ∃out : ∀{Γ Γₚ A C} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp ▹ₚ A) (C [ pₜ ]ᶠ)
+         → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
+\end{code}
 
+\begin{code}[hide]
 cong, : ∀{Δ Γ Δₚ Γₚ}{γ γ' : Sub Δ Γ}{γₚ : Subp Δ Δₚ (Γₚ [ γ ]Conp)}{γ'ₚ : Subp Δ Δₚ (Γₚ [ γ' ]Conp)} → γ ≡ γ' → (γ , mk γₚ) ≡ (γ' , mk γ'ₚ)
 cong, refl = refl
 
 open import model funar relar
+\end{code}
 
+Az iniciális modell tehát a következőképpen néz ki:
+\begin{code}
 I : Model
 I = record
   { Con = Σ Con Conp
-  ; Sub = λ (Δ , Δₚ) (Γ , Γₚ) → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
-  ; _∘_ = λ {(Γ , Γₚ) (Δ , Δₚ) (Θ , Θₚ)}(γ , mk γₚ) (δ , mk δₚ) → (γ ∘ δ) , mk (substP (Subp Θ Θₚ) ([∘]Conp ⁻¹) ((γₚ [ δ ]ᵖ) ∘ₚ δₚ))
+  ; Sub = λ (Δ , Δₚ) (Γ , Γₚ)
+          → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
+  ; _∘_ = λ {(Γ , Γₚ) (Δ , Δₚ) (Θ , Θₚ)}(γ , mk γₚ) (δ , mk δₚ)
+          → (γ ∘ δ) , mk (substP (Subp Θ Θₚ) ([∘]Conp ⁻¹) ((γₚ [ δ ]ᵖ) ∘ₚ δₚ))
   ; ass = cong, ass
   ; id = λ {(Γ , Γₚ)} → idₜ , mk (substP (λ x → Subp Γ Γₚ x) ([id]Conp ⁻¹) idp)
   ; idl = cong, idl
@@ -319,7 +355,9 @@ I = record
   ; [∘]ᵗ = λ {Γ Δ Θ t (γ , γₚ) (δ , δₚ)} → [∘]ᵗ {t = t}
   ; [id]ᵗ = t[id]ᵗ
   ; _▹ₜ = λ (Γ , Γₚ) → Γ ▹ₜ , Γₚ [ pₜ ]Conp
-  ; _,ₜ_ = λ (γ , mk γₚ) t → (γ ,ₜ t) , mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
+  ; _,ₜ_ = λ (γ , mk γₚ) t
+          → (γ ,ₜ t) ,
+            mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
   ; pₜ = pₜ , mk idp
   ; qₜ = qₜ
   ; ▹ₜβ₁ = cong, ▹ₜβ₁
@@ -343,7 +381,8 @@ I = record
   ; fun[] = λ {Γ n ar} → cong (λ x → fun ar x) s≡map
   ; _⊃_ = _⊃_
   ; ⊃[] = refl
-  ; ⊃in = λ {(Γ , Γₚ) A B} → substP (λ x → Pf Γ (Γₚ ▹ₚ A) x → Pf Γ Γₚ (A ⊃ B)) (f[id]ᶠ ⁻¹) (⊃in)
+  ; ⊃in = λ {(Γ , Γₚ) A B} → substP (λ x → Pf Γ (Γₚ ▹ₚ A) x
+          → Pf Γ Γₚ (A ⊃ B)) (f[id]ᶠ ⁻¹) (⊃in)
   ; ⊃out = ⊃out
   ; _∧_ = _∧_
   ; ∧[] = refl
@@ -357,7 +396,9 @@ I = record
   ; ∨[] = refl
   ; ∨in₁ = ∨in₁
   ; ∨in₂ = ∨in₂
-  ; ∨out =  λ {(Γ , Γₚ)} {A} {B} {C} a b → substP (λ C → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C) f[id]ᶠ (∨out a b)
+  ; ∨out =  λ {(Γ , Γₚ)} {A} {B} {C} a b
+            → substP (λ C → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C)
+                     f[id]ᶠ (∨out a b)
   ; ⊥ = ⊥
   ; ⊥[] = refl
   ; ⊥out = ⊥out
@@ -368,5 +409,9 @@ I = record
   ; ∃ = ∃
   ; ∃[] = cong (λ z → ∃ (_ [ z ,ₜ var vz ]ᶠ)) (∘p ⁻¹)
   ; ∃in = ∃in
-  ; ∃out = λ {(Γ , Γₚ)}{A}{C} w p → ∃out {Γ}{Γₚ}{A}{C} (substP (λ z → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ)) idr w) p
+  ; ∃out = λ {(Γ , Γₚ)}{A}{C} w p
+          → ∃out {Γ}{Γₚ}{A}{C}
+            (substP (λ z
+            → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ)) idr w) p
   }
+\end{code}

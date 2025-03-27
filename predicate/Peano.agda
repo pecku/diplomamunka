@@ -1,6 +1,7 @@
 {-# OPTIONS --prop #-}
 
 open import Agda.Primitive
+open import Agda.Builtin.Bool
 open import Lib
 
 data funar : ℕ → Set where
@@ -10,7 +11,6 @@ data funar : ℕ → Set where
 
 data relar : ℕ → Set where
   eq   : relar 2
-  leq  : relar 2
 
 open import model
 
@@ -102,7 +102,6 @@ module workInTarski where
 
   ℕRel : (n : ℕ) → relar n → ℕ ^ n → Prop
   ℕRel _ eq (m , n , _) = m ≡ n
-  ℕRel _ leq = {!!}
 
   import Tarski funar relar ℕ ℕfun ℕRel as T
   open Model T.T
@@ -136,3 +135,14 @@ module workInTarski where
 
   ∀P∧∀Q⊃∀P∧Q : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall P ∧ Forall Q) ⊃ (Forall (P ∧ Q)))
   ∀P∧∀Q⊃∀P∧Q = λ γ x d → fst x d ,p snd x d         
+
+
+module workInBool where
+  import BoolModel funar relar ℕ (λ n _ _ → n) (λ n _ _ → true) as B
+  open Model B.B
+  
+  lem : ∀{Γ}{A : For Γ} → Pf Γ (A ∨ (A ⊃ ⊥))
+  lem {Γ} {A} γ with A γ
+  ... | false = refl
+  ... | true = refl
+  

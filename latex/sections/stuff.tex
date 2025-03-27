@@ -1,0 +1,59 @@
+\chapter{Stuff}
+\label{ch:stuff}
+
+\input{sections/agda/latex/misc.tex}
+
+Az Agda egy függően típusozott funkcionális nyelv, amelyet bizonyításokra is tudunk használni, ezzel megmutatva a logika kapcsolatát a típuselmélettel. Továbbá egy teljes nyelv is, ami azt jelenti, hogy minden program terminál és mintaillesztés során is minden esetet kötelező lekezelni.
+
+Ahogy már korábban szó volt róla, az elsőrendű logikát mint nyelvet sekély módon is be lehet ágyazni az Agda rendszerébe, mivel ehhez minden eszköz adott a meglévő típusok és műveletek által.
+
+\section{Elsőrendű logika Agdában}
+
+Az elsőrendű logika sekély beágyazása Agdában meglehetősen természetesnek is hathat:
+
+\subsection{Logikai állítások, mint típusok}
+
+Az elsőrendű logikában egy formula, mint $ P(x) $, vagy igaz, vagy hamis. Agdában kezelhetjük az állításokat típusokként, így a bizonyítása a $ P(x) $ formulának megfeleltethető az állítás szort egy elemének.
+
+\subsection{Az univerzális kvantor, mint egy függő függvény típus}
+
+Az univerzális kvantor $ ∀ x. P(x) $ egyszerűen reprezentálható egy függő függvény típussal:
+
+\miscUniversalQuantifier{}
+
+\subsection{Az egzisztenciális kvantor (∃), mint a függő pár típus (Σ)}
+
+Az egzisztenciális kvantor $ ∃ x. P(x) $ megfeleltethető a függő pár típusnak:
+
+\miscExistentialQuantifier{}
+
+\subsection{Logikai összekötők, mint meglévő típuskonstruktorok}
+
+\begin{itemize}
+    \item \textbf{Konjunkció} ($\land$) - szorzat típus ($\Sigma$-types):
+\miscConjunction{}
+    \item \textbf{Disjunkció} ($\lor$) - összeg típus:
+\miscDisjunction{}
+    \item \textbf{Implikáció} ($\rightarrow$) - függvény típus:
+\miscImplication{}
+    \item \textbf{Negáció} ($\neg A$) - $ A \rightarrow \bot $ (ahol $\bot$ az üres típus):
+\miscNegation{}
+\end{itemize}
+
+\subsection{Egyenlőség és elsőrendű termek}
+
+A beépített egyenlőség Agdában ($ \_≡\_ $), amelyet közvetlenül használhatunk:
+
+\miscEquality{}
+
+Mindezekkel a funkciókkal a sekély beágyazás egyszerűen megvalósítható. Az elsőrendű logikát nem szükséges szintaktikus fákként kódolni, hanem egyszerűen a beépített Agda típusokat és függvényeket használhatjuk.
+
+\subsection{Példa bizonyítás}
+
+Például, ha be akarnánk bizonyítani a következőt:
+
+\[ \forall x. (P(x) \rightarrow Q(x)) \rightarrow (\forall x. P(x)) \rightarrow (\forall x. Q(x)) \]
+
+Egyszerűen csak egy függvény applikációval adjuk meg:
+
+\miscExLemma{}
