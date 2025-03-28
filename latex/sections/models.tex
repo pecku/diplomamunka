@@ -1,4 +1,12 @@
 \chapter{Modellek}
 \label{ch:models}
 
+      % pl. Peano aritmetika (ahogy fent van megadva)
+      %   relar 2 = 𝟚, false az egyenloseg, Rel {Γ}{2} false : Tm Γ × Tm Γ × ⊤ → For Γ
+      %   zero := fun {Γ}{0} tt tt : Tm Γ
+      %   suc (n : Tm Γ) := fun {Γ}{1} tt (n, tt) : Tm Γ
+      %   Eq (u v : Tm Γ) := Rel {n = 2} false (u , v , tt)
+      % (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
+      % ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
+
 A Bool modell az elsőrendű logika egy olyan specifikus értelmezése, ahol a logikai műveletek a Bool értékek közötti műveletekkel azonosak és a formulák értéke vagy igaz, vagy hamis.

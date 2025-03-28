@@ -212,27 +212,7 @@ A terminális objektum egy olyan objektum, amelyhez minden más objektumból lé
 
 \section{Termek}
 
-
-
-
-
-A termekbe való behelyettesítésre vonatkoznak.
-
-A termek manipulálására vonatkozó szabályokat, valamint a kapcsolódó β és η szabályokat adjuk meg.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Megadjuk a termek kontextustól függő halmazát és a termek helyettesítését, amivel a szabad változóknak tudunk értéket adni. Megadjuk a helyettesítés funktort és az identitás behelyettesítésének lemmáját:
+A termeket (\AgdaField{Tm}) egy funktorként adjuk meg. Úgy is mondhatjuk, hogy egy kontextustól függenek, mivel lehetnek benne termváltozók, amikbe be tudunk majd helyettesíteni, így értéket adva a szabad változóknak. Ehhez szükségünk lesz termekbe való behelyettesítésre, másnéven egy morfizmusok feletti akcióra. Egy funktornak teljesítenie kell két feltételt is: a kompozícióval való kompatibilitást és az identitással való kompatibilitást. Ezeket az \AgdaField{[∘]ᵗ} és \AgdaField{[id]ᵗ} egyenlőségek biztosítják.
 \begin{code}%
 %
 \>[6]\AgdaField{Tm}%
@@ -308,19 +288,7 @@ Megadjuk a termek kontextustól függő halmazát és a termek helyettesítésé
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{t}\<%
 \end{code}
-A környezetek termekkel és termváltozókkal való kiegészítését is megadjuk.
-% környezetbe be tudunk tenni egy termváltozót (ez olyasmi, mint a Descartes szorzat _×⊤)
-% _,_ = párképzés, mint a Descartes-szorzatnál
-% p: első projekció (fst)
-% q: második projekció (snd)
-
-Két bétaszabály és egy étaszabály is tartozik ide:
-
-((p∘\_) , (q[\_])) : Sub Δ (Γ ▹ₜ) ≅ Sub Δ Γ × Tm Δ : \_,ₜ\_
-
-β: jobbrol balra, majd jobbra = mintha nem csinaltam volna semmit
-
-η: balrol jobbra, majd balra = mintha nem csinaltam volna semmit
+A környezetek termekkel és termváltozókkal való kiegészítését is megadjuk. A környezetbe betenni egy termváltozót (\AgdaField{\_▹ₜ}) hasonlítható egy olyan Descartes szorzathoz, amelynek az egyik oldalán az egyelemű halmaz található: \AgdaDatatype{\_×⊤}. A behelyettesítéseket is kiegészíthetjük termekkel (\AgdaField{\_,ₜ\_}), amelyeket ismételten a Descartes szorzattal lehetne azonosítani. A képzett pároknak tehát meg tudjuk adni az első (\AgdaField{pₜ}) és a második (\AgdaField{qₜ}) projekcióját.
 \begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}▹ₜ}}%
@@ -365,7 +333,19 @@ Két bétaszabály és egy étaszabály is tartozik ide:
 \AgdaField{Tm}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{▹ₜ}}\AgdaSymbol{)}\<%
-\\
+\end{code}
+
+Fontos megadjuk a redukciós szabályokat is (β, η), hogy biztosítsuk az azonos kifejezések közötti egyenlőséget.
+
+\texttt{
+((p∘\_) , (q[\_])) : Sub Δ (Γ ▹ₜ) ≅ Sub Δ Γ × Tm Δ : \_,ₜ\_
+}
+
+\begin{itemize}
+\item β: jobbról balra, majd jobbra = mintha nem történt volna semmi
+\item η: balról jobbra, majd balra = mintha nem történt volna semmi
+\end{itemize}
+\begin{code}%
 %
 \>[6]\AgdaField{▹ₜβ₁}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -433,7 +413,10 @@ Két bétaszabály és egy étaszabály is tartozik ide:
 \AgdaBound{γt}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᵗ}}\AgdaSymbol{)}\<%
 \end{code}
-Formulák:
+
+\section{Formulák}
+
+A formulákra is tekinthetünk funktorként, így hasonlóan a termekhez a következő módon adjuk meg:
 \begin{code}%
 %
 \>[6]\AgdaField{For}\AgdaSpace{}%
@@ -509,16 +492,10 @@ Formulák:
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{A}\<%
 \end{code}
-Bizonyítások: ezekben vannak valtozok (Con-nal indexelve), es valamilyen formulat bizonyitanak (For-al indexelve)
-      % Γ ⊢ A  <- szokasos logikai (bizonyitaslmeleti jeloles) p : Pf Γ A azt jelenti, hogy p bizonyitja az A allitast, ahol
-      % szabad valtozok Γ-ban vannak
-      % pl. Peano aritmetika (ahogy fent van megadva)
-      %   relar 2 = 𝟚, false az egyenloseg, Rel {Γ}{2} false : Tm Γ × Tm Γ × ⊤ → For Γ
-      %   zero := fun {Γ}{0} tt tt : Tm Γ
-      %   suc (n : Tm Γ) := fun {Γ}{1} tt (n, tt) : Tm Γ
-      %   Eq (u v : Tm Γ) := Rel {n = 2} false (u , v , tt)
-      % (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
-      % ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
+
+\section{Bizonyítások}
+
+A bizonyításokat már egy kicsivel bonyolultabban adjuk meg, ugyanis egy \AgdaField{For} feletti dependáns funktronak is nevezhetnénk. Ha vesszük például a Γ ⊢ A szokásos logikai (bizonyításelméleti) jelölést, akkor a \AgdaDatatype{p} : \AgdaField{Pf} Γ A azt jelenti, hogy \AgdaDatatype{p} bizonyítja az A állítást, ahol a szabad változók Γ-ban vannak.
 \begin{code}%
 %
 \>[6]\AgdaField{Pf}%
@@ -557,8 +534,7 @@ Bizonyítások: ezekben vannak valtozok (Con-nal indexelve), es valamilyen formu
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
 \end{code}
-Bizonyítás-változók:
-      % ((p∘_) , (q[_])) : Sub Δ (Γ ▹ₚ A) ≅ (γ : Sub Δ Γ) × Pf Δ (A [ γ ]ᶠ) : _,ₚ_
+A bizonyítás-változókat a termváltozók esetében is használt operációkhoz hasonlóan valósítjuk meg:
 \begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}▹ₚ\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -684,6 +660,15 @@ Bizonyítás-változók:
 \AgdaBound{γa}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᵖ}}\AgdaSymbol{))}\<%
 \end{code}
+
+\noindent
+\raggedright
+\texttt{
+((p∘\_),(q[\_])) : Sub Δ (Γ▹ₚA) ≅ (γ: Sub Δ Γ) × Pf Δ (A[γ]ᶠ) : \_,ₚ\_
+}
+
+\section{Reláció- és függvényszimbólumok}
+
 Reláció és függvényszimbólumok (a modell a függvények és a relációk aritásával van felparaméterezve):
 \begin{code}%
 %
@@ -792,7 +777,12 @@ Reláció és függvényszimbólumok (a modell a függvények és a relációk a
 \AgdaOperator{\AgdaField{]ᵗ}}\AgdaSpace{}%
 \AgdaBound{ts}\AgdaSymbol{)}\<%
 \end{code}
-Logikai összekötők
+
+\section{Logikai összekötők}
+
+\subsection{Implikáció (⊃)}
+
+Az A ⊃ B jelentése: "ha A igaz, akkor B is igaz".
 \begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}⊃\AgdaUnderscore{}}}%
@@ -807,7 +797,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{⊃[]}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -836,7 +827,10 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{[}}\AgdaSpace{}%
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
-\\
+\end{code}
+\begin{itemize}
+\item Az implikáció bevezető szabálya (\AgdaField{⊃in}): Ha tudjuk bizonyítani, hogy B igaz egy olyan kontextusban, ahol A feltételezett, akkor van egy bizonyításunk A ⊃ B-re is.
+\begin{code}%
 %
 \>[6]\AgdaField{⊃in}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -858,7 +852,9 @@ Logikai összekötők
 \AgdaSymbol{((}\AgdaBound{A}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{⊃}}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSymbol{))}\<%
-\\
+\end{code}
+\item Az implikáció kivezető szabálya (\AgdaField{⊃out}): Ha van egy bizonyításunk A ⊃ B-re, valamint A-ra is, akkor van egy bizonyításunk B-re is.
+\begin{code}%
 %
 \>[6]\AgdaField{⊃out}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -879,9 +875,12 @@ Logikai összekötők
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{B}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+\end{itemize}
+
+\subsection{Konjunkció (∧)}
+Az A ∧ B azt jelenti, hogy mind A, mind B igaz.
+\begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}∧\AgdaUnderscore{}}}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -895,7 +894,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{∧[]}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -924,7 +924,10 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{[}}\AgdaSpace{}%
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
-\\
+\end{code}
+\begin{itemize}
+\item A konjunkció bevezető szabálya (\AgdaField{∧in}): Ha A és B külön-külön bizonyítható, akkor A ∧ B is igaz.
+\begin{code}%
 %
 \>[6]\AgdaField{∧in}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -945,7 +948,10 @@ Logikai összekötők
 \AgdaSymbol{(}\AgdaBound{A}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{∧}}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\item Az konjunkció kivezető szabálya (\AgdaField{∧out₁}): Az A ∧ B-ből következik A.
+\item Az konjunkció kivezető szabálya (\AgdaField{∧out₂}): Az A ∧ B-ből következik B.
+\begin{code}%
 %
 \>[6]\AgdaField{∧out₁}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -979,45 +985,12 @@ Logikai összekötők
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{B}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-%
-\>[6]\AgdaField{⊤}%
-\>[12]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaField{For}\AgdaSpace{}%
-\AgdaBound{Γ}\<%
-\\
-%
-\>[6]\AgdaField{⊤[]}%
-\>[12]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
-\AgdaBound{Δ}\AgdaSymbol{\}\{}\AgdaBound{γ}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaField{Sub}\AgdaSpace{}%
-\AgdaBound{Δ}\AgdaSpace{}%
-\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaField{⊤}\AgdaSpace{}%
-\AgdaOperator{\AgdaField{[}}\AgdaSpace{}%
-\AgdaBound{γ}\AgdaSpace{}%
-\AgdaOperator{\AgdaField{]ᶠ}}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
-\AgdaField{⊤}\<%
-\\
-%
-\>[6]\AgdaField{⊤in}%
-\>[12]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaField{Pf}\AgdaSpace{}%
-\AgdaBound{Γ}\AgdaSpace{}%
-\AgdaField{⊤}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+\end{itemize}
+
+\subsection{Diszjunkció (∨)}
+Az A ∨ B jelentése, hogy legalább az egyik (A vagy B) igaz.
+\begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}∨\AgdaUnderscore{}}}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1031,7 +1004,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{∨[]}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1060,7 +1034,11 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{[}}\AgdaSpace{}%
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
-\\
+\end{code}
+\begin{itemize}
+\item A diszjunkció bevezető szabálya (\AgdaField{∨in₁}): Ha A igaz, akkor A ∨ B is igaz.
+\item A diszjunkció bevezető szabálya (\AgdaField{∨in₂}): Ha B igaz, akkor A ∨ B is igaz.
+\begin{code}%
 %
 \>[6]\AgdaField{∨in₁}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1094,11 +1072,13 @@ Logikai összekötők
 \AgdaSymbol{(}\AgdaBound{A}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{∨}}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\item A diszjunkció kivezető szabálya (\AgdaField{∨out}): Ha tudjuk, hogy A ∨ B igaz, és abból is következik, ha A igaz, de abból is, ha B igaz, akkor C igaz.
+\begin{code}%
 %
 \>[6]\AgdaField{∨out}%
 \>[12]\AgdaSymbol{:}%
-\>[777I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\>[755I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -1121,7 +1101,7 @@ Logikai összekötők
 \AgdaField{pₚ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[777I]%
+\>[.][@{}l@{}]\<[755I]%
 \>[14]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
@@ -1132,9 +1112,55 @@ Logikai összekötők
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{C}\<%
-\\
+\end{code}
+\end{itemize}
+
+\subsection{Konstans igaz (⊤)}
+A \AgdaField{⊤} egy mindig igaz állítást jelöl.
+\begin{code}%
 %
-\\[\AgdaEmptyExtraSkip]%
+\>[6]\AgdaField{⊤}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaField{For}\AgdaSpace{}%
+\AgdaBound{Γ}\<%
+\end{code}
+\begin{code}%
+%
+\>[6]\AgdaField{⊤[]}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\AgdaBound{Δ}\AgdaSymbol{\}\{}\AgdaBound{γ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaField{Sub}\AgdaSpace{}%
+\AgdaBound{Δ}\AgdaSpace{}%
+\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaField{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaField{[}}\AgdaSpace{}%
+\AgdaBound{γ}\AgdaSpace{}%
+\AgdaOperator{\AgdaField{]ᶠ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaField{⊤}\<%
+\end{code}
+\begin{itemize}
+\item Az \textit{igaz} bevezető szabálya (\AgdaField{⊤in}): Minden kontextusban igaz.
+\begin{code}%
+%
+\>[6]\AgdaField{⊤in}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaField{Pf}\AgdaSpace{}%
+\AgdaBound{Γ}\AgdaSpace{}%
+\AgdaField{⊤}\<%
+\end{code}
+\end{itemize}
+
+\subsection{Konstans hamis (⊥)}
+Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
+\begin{code}%
 %
 \>[6]\AgdaField{⊥}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1142,7 +1168,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{⊥[]}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1159,7 +1186,10 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaField{⊥}\<%
-\\
+\end{code}
+\begin{itemize}
+\item A \textit{hamis} kivezető szabálya (\AgdaField{⊥out}): Ha egy bizonyítás során elérünk egy ellentmondást (\AgdaField{⊥}), akkor bármilyen tetszőleges állítást igaznak vehetünk (\textit{ex falso quodlibet}).
+\begin{code}%
 %
 \>[6]\AgdaField{⊥out}%
 \>[12]\AgdaSymbol{:}\AgdaSpace{}%
@@ -1173,9 +1203,17 @@ Logikai összekötők
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{A}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+\end{itemize}
+
+\subsection{Kvantorok}
+
+A kvantorok formális logikai eszközök, amelyek segítségével általános és létezési állításokat tehetünk. Bindernek is nevezzük őket, utalva rá, hogy egy változót köt, azaz meghatározza, hogy egy változó miként értelmezhető egy adott hatókörben.
+
+\subsubsection{Univerzális kvantor (∀)}
+
+Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás minden lehetséges elemre igaz. Például a $∀x P(x)$ azt jelenti, hogy minden x-re igaz, hogy $P(x)$. A deklarációban látható is, hogy mivel egy binder-ről beszélünk, egy formulában lévő szabad változót kötünk meg, így egy szükebb kontextusban lévő formulát fogunk kapni.
+\begin{code}%
 %
 \>[6]\AgdaField{Forall}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1187,7 +1225,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{Forall[]}\AgdaSpace{}%
 \AgdaSymbol{:}%
@@ -1216,7 +1255,10 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{,ₜ}}\AgdaSpace{}%
 \AgdaField{qₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\begin{itemize}
+\item Az univerzális kvantor bevezető szabálya (\AgdaField{∀in}):
+\begin{code}%
 %
 \>[6]\AgdaField{∀in}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1233,7 +1275,9 @@ Logikai összekötők
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaField{Forall}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\item Az univerzális kvantor kivezető szabálya (\AgdaField{∀out}):
+\begin{code}%
 %
 \>[6]\AgdaField{∀out}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1250,9 +1294,13 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{▹ₜ}}\AgdaSpace{}%
 \AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{A}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+\end{itemize}
+
+\subsubsection{Egzisztenciális kvantor (∃)}
+
+Az egzisztenciális kvantor azt fejezi ki, hogy létezik legalább egy olyan elem, amelyre igaz egy állítás. Például a $∃x P(x)$ azt jelenti, hogy létezik legalább egy x, amelyre igaz, hogy $P(x)$.
+\begin{code}%
 %
 \>[6]\AgdaField{∃}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1265,7 +1313,8 @@ Logikai összekötők
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
-\\
+\end{code}
+\begin{code}%
 %
 \>[6]\AgdaField{∃[]}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1292,7 +1341,10 @@ Logikai összekötők
 \AgdaOperator{\AgdaField{,ₜ}}\AgdaSpace{}%
 \AgdaField{qₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\begin{itemize}
+\item Az egzisztenciális kvantor bevezető szabálya (\AgdaField{∃in}):
+\begin{code}%
 %
 \>[6]\AgdaField{∃in}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1317,7 +1369,9 @@ Logikai összekötők
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaField{∃}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\item Az egzisztenciális kvantor kivezető szabálya (\AgdaField{∃out}):
+\begin{code}%
 %
 \>[6]\AgdaField{∃out}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1346,6 +1400,8 @@ Logikai összekötők
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{C}\<%
 \end{code}
+\end{itemize}
+
 \begin{code}[hide]%
 %
 \>[3]\AgdaKeyword{infixl}\AgdaSpace{}%

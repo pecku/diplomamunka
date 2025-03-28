@@ -25,7 +25,7 @@ infixr 8 _∧_
 infixr 7 _∨_
 \end{code}
 
-A szintaxisunk az iniciális modell. A szortokat algebrai adattípusokkal definiáljuk:
+A szortokat algebrai adattípusokkal definiáljuk:
 \begin{code}
 data Con  : Set
 data Sub  : Con → Con → Set

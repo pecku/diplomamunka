@@ -44,17 +44,7 @@ A terminális objektum egy olyan objektum, amelyhez minden más objektumból lé
 
 \section{Termek}
 
-
-
-
-
-A termekbe való behelyettesítésre vonatkoznak.
-
-A termek manipulálására vonatkozó szabályokat, valamint a kapcsolódó β és η szabályokat adjuk meg.
-
-
-
-Megadjuk a termek kontextustól függő halmazát és a termek helyettesítését, amivel a szabad változóknak tudunk értéket adni. Megadjuk a helyettesítés funktort és az identitás behelyettesítésének lemmáját:
+A termeket (\AgdaField{Tm}) egy funktorként adjuk meg. Úgy is mondhatjuk, hogy egy kontextustól függenek, mivel lehetnek benne termváltozók, amikbe be tudunk majd helyettesíteni, így értéket adva a szabad változóknak. Ehhez szükségünk lesz termekbe való behelyettesítésre, másnéven egy morfizmusok feletti akcióra. Egy funktornak teljesítenie kell két feltételt is: a kompozícióval való kompatibilitást és az identitással való kompatibilitást. Ezeket az \AgdaField{[∘]ᵗ} és \AgdaField{[id]ᵗ} egyenlőségek biztosítják.
 \begin{code}
       Tm    : Con → Set k
       _[_]ᵗ : ∀{Γ Δ} → Tm Γ → Sub Δ Γ → Tm Δ
@@ -62,29 +52,33 @@ Megadjuk a termek kontextustól függő halmazát és a termek helyettesítésé
               → t [ γ ∘ δ ]ᵗ ≡ t [ γ ]ᵗ [ δ ]ᵗ
       [id]ᵗ : ∀{Γ}{t : Tm Γ} → t [ id ]ᵗ ≡ t
 \end{code}
-A környezetek termekkel és termváltozókkal való kiegészítését is megadjuk.
-% környezetbe be tudunk tenni egy termváltozót (ez olyasmi, mint a Descartes szorzat _×⊤)
-% _,_ = párképzés, mint a Descartes-szorzatnál
-% p: első projekció (fst)
-% q: második projekció (snd)
-
-Két bétaszabály és egy étaszabály is tartozik ide:
-
-((p∘\_) , (q[\_])) : Sub Δ (Γ ▹ₜ) ≅ Sub Δ Γ × Tm Δ : \_,ₜ\_
-
-β: jobbrol balra, majd jobbra = mintha nem csinaltam volna semmit
-
-η: balrol jobbra, majd balra = mintha nem csinaltam volna semmit
+A környezetek termekkel és termváltozókkal való kiegészítését is megadjuk. A környezetbe betenni egy termváltozót (\AgdaField{\_▹ₜ}) hasonlítható egy olyan Descartes szorzathoz, amelynek az egyik oldalán az egyelemű halmaz található: \AgdaDatatype{\_×⊤}. A behelyettesítéseket is kiegészíthetjük termekkel (\AgdaField{\_,ₜ\_}), amelyeket ismételten a Descartes szorzattal lehetne azonosítani. A képzett pároknak tehát meg tudjuk adni az első (\AgdaField{pₜ}) és a második (\AgdaField{qₜ}) projekcióját.
 \begin{code}
       _▹ₜ   : Con → Con
       _,ₜ_  : ∀{Γ Δ} → Sub Δ Γ → Tm Δ → Sub Δ (Γ ▹ₜ)
       pₜ    : ∀{Γ} → Sub (Γ ▹ₜ) Γ
       qₜ    : ∀{Γ} → Tm (Γ ▹ₜ)
+\end{code}
+
+Fontos megadjuk a redukciós szabályokat is (β, η), hogy biztosítsuk az azonos kifejezések közötti egyenlőséget.
+
+\texttt{
+((p∘\_) , (q[\_])) : Sub Δ (Γ ▹ₜ) ≅ Sub Δ Γ × Tm Δ : \_,ₜ\_
+}
+
+\begin{itemize}
+\item β: jobbról balra, majd jobbra = mintha nem történt volna semmi
+\item η: balról jobbra, majd balra = mintha nem történt volna semmi
+\end{itemize}
+\begin{code}
       ▹ₜβ₁  : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → pₜ ∘ (γ ,ₜ t) ≡ γ
       ▹ₜβ₂  : ∀{Γ Δ}{t : Tm Δ}{γ : Sub Δ Γ} → qₜ [ γ ,ₜ t ]ᵗ ≡ t
       ▹ₜη   : ∀{Γ Δ} → {γt : Sub Δ (Γ ▹ₜ)} → γt ≡ (pₜ ∘ γt ,ₜ qₜ [ γt ]ᵗ)
 \end{code}
-Formulák:
+
+\section{Formulák}
+
+A formulákra is tekinthetünk funktorként, így hasonlóan a termekhez a következő módon adjuk meg:
 \begin{code}
       For : Con → Set j
       _[_]ᶠ : ∀{Γ Δ} → For Γ → Sub Δ Γ → For Δ
@@ -92,22 +86,15 @@ Formulák:
               → A [ γ ∘ δ ]ᶠ ≡ A [ γ ]ᶠ [ δ ]ᶠ
       [id]ᶠ : ∀{Γ}{A : For Γ} → A [ id ]ᶠ ≡ A
 \end{code}
-Bizonyítások: ezekben vannak valtozok (Con-nal indexelve), es valamilyen formulat bizonyitanak (For-al indexelve)
-      % Γ ⊢ A  <- szokasos logikai (bizonyitaslmeleti jeloles) p : Pf Γ A azt jelenti, hogy p bizonyitja az A allitast, ahol
-      % szabad valtozok Γ-ban vannak
-      % pl. Peano aritmetika (ahogy fent van megadva)
-      %   relar 2 = 𝟚, false az egyenloseg, Rel {Γ}{2} false : Tm Γ × Tm Γ × ⊤ → For Γ
-      %   zero := fun {Γ}{0} tt tt : Tm Γ
-      %   suc (n : Tm Γ) := fun {Γ}{1} tt (n, tt) : Tm Γ
-      %   Eq (u v : Tm Γ) := Rel {n = 2} false (u , v , tt)
-      % (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
-      % ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
+
+\section{Bizonyítások}
+
+A bizonyításokat már egy kicsivel bonyolultabban adjuk meg, ugyanis egy \AgdaField{For} feletti dependáns funktronak is nevezhetnénk. Ha vesszük például a Γ ⊢ A szokásos logikai (bizonyításelméleti) jelölést, akkor a \AgdaDatatype{p} : \AgdaField{Pf} Γ A azt jelenti, hogy \AgdaDatatype{p} bizonyítja az A állítást, ahol a szabad változók Γ-ban vannak.
 \begin{code}
       Pf  : (Γ : Con) → For Γ → Prop l
       _[_]ᵖ : ∀{Γ Δ A} → Pf Γ A → (γ : Sub Δ Γ) → Pf Δ (A [ γ ]ᶠ)
 \end{code}
-Bizonyítás-változók:
-      % ((p∘_) , (q[_])) : Sub Δ (Γ ▹ₚ A) ≅ (γ : Sub Δ Γ) × Pf Δ (A [ γ ]ᶠ) : _,ₚ_
+A bizonyítás-változókat a termváltozók esetében is használt operációkhoz hasonlóan valósítjuk meg:
 \begin{code}
       _▹ₚ_ : (Γ : Con) → For Γ → Con
       _,ₚ_  : ∀{Δ Γ A} → (γ : Sub Δ Γ) → Pf Δ (A [ γ ]ᶠ) → Sub Δ (Γ ▹ₚ A)
@@ -117,6 +104,15 @@ Bizonyítás-változók:
       ▹ₚη  : ∀ {Γ Δ A}{γa : Sub Δ (Γ ▹ₚ A)}
              → γa ≡ (pₚ ∘ γa ,ₚ substP (Pf Δ) ([∘]ᶠ ⁻¹) (qₚ [ γa ]ᵖ))
 \end{code}
+
+\noindent
+\raggedright
+\texttt{
+((p∘\_),(q[\_])) : Sub Δ (Γ▹ₚA) ≅ (γ: Sub Δ Γ) × Pf Δ (A[γ]ᶠ) : \_,ₚ\_
+}
+
+\section{Reláció- és függvényszimbólumok}
+
 Reláció és függvényszimbólumok (a modell a függvények és a relációk aritásával van felparaméterezve):
 \begin{code}
       Rel   : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
@@ -126,45 +122,147 @@ Reláció és függvényszimbólumok (a modell a függvények és a relációk a
       fun[] : ∀{Γ n}{ar : funar n}{ts : Tm Γ ^ n}{Δ}{γ : Sub Δ Γ}
               → fun ar ts [ γ ]ᵗ ≡ fun ar (map _[ γ ]ᵗ ts)
 \end{code}
-Logikai összekötők
+
+\section{Logikai összekötők}
+
+\subsection{Implikáció (⊃)}
+
+Az A ⊃ B jelentése: "ha A igaz, akkor B is igaz".
 \begin{code}
       _⊃_   : ∀{Γ} → For Γ → For Γ → For Γ
+\end{code}
+\begin{code}
       ⊃[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ⊃ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
+\end{code}
+\begin{itemize}
+\item Az implikáció bevezető szabálya (\AgdaField{⊃in}): Ha tudjuk bizonyítani, hogy B igaz egy olyan kontextusban, ahol A feltételezett, akkor van egy bizonyításunk A ⊃ B-re is.
+\begin{code}
       ⊃in   : ∀{Γ A B} → Pf (Γ ▹ₚ A) (B [ pₚ ]ᶠ) → Pf Γ ((A ⊃ B))
+\end{code}
+\item Az implikáció kivezető szabálya (\AgdaField{⊃out}): Ha van egy bizonyításunk A ⊃ B-re, valamint A-ra is, akkor van egy bizonyításunk B-re is.
+\begin{code}
       ⊃out  : ∀{Γ A B} → Pf Γ (A ⊃ B) → Pf Γ A → Pf Γ B
+\end{code}
+\end{itemize}
 
+\subsection{Konjunkció (∧)}
+Az A ∧ B azt jelenti, hogy mind A, mind B igaz.
+\begin{code}
       _∧_   : ∀{Γ} → For Γ → For Γ → For Γ
+\end{code}
+\begin{code}
       ∧[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∧ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∧ B [ γ ]ᶠ
+\end{code}
+\begin{itemize}
+\item A konjunkció bevezető szabálya (\AgdaField{∧in}): Ha A és B külön-külön bizonyítható, akkor A ∧ B is igaz.
+\begin{code}
       ∧in   : ∀{Γ A B} → Pf Γ A → Pf Γ B → Pf Γ (A ∧ B)
+\end{code}
+\item Az konjunkció kivezető szabálya (\AgdaField{∧out₁}): Az A ∧ B-ből következik A.
+\item Az konjunkció kivezető szabálya (\AgdaField{∧out₂}): Az A ∧ B-ből következik B.
+\begin{code}
       ∧out₁ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ A
       ∧out₂ : ∀{Γ A B} → Pf Γ (A ∧ B) → Pf Γ B
+\end{code}
+\end{itemize}
 
-      ⊤     : ∀{Γ} → For Γ
-      ⊤[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊤ [ γ ]ᶠ ≡ ⊤
-      ⊤in   : ∀{Γ} → Pf Γ ⊤
-
+\subsection{Diszjunkció (∨)}
+Az A ∨ B jelentése, hogy legalább az egyik (A vagy B) igaz.
+\begin{code}
       _∨_   : ∀{Γ} → For Γ → For Γ → For Γ
+\end{code}
+\begin{code}
       ∨[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∨ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∨ B [ γ ]ᶠ
+\end{code}
+\begin{itemize}
+\item A diszjunkció bevezető szabálya (\AgdaField{∨in₁}): Ha A igaz, akkor A ∨ B is igaz.
+\item A diszjunkció bevezető szabálya (\AgdaField{∨in₂}): Ha B igaz, akkor A ∨ B is igaz.
+\begin{code}
       ∨in₁  : ∀{Γ A B} → Pf Γ A → Pf Γ (A ∨ B)
       ∨in₂  : ∀{Γ A B} → Pf Γ B → Pf Γ (A ∨ B)
+\end{code}
+\item A diszjunkció kivezető szabálya (\AgdaField{∨out}): Ha tudjuk, hogy A ∨ B igaz, és abból is következik, ha A igaz, de abból is, ha B igaz, akkor C igaz.
+\begin{code}
       ∨out  : ∀{Γ A B C} → Pf (Γ ▹ₚ A) (C [ pₚ ]ᶠ) → Pf (Γ ▹ₚ B) (C [ pₚ ]ᶠ)
               → Pf Γ (A ∨ B) → Pf Γ C
+\end{code}
+\end{itemize}
 
+\subsection{Konstans igaz (⊤)}
+A \AgdaField{⊤} egy mindig igaz állítást jelöl.
+\begin{code}
+      ⊤     : ∀{Γ} → For Γ
+\end{code}
+\begin{code}
+      ⊤[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊤ [ γ ]ᶠ ≡ ⊤
+\end{code}
+\begin{itemize}
+\item Az \textit{igaz} bevezető szabálya (\AgdaField{⊤in}): Minden kontextusban igaz.
+\begin{code}
+      ⊤in   : ∀{Γ} → Pf Γ ⊤
+\end{code}
+\end{itemize}
+
+\subsection{Konstans hamis (⊥)}
+Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
+\begin{code}
       ⊥     : ∀{Γ} → For Γ
+\end{code}
+\begin{code}
       ⊥[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊥ [ γ ]ᶠ ≡ ⊥
+\end{code}
+\begin{itemize}
+\item A \textit{hamis} kivezető szabálya (\AgdaField{⊥out}): Ha egy bizonyítás során elérünk egy ellentmondást (\AgdaField{⊥}), akkor bármilyen tetszőleges állítást igaznak vehetünk (\textit{ex falso quodlibet}).
+\begin{code}
       ⊥out  : ∀{Γ A} → Pf Γ ⊥ → Pf Γ A
+\end{code}
+\end{itemize}
 
+\subsection{Kvantorok}
+
+A kvantorok formális logikai eszközök, amelyek segítségével általános és létezési állításokat tehetünk. Bindernek is nevezzük őket, utalva rá, hogy egy változót köt, azaz meghatározza, hogy egy változó miként értelmezhető egy adott hatókörben.
+
+\subsubsection{Univerzális kvantor (∀)}
+
+Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás minden lehetséges elemre igaz. Például a $∀x P(x)$ azt jelenti, hogy minden x-re igaz, hogy $P(x)$. A deklarációban látható is, hogy mivel egy binder-ről beszélünk, egy formulában lévő szabad változót kötünk meg, így egy szükebb kontextusban lévő formulát fogunk kapni.
+\begin{code}
       Forall : ∀{Γ} → For (Γ ▹ₜ) → For Γ
+\end{code}
+\begin{code}
       Forall[] : ∀{Γ A Δ}{γ : Sub Δ Γ}
                  → Forall A [ γ ]ᶠ ≡ Forall (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
+\end{code}
+\begin{itemize}
+\item Az univerzális kvantor bevezető szabálya (\AgdaField{∀in}):
+\begin{code}
       ∀in : ∀{Γ A} → Pf (Γ ▹ₜ ) A → Pf Γ (Forall A)
+\end{code}
+\item Az univerzális kvantor kivezető szabálya (\AgdaField{∀out}):
+\begin{code}
       ∀out : ∀{Γ A} → Pf Γ (Forall A) → Pf (Γ ▹ₜ ) A
+\end{code}
+\end{itemize}
 
+\subsubsection{Egzisztenciális kvantor (∃)}
+
+Az egzisztenciális kvantor azt fejezi ki, hogy létezik legalább egy olyan elem, amelyre igaz egy állítás. Például a $∃x P(x)$ azt jelenti, hogy létezik legalább egy x, amelyre igaz, hogy $P(x)$.
+\begin{code}
       ∃ : ∀{Γ} → For (Γ ▹ₜ ) → For Γ
+\end{code}
+\begin{code}
       ∃[] : ∀{Γ A Δ}{γ : Sub Δ Γ} → ∃ A [ γ ]ᶠ ≡ ∃ (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
+\end{code}
+\begin{itemize}
+\item Az egzisztenciális kvantor bevezető szabálya (\AgdaField{∃in}):
+\begin{code}
       ∃in : ∀{Γ A} → (t : Tm Γ) → Pf Γ (A [ id ,ₜ t ]ᶠ) → Pf Γ (∃ A)
+\end{code}
+\item Az egzisztenciális kvantor kivezető szabálya (\AgdaField{∃out}):
+\begin{code}
       ∃out : ∀{Γ A C} → Pf (Γ ▹ₜ ▹ₚ A) (C [ pₜ ∘ pₚ ]ᶠ) → Pf Γ (∃ A) → Pf Γ C
 \end{code}
+\end{itemize}
+
 \begin{code}[hide]
    infixl 5 _▹ₚ_
    infixl 5 _,ₚ_
