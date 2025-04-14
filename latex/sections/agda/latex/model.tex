@@ -414,6 +414,89 @@ Fontos megadjuk a redukciós szabályokat is (β, η), hogy biztosítsuk az azon
 \AgdaOperator{\AgdaField{]ᵗ}}\AgdaSymbol{)}\<%
 \end{code}
 
+\subsection{De Bruijn-indexek}
+
+A De Bruijn-indexek a változók lambda-kalkulus vagy logikai kifejezésekben való ábrázolásának egy módja. Fő előnye, hogy nem használ változóneveket. Ahelyett, hogy egy változóra névvel hivatkoznánk, minden változót egy számmal reprezentálunk, amely megadja, hogy hány kötőelemet (például kvantorokat) kell felfelé haladnunk a kifejezésfában, hogy megtaláljuk a változó értékét. A De Bruijn-indexek használata megkönnyíti a kifejezések manipulálását és egyszerűsíti a bizonyításokat, mivel nem fordul elő névütközés vagy változó-újradefiniálás.
+
+Egy egyszerű példa:
+
+A \texttt{λx. λy. x} kifejezés De Bruijn-indexekkel: \texttt{λ. λ. 1}.
+
+Az 1 itt a két szinttel feljebb kötött változóra hivatkozik (0-tól indexelve), azaz az x-re.
+
+Az indexelés a következőképp működik:
+
+\begin{itemize}
+\item A legbelső kötött változó a 0 indexet kapja.
+\item Az azt követő az 1 indexet.
+\item Aztán 2 és így tovább.
+\end{itemize}
+
+Tehát:
+
+\begin{itemize}
+\item A \texttt{λx. x} kifejezés \texttt{λ. 0} lesz.
+\item A \texttt{λx. λy. x} kifejezés \texttt{λ. λ. 1} lesz.
+\item A \texttt{λx. λy. y} kifejezés \texttt{λ. λ. 0} lesz.
+\end{itemize}
+
+\subsubsection{Miért "jobbak" a De Bruijn-indexek?}
+Különösen az olyan formális rendszerekben, mint jelen esetben az elsőrendű logikai implementáció, a De Bruijn-indexek segítenek a következőkben:
+
+\begin{itemize}
+\item A változónevek ütközésének elkerülése
+
+Egy helyettesítés végrehajtásakor az átnevezés (renaming, alfa konverzió) szükségtelenné válik. Nem kell többé aggódni a változók véletlen elfogása (variable capture) miatt.
+
+\item Helyettesítések egyszerűbb végrehajtása
+
+A helyettesítés következetessé válik. Nincs szükség a változók nevének nyomon követésére, csak az indexeket kell megfelelően eltolni a helyettesítés során.
+
+\item Egyszerűbb egyenlőségellenőrzés
+
+Két kifejezés az átnevezésig egyenlő, ha De Bruijn-ábrázolásaik megegyeznek. Mondhatni ingyen kapjuk az alfa-ekvivalenciát.
+
+\item Jobban illik a mechanikus bizonyítási rendszerekhez
+Az olyan rendszerek, mint az Agda, a Coq vagy a logikát belsőleg implementáló bizonyítási asszisztensek előnyben részesülnek a De Bruijn-indexek használatával kapcsolatban, mert:
+\begin{itemize}
+\item Függő típusos nyelvekben könnyebb őket megvalósítani
+\item A mintaillesztés is kevésbé érzékeny a hibákra
+\item Passzol a strukturális rekurziós elvekhez az olyan totális nyelvekben, mint az Agda.
+\end{itemize}
+\end{itemize}
+
+Az univerzális kvantor szignatúrája tipikusan a következőképpen nézne ki:
+\begin{lstlisting}
+∀_ : Formula → Formula
+\end{lstlisting}
+
+De szemantikusan, a De Bruijn-indexelt környezetben, a ∀ köt egy változót a formulában, ami azt eredményezi, hogy egyel kevesebb szabad változó lesz benne, ami a szignatúrában is látszik:
+
+\begin{lstlisting}
+∀ : (A : For (Γ ▹ₜ)) → For Γ
+\end{lstlisting}
+
+Összességében esetünkben nagyban megkönnyíti a munkát a
+\begin{itemize}
+\item ∀ és ∃ implementálásánál és használatánál
+\item behelyettesítésekkel kapcsolatos műveleteknél
+\item formális bizonyításoknál
+\end{itemize}
+
+Jelen implementációban a De Bruijn-indexek megléte a következőképpen valósul meg:
+
+\begin{itemize}
+\item A \AgdaField{\_▹ₜ} művelet azáltal ad hozzá egy új változót a környezethez, hogy az indexeket eltolja egyel.
+\item A \AgdaField{\_,ₜ\_} megfeltethető azzal, hogy az új változóhoz konstruálunk egy behelyettesítést.
+\item A \AgdaField{pₜ} és \AgdaField{qₜ} pedig a projekciók, amelyek segítenek lebontani a behelyettesítést.
+  \begin{itemize}
+  \item \AgdaField{pₜ} eldobja a legújabb változót
+  \item \AgdaField{qₜ} a változó a 0. indexen
+  \end{itemize}
+\end{itemize}
+
+Ugyanez a megvalósítás látható a későbbiekben a bizonyítások esetében is.
+
 \section{Formulák}
 
 A formulákra is tekinthetünk funktorként, így hasonlóan a termekhez a következő módon adjuk meg:
@@ -669,7 +752,7 @@ A bizonyítás-változókat a termváltozók esetében is használt operációkh
 
 \section{Reláció- és függvényszimbólumok}
 
-Reláció és függvényszimbólumok (a modell a függvények és a relációk aritásával van felparaméterezve):
+A modell a függvények és a relációk aritásával van felparaméterezve, ezt felhasználva határozzuk meg, hogy egy reláció vagy függvény hány termet vár majd paraméterként.
 \begin{code}%
 %
 \>[6]\AgdaField{Rel}%
@@ -1208,11 +1291,11 @@ Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
 
 \subsection{Kvantorok}
 
-A kvantorok formális logikai eszközök, amelyek segítségével általános és létezési állításokat tehetünk. Bindernek is nevezzük őket, utalva rá, hogy egy változót köt, azaz meghatározza, hogy egy változó miként értelmezhető egy adott hatókörben.
+A kvantorok formális logikai eszközök, amelyek segítségével általános és létezési állításokat tehetünk. Bindernek (kötés) is nevezzük őket, utalva rá, hogy egy változót köt, azaz meghatározza, hogy egy változó miként értelmezhető egy adott hatókörben.
 
 \subsubsection{Univerzális kvantor (∀)}
 
-Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás minden lehetséges elemre igaz. Például a $∀x P(x)$ azt jelenti, hogy minden x-re igaz, hogy $P(x)$. A deklarációban látható is, hogy mivel egy binder-ről beszélünk, egy formulában lévő szabad változót kötünk meg, így egy szükebb kontextusban lévő formulát fogunk kapni.
+Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás minden lehetséges elemre igaz. Például a $∀x P(x)$ azt jelenti, hogy minden x-re igaz, hogy $P(x)$. A deklarációban látható is, hogy mivel egy kötésről beszélünk, egy formulában lévő szabad változót kötünk meg, így egy szűkebb kontextusban lévő formulát fogunk kapni.
 \begin{code}%
 %
 \>[6]\AgdaField{Forall}\AgdaSpace{}%

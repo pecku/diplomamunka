@@ -1,14 +1,86 @@
 \chapter{Bevezetés}
 \label{ch:intro}
 
+\section{A dolgozat célja}
+
 A dolgozat célja az elsőrendű logika formalizálása Agdában, mint mélyen beágyazott nyelv. A mély beágyazás biztosítja, hogy teljes kontrollunk legyen a logika reprezentációja felett. Többféle szemantikát meg tudunk így adni, míg a sekély beágyazás rögzít egy szemantikát, mivel közvetlenül a metanyelv konstrukcióit használja.
 
+Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modell fogalmat többszortú módon adjuk, amelyek indexelve vannak egymás felett. A szortok a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reperezántálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
+
+A fő kontribúció abban rejlik, hogy az iniciális algebrát kvóciensek nélkül (induktív adattípusokkal) adjuk meg. Erre egy jó példa lehet az \textit{A} feletti monoid, ami egy egyenlőséges algebrai elmélet, de meg tudjuk adni a szintaxisát egyenlőségek nélkül.
+
+\input{sections/agda/latex/monoid.tex}
+
+A monoid szintaxisaként itt a listát használjuk, ugyanis a listák és a konkatenáció természetes módon kielégítik a monoid egyenlőségeit (asszociativitás, identitáselem), így a konstrukció definícionálisan garantálja ezeket a tulajdonságokat.
+
+A következő konstrukció ellenpéldaként szolgál, nevezhetjük rendezetlen párnak:
+
+\input{sections/agda/latex/up.tex}
+
+Ahhoz, hogy megadjuk a rendezetlen pár szintaxisát, egy kiegészítő egyenletre van szükség, amely biztosítja a kommutativitást (a, b) ≡ (b, a).
+
+Míg bizonyos algebrai struktúrák iniciális modelljei definiálhatók egyenlőségek megadása nélkül, tisztán olyan módon, hogy az egyenlőségek definícionálisan teljesüljenek, másokhoz további egyenletek szükségesek a kívánt tulajdonságok kikényszerítésére.
 
 \input{sections/agda/latex/algebraic_theory.tex}
 
 
-Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modell fogalmat többszortú módon adjuk, amelyek indexelve vannak egymás felett. A szortok a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reperezántálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
 
+\input{sections/agda/latex/misc.tex}
+
+\section{Elsőrendű logika Agdában}
+
+Az Agda egy függően típusozott funkcionális nyelv, amelyet bizonyításokra is tudunk használni, ezzel megmutatva a logika kapcsolatát a típuselmélettel. Továbbá egy teljes nyelv is, ami azt jelenti, hogy minden program terminál és mintaillesztés során is minden esetet kötelező lekezelni.
+
+Ahogy már korábban szó volt róla, az elsőrendű logikát mint nyelvet sekély módon is be lehet ágyazni az Agda rendszerébe, mivel ehhez minden eszköz adott a meglévő típusok és műveletek által.
+
+Az elsőrendű logika sekély beágyazása Agdában meglehetősen természetesnek is hathat:
+
+\subsection{Logikai állítások, mint típusok}
+
+Az elsőrendű logikában egy formula, mint $ P(x) $, vagy igaz, vagy hamis. Agdában kezelhetjük az állításokat típusokként, így a bizonyítása a $ P(x) $ formulának megfeleltethető az állítás szort egy elemének.
+
+\subsection{Az univerzális kvantor, mint egy függő függvény típus}
+
+Az univerzális kvantor $ ∀ x. P(x) $ egyszerűen reprezentálható egy függő függvény típussal:
+
+\miscUniversalQuantifier{}
+
+\subsection{Az egzisztenciális kvantor (∃), mint a függő pár típus (Σ)}
+
+Az egzisztenciális kvantor $ ∃ x. P(x) $ megfeleltethető a függő pár típusnak:
+
+\miscExistentialQuantifier{}
+
+\subsection{Logikai összekötők, mint meglévő típuskonstruktorok}
+
+\begin{itemize}
+    \item \textbf{Konjunkció} ($\land$) - szorzat típus ($\Sigma$-types):
+\miscConjunction{}
+    \item \textbf{Disjunkció} ($\lor$) - összeg típus:
+\miscDisjunction{}
+    \item \textbf{Implikáció} ($\rightarrow$) - függvény típus:
+\miscImplication{}
+    \item \textbf{Negáció} ($\neg A$) - $ A \rightarrow \bot $ (ahol $\bot$ az üres típus):
+\miscNegation{}
+\end{itemize}
+
+\subsection{Egyenlőség és elsőrendű termek}
+
+A beépített egyenlőség Agdában ($ \_≡\_ $), amelyet közvetlenül használhatunk:
+
+\miscEquality{}
+
+Mindezekkel a funkciókkal a sekély beágyazás egyszerűen megvalósítható. Az elsőrendű logikát nem szükséges szintaktikus fákként kódolni, hanem egyszerűen a beépített Agda típusokat és függvényeket használhatjuk.
+
+\subsection{Példa bizonyítás}
+
+Például, ha be akarnánk bizonyítani a következőt:
+
+\[ \forall x. (P(x) \rightarrow Q(x)) \rightarrow (\forall x. P(x)) \rightarrow (\forall x. Q(x)) \]
+
+Egyszerűen csak egy függvény applikációval adjuk meg:
+
+\miscExLemma{}
 
 % Related works: nem algebrai elmélet
 

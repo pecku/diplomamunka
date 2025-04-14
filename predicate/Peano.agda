@@ -79,7 +79,7 @@ module workInSyntax where
   
   -- (x,p:x=3) ⊢ ∀y.y=3⊃y=x
   p : Pf Γ (Forall {Γ} (_⊃_ {Γ ▹ₜ} (Eq {Γ ▹ₜ} (qₜ {Γ}) (three {Γ ▹ₜ})) (Eq {Γ ▹ₜ} (qₜ {Γ}) (qₜ {◇} [ pₚ {◇ ▹ₜ}{Eq {◇ ▹ₜ} (qₜ {◇}) (three {◇ ▹ₜ})} ]ᵗ [ pₜ {◇ ▹ₜ} ]ᵗ))))
-  p = {!   !} --∀in (⊃in (∀out {! qₚ  !}))
+  p = ∀in {Γ = Γ} (⊃in ({!   !})) -- ∀in (⊃in (∀out {! qₚ  !}))
 
   A⊃A : {A : For ◇} → Pf ◇ (_⊃_ {◇} A A)
   A⊃A = ⊃in qₚ
@@ -145,4 +145,4 @@ module workInBool where
   lem {Γ} {A} γ with A γ
   ... | false = refl
   ... | true = refl
-  
+   

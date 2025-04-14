@@ -1,2 +1,161 @@
-\chapter{Logika, mint algebrai elmélet}
+\chapter{Logika}
 \label{ch:logic}
+
+\section{Bevezetés a logikába}
+
+A logika a helyes következtetés és érvelés tudománya. Matematikai szempontból a logika egy olyan formális nyelv vagy rendszer, amely lehetővé teszi az állítások precíz leírását, valamint ezek igazságértékének és egymáshoz való viszonyának vizsgálatát. A formális logika célja, hogy matematikailag megragadható módon írjon le következtetéseket, amelyek objektív, jól meghatározott szabályokon alapulnak.
+
+A különböző típusú logikák eltérő kifejezőerővel rendelkeznek. A legegyszerűbb formális logikai rendszer a nulladrendű logika, más néven propozíciós logika, amelyet a predikátumlogika vagy elsőrendű logika követ, amely már képes az egyedekről és azok tulajdonságairól is beszélni.
+
+\subsection{Propozíciós (nulladrendű) logika}
+
+A propozíciós logika olyan állításokkal dolgozik, amelyek teljes egészükben igazak vagy hamisak, és nem bonthatók tovább kisebb részekre anélkül, hogy elveszítenék jelentésüket. Ezeket az állításokat propozícióknak nevezzük, és általában kisbetűkkel jelöljük, például p, q, r.
+
+A propozíciókhoz logikai műveletek tartoznak, mint például:
+
+\begin{itemize}
+\item Negáció (¬p) – "nem p"
+\item Konjunkció (p ∧ q) – "p és q"
+\item Diszjunkció (p ∨ q) – "p vagy q"
+\item Implikáció (p → q) – "ha p, akkor q"
+\item Ekvivalencia (p ↔ q) – "p akkor és csak akkor, ha q"
+\end{itemize}
+
+A propozíciós logika célja annak eldöntése, hogy bizonyos formulák egy adott logikai rendszerben igazak-e, illetve hogy egyes állítások logikailag következnek-e másokból.
+
+\subsection{Predikátumlogika (elsőrendű logika)}
+
+Az elsőrendű logika tovább lép a propozíciós logika korlátain. Itt már nem csupán állításokat vizsgálunk, hanem azok belső szerkezetét is feltárjuk. A predikátumlogika képes kifejezni olyan állításokat, mint:
+
+\begin{itemize}
+\item "Minden ember halandó"
+\item "Van olyan szám, amely páros"
+\end{itemize}
+
+Ez úgy éri el, hogy egyedekre (individuumokra), tulajdonságokra (predikátumokra) és kapcsolatokra épít. A rendszer alapelemei:
+
+\begin{itemize}
+    \item Változók (pl. 'x', 'y', 'z')
+    \item Konstansok (pl. 'a', 'b', '0', '1')
+    \item Függvényszimbólumok (pl. 'f(x)')
+    \item Predikátumszimbólumok (pl. 'Ember(x)', 'Szeret(x, y)')
+    \item Kvantorok:
+        \begin{itemize}
+            \item Univerzális kvantor (∀x) – "minden x-re"
+            \item Egzisztenciális kvantor (∃x) – "létezik olyan x"
+        \end{itemize}
+\end{itemize}
+
+Például a mondat:  
+\begin{quote}
+Minden ember halandó
+\end{quote} 
+formalizálva így néz ki:
+\begin{quote}
+∀x. Ember(x) → Halandó(x)
+\end{quote}
+
+\subsection{A propozíciós és az elsőrendű logika közötti különbség}
+
+A két logikai rendszer között a fő különbség az elemzési mélységben és kifejezőerőben rejlik:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Tulajdonság} & \textbf{Propozíciós logika} & \textbf{Elsőrendű logika} \\ \hline
+Alapegység & Egész állítások (pl. "esik az eső") & Egyedek, tulajdonságok és relációk \\ \hline
+Belső szerkezet & Nem vizsgálja & Vizsgálja és kezeli \\ \hline
+Kvantorok & Nincsenek & Vannak (∀, ∃) \\ \hline
+Kifejezőerő & Korlátozott & Sokkal gazdagabb \\ \hline
+Példa & \(p \to q\) & \(\forall x. \text{Ember}(x) \to \text{Halandó}(x)\) \\ \hline
+\end{tabular}
+\caption{A propozíciós és az elsőrendű logika közötti különbségek.}
+\label{tab:logic_comparison}
+\end{table}
+
+A propozíciós logika tehát alkalmas egyszerű állítások kezelésére, míg az elsőrendű logika képes összetettebb szerkezeteket és általános állításokat is kezelni. Ennek következtében az elsőrendű logika az automatikus bizonyítás, formális verifikáció és matematikai elméletek formalizálásának is egyik alapja. Például Agdában is ezen alapul a legtöbb formális modell.
+
+
+\subsection{Eldönthetőség}
+
+A logikai rendszerek egyik központi kérdése az eldönthetőség. Egy logikai rendszer eldönthető, ha létezik olyan algoritmus, amely minden lehetséges bemenetre, véges időn belül eldönti, hogy az adott formula érvényes vagy nem, vagy hogy egy adott formula levezethető-e a rendszer axiómáiból és szabályaiból.
+
+Ez különösen fontos a formális verifikációban és az automatikus tételbizonyításban, ahol azt szeretnénk, hogy egy gép automatikusan meg tudja mondani, hogy egy adott logikai állítás igaz-e vagy sem.
+
+\subsubsection{Eldönthetőség a propozíciós logikában}
+
+A propozíciós logika eldönthető: létezik algoritmus, amely képes eldönteni bármely propozíciós formula esetén, hogy az logikailag érvényes-e. Az egyik ilyen algoritmus például az igazságtábla-módszer, amely minden lehetséges értékkombinációt kipróbál.
+
+Vegyük például az alábbi formulát:  
+\begin{quote}
+(p ∧ (p → q)) → q
+\end{quote}
+
+Ez egy tautológia, azaz mindig igaz, és ezt géppel is eldönthetjük véges időn belül.
+
+\subsubsection{Eldönthetőség az elsőrendű logikában}
+
+Az elsőrendű logika általánosságban nem eldönthető. Ez azt jelenti, hogy nem létezik olyan algoritmus, amely minden elsőrendű formula esetén képes lenne megmondani véges időn belül, hogy az levezethető-e vagy sem.
+
+Ez a híres Church–Turing-tétel egyik következménye, amely kimondja, hogy az elsőrendű logika bizonyíthatósága rekurzívan enumerálható, de nem rekurzívan eldönthető.
+
+Vannak azonban esetek, ahol eldönthetőség biztosítható, ha valamilyen formában korlátokat vezetünk be, például formulakészletek szűkítése, vagy véges struktúrákra korlátozott értelmezések esetén.
+
+Az eldönthetőség hiánya azt jelenti, hogy az elsőrendű logikában nem mindig lehet automatizálni a bizonyítást. Egy automatikus tételbizonyító rendszer, például egy Agdához hasonló típuselmélet-alapú nyelv, nem garantálhatja, hogy minden helyes állítást képes lesz levezetni. Az ilyen rendszerek gyakran fél-automaták: bizonyos esetekben képesek segíteni vagy teljesen elvégezni a bizonyítást, de általános megoldás nem létezik.
+
+\subsection{Klasszikus és konstruktív logika}
+
+A klasszikus logika a legelterjedtebb, amelyet a legtöbb hagyományos matematikai elmélet is használ. Ezzel szemben a konstruktív logika – más néven intuicionista logika – eltér bizonyos alapvető logikai szabályok elfogadásában, különösen azokra az esetekre vonatkozóan, amikor valaminek a létezését vagy valami igazságát állítjuk anélkül, hogy konkrét példát tudnánk adni vagy bizonyítékot tudnánk konstruálni.
+
+\subsubsection{A klasszikus logika főbb jellemzői}
+
+A klasszikus logika elfogadja az alábbi törvényeket:
+
+\begin{itemize}
+\item Kizárt harmadik elve: P ∨ ¬P minden P formula esetén igaz.
+\item Kettős negáció elve: ¬¬P → P minden P formula esetén igaz.
+\item Nem-konstruktív létezés bizonyítása: elég kimutatni, hogy a létezés tagadása ellentmondáshoz vezet.
+\end{itemize}
+
+Ezek az elvek lehetővé teszik sok klasszikus matematikai bizonyításfajta alkalmazását, például:
+
+\begin{itemize}
+\item Indirekt bizonyítás (reductio ad absurdum)
+\item Nem konstruktív létezés bizonyítása (pl. "létezik irracionális szám 'a', amire $a ^ a$ racionális" – de nem mondjuk meg, melyik az)
+\end{itemize}
+
+\subsubsection{A konstruktív logika főbb jellemzői}
+
+A konstruktív logika nem fogadja el automatikusan a kizárt harmadik elvét, sem a kettős negáció elvét. Ehelyett csak akkor állíthatjuk, hogy egy állítás igaz:
+
+\begin{itemize}
+\item ha konkrét bizonyítékot tudunk adni rá (pl. konstrukciót vagy algoritmust),
+\item vagy ha például \texttt{∃x. P(x)} állítást vizsgáljuk, akkor meg kell mutatni konkrétan az 'x'-et, amire \texttt{P(x)} igaz.
+\end{itemize}
+
+Ez a logika különösen jól illeszkedik a kategóriaelmélethez, típuselmélethez és a formális bizonyítási rendszerekhez. Ezekben a rendszerekben egy állítás bizonyítása gyakran azt jelenti, hogy megadunk egy konkrét értéket vagy programot, amely megfelel az állításnak.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Állítás} & \textbf{Klasszikus logika szerint} & \textbf{Konstruktív logika szerint} \\ \hline
+\(P \lor \neg P\) & Mindig igaz & Nem mindig igaz (bizonyíték kell valamelyik ágra) \\ \hline
+\(\neg\neg P \to P\) & Igaz & Nem elfogadott általánosan \\ \hline
+\(\exists x. P(x)\) & Elég indirekt bizonyítás & Csak konkrét \(x\) bemutatása mellett igaz \\ \hline
+\end{tabular}
+\caption{Különbségek a klasszikus és konstruktív logika között.}
+\label{tab:classical_vs_constructive_logic}
+\end{table}
+
+\subsubsection{Kapcsolat az Agdával}
+
+Az Agda és más hasonló rendszerek (pl. Coq, Lean) konstruktív logikát alkalmaznak: amikor egy állítást bebizonyítunk Agdában, valójában egy értéket konstruálunk, amely az adott állítás típusának felel meg. Ennek alapja a Curry–Howard megfelelés, amely szerint:
+
+\begin{itemize}
+\item Állítások ↔ Típusok  
+\item Bizonyítások ↔ Programok (értékek)
+\end{itemize}
+
+Ez a szemlélet a konstruktív logikához illeszkedik, hiszen minden állításnak csak akkor van "értelme", ha tudunk adni rá konkrét példát, vagy meg tudjuk konstruálni a bizonyítását.

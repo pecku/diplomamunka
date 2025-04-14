@@ -9,4 +9,87 @@
       % (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
       % ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
 
-A Bool modell az elsőrendű logika egy olyan specifikus értelmezése, ahol a logikai műveletek a Bool értékek közötti műveletekkel azonosak és a formulák értéke vagy igaz, vagy hamis.
+
+A szemantikai modellek a megadott elsőrendű logika jelentését, értelmezését adják meg. A három vizsgált modell - a Bool modell, a Tarski modell és a Family modell - különböző megközelítéseket kínál a logikai kifejezések értelmezésére és kiértékelésére.
+
+\begin{itemize}
+\item Bool modell: A legegyszerűbb és legközvetlenebb megközelítés, amely a logikai kifejezéseket az igaz és hamis értékekre képezi le, valamint a logikai műveletek a Bool értékek közötti műveletekkel azonosak. Ez a klasszikus kétértékű szemantika.
+
+\item Tarski modell: A logikai kifejezések értelmezését a halmazelmélet alapjaira helyezi. Ebben a modellben a logikai változók és kifejezések értékei halmazok, illetve halmazok közötti relációk. A Tarski szemantika a logikai igazságot a kifejezések halmazelméleti interpretációjával határozza meg, amely lehetővé teszi a logikai állítások formális és precíz vizsgálatát.
+
+\item Family modell: Egy indexelt családok segítségével felépített szemantika. Felfogható a Kripke-szemantika egy specializációjaként. Ez a modell, a Kripke modellel szemben, nem specifikál explicit elérhetőségi relációt az indexek között, ami egyszerűsíti a struktúrát.
+\end{itemize}
+
+
+\section{Bool modell}
+
+
+A Bool modellhez közvetlenül az Agda beépített Bool típusát használjuk, így a logikai összekötők (∧, ∨, →, ¬) is a megfelelő Bool műveletekre fordítódnak. A formulák kiértékelése során minden atomi állítás, predikátum és függvény végső soron egy Bool értékre redukálódik. Az univerzális és egzisztenciális kvantorokra gondolhatunk úgy, mint listák feletti all és any műveletek.
+
+
+\section{Tarski modell}
+
+
+A Tarski modell az elsőrendű logika standard szemantikai modellje. Egy nem üres domain (univerzum) felett értelmezett interpretáció.
+
+Az Agdában implementált Tarski modell a következő komponensekből áll:
+
+Egy tetszőleges típus, amely a domaint reprezentálja
+Függvények, amelyek a logikai nyelv szimbólumait a domain elemeire, függvényeire és relációira képezik le
+Változókiértékelő függvény, amely a változókat a domain elemeire képezi le
+Rekurzív interpretációs függvény, amely a formulákat a domain feletti állításokra képezi le
+
+
+
+\section{Family modell}
+
+A Family modell felfogható a Kripke-szemantika egy specializációjaként.
+
+Indexelés mint lehetséges világok: A Family modellben szereplő I indexhalmaz elemei megfeleltethetők a Kripke szemantika lehetséges világainak.
+Az elérhetőségi reláció implicit módon adott vagy triviális
+A D(i) tartományok explicit módon specifikáltak minden i indexre
+A logikai operátorok szemantikája hasonlóan van definiálva, de a modell szerkezete egyszerűbb és célorientáltabb
+
+Ahogyan a Kripke-modellekben minden lehetséges világban kiértékeljük a formulákat, a Family modellben minden indexhez tartozó struktúrán értelmezzük a kifejezéseket és formulákat.
+Elérhetőségi reláció hiánya: A Kripke-modellekben alapvető szerepet játszik a világok közötti elérhetőségi reláció (R), amely meghatározza a modális operátorok szemantikáját. A Family modell nem specifikál explicit elérhetőségi relációt az indexek között, ami egyszerűsíti a struktúrát.
+
+
+Minden predikátum egy típuscsalád, amely a domain elemeihez típusokat rendel
+A logikai konnektívák típuskonstruktorokként implementálódnak (pl. függő összeg és szorzat típusok)
+A kvantorok függő típusokként implementálódnak (Π és Σ típusok)
+A bizonyítások a megfelelő típusok értékei/lakói
+
+
+
+\section{Modellek összehasonlítása}
+
+A modellek összehasonlítása
+
+Expresszivitás
+
+Bool modell: A legkevésbé expresszív, csak véges domainek felett használható hatékonyan, és a klasszikus kétértékű logikára korlátozódik.
+Tarski modell: Nagyon expresszív, a klasszikus elsőrendű logika teljes szemantikáját képes modellezni, beleértve a végtelen domaineket is.
+Family modell: Expresszív és konstruktív jellegű, de más filozófiai alapokon nyugszik, mint a klasszikus logika.
+
+Implementációs komplexitás
+
+Bool modell: Egyszerű implementáció, könnyen érthető kód.
+Tarski modell: Közepes komplexitás, több absztrakciós réteget igényel.
+Family modell: A legösszetettebb implementáció, amely mély típuselméleti ismereteket igényel.
+
+Alkalmazási területek
+
+Bool modell: Ideális tautológiák ellenőrzésére, véges modell ellenőrzésre és egyszerű példákra.
+Tarski modell: Alkalmas általános célú logikai modellezésre, tételbizonyítókhoz és modellellenőrzőkhöz.
+Family modell: Kiválóan alkalmas bizonyítássegédekhez, programlevezetéshez és verifikációhoz.
+
+
+\section{Összegzés}
+
+A három bemutatott modell különböző megközelítéseket kínál az elsőrendű logika szemantikájának implementálására Agdában. Mindegyik modellnek megvannak a maga erősségei és gyengeségei, valamint jellemző alkalmazási területei:
+
+A Bool modell egyszerűsége és hatékonysága miatt alkalmas gyors prototípusok készítésére és véges domainek feletti ellenőrzésekre.
+A Tarski modell matematikai precizitása és általánossága miatt a legjobb választás a klasszikus elsőrendű logika teljes szemantikájának implementálására.
+A Family modell típuselméleti megalapozottsága miatt különösen alkalmas olyan alkalmazásokhoz, ahol a bizonyítások és számítások integrációja fontos.
+
+Az implementációnkban mindhárom modellt megvalósítottuk, demonstrálva ezzel az Agda típusrendszerének erejét és rugalmasságát. A modellek közötti formális kapcsolatokat is definiáltuk, bizonyítva, hogy bizonyos feltételek mellett konzisztens eredményeket adnak.

@@ -17,7 +17,7 @@ record Semigroup : Set₁ where
 
 Ezek alapján a ℕ és a + (összeadás), vagy a 𝔹 (Bool) és az ∧ (és) félcsoportot alkotnak. Ez nem mondható el viszont a ℕ és a - (kivonás) párosításról, ugyanis az utóbbi műveletre nem igaz, hogy asszociatív.
 
-Ezt kiegészítve a modell elmélettel, az előbb említett félcsoportokat egy-egy modellként is reprezentálhatjuk a következő módon:
+Az előbb említett félcsoportokat egy-egy modellként is reprezentálhatjuk a következő módon:
 
 \begin{code}[hide]
 open import Agda.Builtin.Nat public renaming (Nat to ℕ) public
@@ -38,7 +38,7 @@ cong f refl = refl
   }
 \end{code} 
 
-A szintaxist tehát definiálhatjuk egy olyan modellként, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni.
+A szintaxist definiálhatjuk egy olyan modellként, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni. A 0 elemű halmazon meg tudunk adni mintaillesztéssel tetszőleges más halmazba függvényt, amely triviálisan megőrzi az összes operátort. 
 \begin{code}
 data C : Set where
 
@@ -49,4 +49,3 @@ I = record
   ; associativity = λ x y z → refl
   }  
 \end{code}
-

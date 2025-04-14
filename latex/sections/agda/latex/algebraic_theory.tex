@@ -60,7 +60,7 @@ Például a félcsoport egy olyan algebrai struktúra, amely egy halmazból és 
 
 Ezek alapján a ℕ és a + (összeadás), vagy a 𝔹 (Bool) és az ∧ (és) félcsoportot alkotnak. Ez nem mondható el viszont a ℕ és a - (kivonás) párosításról, ugyanis az utóbbi műveletre nem igaz, hogy asszociatív.
 
-Ezt kiegészítve a modell elmélettel, az előbb említett félcsoportokat egy-egy modellként is reprezentálhatjuk a következő módon:
+Az előbb említett félcsoportokat egy-egy modellként is reprezentálhatjuk a következő módon:
 
 \begin{code}[hide]%
 \>[0]\AgdaKeyword{open}\AgdaSpace{}%
@@ -181,7 +181,7 @@ Ezt kiegészítve a modell elmélettel, az előbb említett félcsoportokat egy-
 \>[2]\AgdaSymbol{\}}\<%
 \end{code} 
 
-A szintaxist tehát definiálhatjuk egy olyan modellként, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni.
+A szintaxist definiálhatjuk egy olyan modellként, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni. A 0 elemű halmazon meg tudunk adni mintaillesztéssel tetszőleges más halmazba függvényt, amely triviálisan megőrzi az összes operátort. 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{C}\AgdaSpace{}%
@@ -229,4 +229,3 @@ A szintaxist tehát definiálhatjuk egy olyan modellként, amelyből minden más
 %
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
-

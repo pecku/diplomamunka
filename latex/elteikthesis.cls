@@ -648,3 +648,4 @@
 \newunicodechar{⊔}{\ensuremath{\sqcup}}
 \newunicodechar{⟨}{\ensuremath{\langle}}
 \newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}

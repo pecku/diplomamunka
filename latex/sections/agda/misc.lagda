@@ -1,17 +1,18 @@
 
+\begin{code}[hide]
+{-# OPTIONS --prop #-}
+\end{code}
+
 \newcommand{\miscUniversalQuantifier}{%
 \begin{code}
-∀̂_ : {A : Set} → (A → Set) → Set
+∀̂_ : {A : Set} → (A → Prop) → Prop
 ∀̂ P = ∀ x → P x
 \end{code}}
 
 \newcommand{\miscExistentialQuantifier}{%
 \begin{code}
-record ∃ {A : Set} (P : A → Set) : Set where
-  constructor _,_
-  field
-    witness : A
-    proof : P witness
+data ∃ (A : Set) (B : A → Prop) : Prop where
+  _,_ : (a : A) → B a → ∃ A B
 \end{code}}
 
 \newcommand{\miscConjunction}{%
