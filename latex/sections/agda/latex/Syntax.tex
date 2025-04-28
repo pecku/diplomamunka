@@ -92,6 +92,8 @@
 \AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}∨\AgdaUnderscore{}}}\<%
 \end{code}
 
+\section{Szortok}
+
 A szortokat algebrai adattípusokkal definiáljuk:
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -247,6 +249,14 @@ A konstruktorokat megadjuk intuitívan a \AgdaField{Con} és \AgdaField{For} szo
 \AgdaDatatype{For}\AgdaSpace{}%
 \AgdaBound{Γ}\<%
 \end{code}
+
+\section{Változók}
+
+Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyítás-változókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyítás-kontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
+
+A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyítás-kontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
+
+\section{Termváltozók}
 
 Mivel a nyelvünk változókat is tartalmazhat, ezért be kell vezetnünk két további adattípust, a termváltozókat és a hozzá tartozó behelyettesítésteket:
 \begin{code}%
@@ -548,6 +558,8 @@ Mivel a nyelvünk változókat is tartalmazhat, ezért be kell vezetnünk két t
 \AgdaOperator{\AgdaInductiveConstructor{,ᵥ}}\AgdaSpace{}%
 \AgdaInductiveConstructor{vz}\<%
 \end{code}
+
+\section{Termek és behelyettesítések}
 
 Az előbbiek segítségével már meg tudjuk adni a \AgdaField{Tm} és \AgdaField{Sub} szortokat is:
 \begin{code}%
@@ -2572,6 +2584,8 @@ Az előbbiek segítségével már meg tudjuk adni a \AgdaField{Tm} és \AgdaFiel
 \AgdaFunction{t[id]ᵗs}\<%
 \end{code}
 
+\section{Bizonyítások kontextusa és azok behelyettesítése}
+
 A bizonyítások miatt azonban szükségünk van mégegy összetevőre, ez lesz a bizonyítások kontextusa:
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -2885,9 +2899,11 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
 \AgdaBound{ξ}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{]Conp}}\AgdaSymbol{)}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+
+\section{Bizonyítások}
+
+\begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaKeyword{where}\<%
@@ -3344,6 +3360,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaBound{funar}\AgdaSpace{}%
 \AgdaBound{relar}\<%
 \end{code}
+
+\section{Iniciális modell}
 
 Az iniciális modell tehát a következőképpen néz ki:
 \begin{code}%
@@ -4146,3 +4164,5 @@ Az iniciális modell tehát a következőképpen néz ki:
 %
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
+
+Láthatjuk, hogy a kontextus és a helyettesítés a korábban is említett különválasztott term- és bizonyítás-kontextus valamint a term- és bizonyítás-helyettesítés párok fogják megadni, ebből adódik a további részek kicsivel összetettebb megadása.

@@ -1,16 +1,11 @@
 \chapter{Modellek}
 \label{ch:models}
 
-      % pl. Peano aritmetika (ahogy fent van megadva)
-      %   relar 2 = 𝟚, false az egyenloseg, Rel {Γ}{2} false : Tm Γ × Tm Γ × ⊤ → For Γ
-      %   zero := fun {Γ}{0} tt tt : Tm Γ
-      %   suc (n : Tm Γ) := fun {Γ}{1} tt (n, tt) : Tm Γ
-      %   Eq (u v : Tm Γ) := Rel {n = 2} false (u , v , tt)
-      % (x,p:x=3) ⊢ ∀y.y=3 ⊃ y=x
-      % ? : Pf (◇ ▹ₜ ▹ₚ Eq qₜ (suc (suc (suc zero)))) (Forall (Eq qₜ (suc (suc (suc zero))) ⊃ Eq qₜ (qₜ[pₜ][pₚ])))
+Ebben a fejezetben különböző szemantikai modelleket definiálunk az elsőrendű logikához. Bemutatjuk a Bool, a Tarski és a Family modelleket, részletezve azok felépítését, működését és alkalmazhatóságát a formalizált logikai rendszeren belül.
 
+\section{Szemantikai modellek}
 
-A szemantikai modellek a megadott elsőrendű logika jelentését, értelmezését adják meg. A három vizsgált modell - a Bool modell, a Tarski modell és a Family modell - különböző megközelítéseket kínál a logikai kifejezések értelmezésére és kiértékelésére.
+A szemantikai modellek a formalizált elsőrendű logika jelentését, értelmezését adják meg. A három vizsgált modell különböző megközelítéseket kínál a logikai kifejezések értelmezésére és kiértékelésére.
 
 \begin{itemize}
 \item Bool modell: A legegyszerűbb és legközvetlenebb megközelítés, amely a logikai kifejezéseket az igaz és hamis értékekre képezi le, valamint a logikai műveletek a Bool értékek közötti műveletekkel azonosak. Ez a klasszikus kétértékű szemantika.
@@ -23,73 +18,144 @@ A szemantikai modellek a megadott elsőrendű logika jelentését, értelmezés�
 
 \section{Bool modell}
 
+\input{sections/agda/latex/BoolModel.tex}
 
 A Bool modellhez közvetlenül az Agda beépített Bool típusát használjuk, így a logikai összekötők (∧, ∨, →, ¬) is a megfelelő Bool műveletekre fordítódnak. A formulák kiértékelése során minden atomi állítás, predikátum és függvény végső soron egy Bool értékre redukálódik. Az univerzális és egzisztenciális kvantorokra gondolhatunk úgy, mint listák feletti all és any műveletek.
 
+A Bool modell csak a klasszikus metaelméletben működik, ahol teljes a
+klasszikus logikára -- a teljesség azt jelenti, hogy ha egy
+állítás teljesül (tehát =true) a Bool-modellben, akkor a szintaxisban
+van bizonyítása ugyanannak az állításnak.
+
+A modell megadásához a következő paraméterekre lesz szükségünk:
+\bmModuleParams
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Paraméter} & \textbf{Jelentés} \\
+\hline
+\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{D} & Az alap halmaz (a modell tartománya) \\
+\hline
+\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\ \hline
+\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\hline
+\end{tabular}
+\caption{Bool modell modulparaméterek}
+\label{tab:boolmodel_module_params}
+\end{table}
+
+
+Ezt a modellt viszonylag egyszerű implementálni, azonban a klasszikus metaelmélet miatt szükségünk lesz a kizárt harmadik elvére, amit meg kell mondanunk az Agdának is hogy létezik, hogy meg tudjuk adni a kvantorok implementációját.
+
+\bmLem
+
+Így a kvantorok implementációja a következőképpen néz ki:
+\bmForall
+\bmExists
+
+A többi logikai operátor és szabály implementációja magától értetődő, és az Agdában egyszerűen mintaillesztéssel van megadva. Az operátorok definíciói követik a Bool típus logikai műveleteit, így az implementációk rövidek és könnyen érthetőek.
+
+\bmBoolModel
+
+A kódban látott \texttt{=>}, \texttt{\&\&} és \texttt{||} operátorok a \texttt{Bool} típusra értelmezett logikai operátorok, amelyek értelemszerűen az implikációt, a konjunkciót és a diszjunkciót valósítják meg.
 
 \section{Tarski modell}
 
+\input{sections/agda/latex/Tarski.tex}
 
-A Tarski modell az elsőrendű logika standard szemantikai modellje. Egy nem üres domain (univerzum) felett értelmezett interpretáció.
+A Tarski modell az elsőrendű logika standard szemantikai modellje, de nem teljes; nincs szükség a kizárt harmadik elvére a megadásához. Egy nem üres domain (univerzum) felett értelmezett interpretáció.
 
 Az Agdában implementált Tarski modell a következő komponensekből áll:
 
-Egy tetszőleges típus, amely a domaint reprezentálja
-Függvények, amelyek a logikai nyelv szimbólumait a domain elemeire, függvényeire és relációira képezik le
-Változókiértékelő függvény, amely a változókat a domain elemeire képezi le
-Rekurzív interpretációs függvény, amely a formulákat a domain feletti állításokra képezi le
+\begin{itemize}
+\item Egy tetszőleges típus, amely a domaint reprezentálja
+\item Függvények, amelyek a logikai nyelv szimbólumait a domain elemeire, függvényeire és relációira képezik le
+\item Változókiértékelő függvény, amely a változókat a domain elemeire képezi le
+\item Rekurzív interpretációs függvény, amely a formulákat a domain feletti állításokra képezi le
+\end{itemize}
 
+Itt már nincs szükség a klasszikus metaelméletre; a kizárt harmadik elve csak akkor teljesül a modellben, ha a metaelméletben is teljesül.
 
+A modell megadásához a következő paraméterekre lesz szükségünk:
+\tmModuleParams
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Paraméter} & \textbf{Jelentés} \\
+\hline
+\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{D} & Az alap halmaz (a modell tartománya) \\
+\hline
+\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\
+\hline
+\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\hline
+\end{tabular}
+\caption{Tarski modell modulparaméterek}
+\label{tab:tarski_module_params}
+\end{table}
+    
+
+A modell implementációja így néz ki:
+
+\tmTarski
 
 \section{Family modell}
 
-A Family modell felfogható a Kripke-szemantika egy specializációjaként.
+\input{sections/agda/latex/Family.tex}
 
-Indexelés mint lehetséges világok: A Family modellben szereplő I indexhalmaz elemei megfeleltethetők a Kripke szemantika lehetséges világainak.
-Az elérhetőségi reláció implicit módon adott vagy triviális
-A D(i) tartományok explicit módon specifikáltak minden i indexre
-A logikai operátorok szemantikája hasonlóan van definiálva, de a modell szerkezete egyszerűbb és célorientáltabb
+A Kripke modell teljes, de túl bonyolult, ezért csak egy speciális esetét, a Family modellt adjuk meg.
 
-Ahogyan a Kripke-modellekben minden lehetséges világban kiértékeljük a formulákat, a Family modellben minden indexhez tartozó struktúrán értelmezzük a kifejezéseket és formulákat.
+\begin{itemize}
+\item Indexelés mint lehetséges világok: A Family modellben szereplő I indexhalmaz elemei megfeleltethetők a Kripke szemantika lehetséges világainak.
+\item Az elérhetőségi reláció implicit módon adott vagy triviális.
+\item A D(i) tartományok explicit módon specifikáltak minden i indexre.
+\item A logikai operátorok szemantikája hasonlóan van definiálva, de a modell szerkezete egyszerűbb és célorientáltabb.
+\end{itemize}
+
+Ahogyan a Kripke-modellben minden lehetséges világban kiértékeljük a formulákat, a Family modellben minden indexhez tartozó struktúrán értelmezzük a kifejezéseket és formulákat.
 Elérhetőségi reláció hiánya: A Kripke-modellekben alapvető szerepet játszik a világok közötti elérhetőségi reláció (R), amely meghatározza a modális operátorok szemantikáját. A Family modell nem specifikál explicit elérhetőségi relációt az indexek között, ami egyszerűsíti a struktúrát.
 
+Minden predikátum egy típuscsalád, amely a domain elemeihez típusokat rendel. A logikai konnektívák típuskonstruktorokként lesznek implementálva (pl. függő összeg és szorzat típusok). A kvantorok függő típusokként jelennek meg (Π és Σ típusok). A bizonyítások a megfelelő típusok értékei.
 
-Minden predikátum egy típuscsalád, amely a domain elemeihez típusokat rendel
-A logikai konnektívák típuskonstruktorokként implementálódnak (pl. függő összeg és szorzat típusok)
-A kvantorok függő típusokként implementálódnak (Π és Σ típusok)
-A bizonyítások a megfelelő típusok értékei/lakói
+Ez a modell részhalmaz-modellként is értelmezhető: tehát az állítások I-nek a részhalmazai.
 
+A modell megadásához a következő paraméterekre lesz szükségünk:
+\fmModuleParams
 
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Paraméter} & \textbf{Jelentés} \\
+\hline
+\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\hline
+\texttt{I} & Az index halmaz \\
+\hline
+\texttt{D} & Az alap halmaz (a modell tartománya) \\
+\hline
+\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\
+\hline
+\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\hline
+\end{tabular}
+\caption{Family modell modulparaméterek}
+\label{tab:family_module_params}
+\end{table}
 
-\section{Modellek összehasonlítása}
-
-A modellek összehasonlítása
-
-Expresszivitás
-
-Bool modell: A legkevésbé expresszív, csak véges domainek felett használható hatékonyan, és a klasszikus kétértékű logikára korlátozódik.
-Tarski modell: Nagyon expresszív, a klasszikus elsőrendű logika teljes szemantikáját képes modellezni, beleértve a végtelen domaineket is.
-Family modell: Expresszív és konstruktív jellegű, de más filozófiai alapokon nyugszik, mint a klasszikus logika.
-
-Implementációs komplexitás
-
-Bool modell: Egyszerű implementáció, könnyen érthető kód.
-Tarski modell: Közepes komplexitás, több absztrakciós réteget igényel.
-Family modell: A legösszetettebb implementáció, amely mély típuselméleti ismereteket igényel.
-
-Alkalmazási területek
-
-Bool modell: Ideális tautológiák ellenőrzésére, véges modell ellenőrzésre és egyszerű példákra.
-Tarski modell: Alkalmas általános célú logikai modellezésre, tételbizonyítókhoz és modellellenőrzőkhöz.
-Family modell: Kiválóan alkalmas bizonyítássegédekhez, programlevezetéshez és verifikációhoz.
-
-
-\section{Összegzés}
-
-A három bemutatott modell különböző megközelítéseket kínál az elsőrendű logika szemantikájának implementálására Agdában. Mindegyik modellnek megvannak a maga erősségei és gyengeségei, valamint jellemző alkalmazási területei:
-
-A Bool modell egyszerűsége és hatékonysága miatt alkalmas gyors prototípusok készítésére és véges domainek feletti ellenőrzésekre.
-A Tarski modell matematikai precizitása és általánossága miatt a legjobb választás a klasszikus elsőrendű logika teljes szemantikájának implementálására.
-A Family modell típuselméleti megalapozottsága miatt különösen alkalmas olyan alkalmazásokhoz, ahol a bizonyítások és számítások integrációja fontos.
-
-Az implementációnkban mindhárom modellt megvalósítottuk, demonstrálva ezzel az Agda típusrendszerének erejét és rugalmasságát. A modellek közötti formális kapcsolatokat is definiáltuk, bizonyítva, hogy bizonyos feltételek mellett konzisztens eredményeket adnak.
+Majd ezek alapján a modellünk:
+\fmFamily

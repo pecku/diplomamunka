@@ -1,2 +1,15 @@
 \chapter{Összegzés}
 \label{ch:summary}
+
+A dolgozat célja az elsőrendű logika algebrai szemléletű formalizálása volt az Agda bizonyító asszisztens segítségével. A formalizáció során az elsőrendű logikát mélyen beágyazott nyelvként írtuk le, majd több különböző szemantikai modellt adtunk meg: a Bool modellt, a Tarski modellt, valamint a Family modellt.
+
+A munka során sikerült egy általános, algebrai alapokon nyugvó rendszert felépíteni, amely képes kifejezni az elsőrendű logika legfontosabb elemeit, és megfelelő alapot ad további szemantikai vizsgálatokhoz. A szintaxis és a modellek kialakítása biztosítja, hogy a rendszer bővíthető és adaptálható legyen különböző alternatív szemantikai értelmezésekhez.
+
+Ugyanakkor több fejlesztési irány is nyitva maradt, amelyek tovább növelhetik a formalizáció teljességét és gyakorlati alkalmazhatóságát:
+
+\begin{itemize}
+\item Kripke szemantika teljes megadása: Jelen dolgozatban a Family modell segítségével közelítettük meg a Kripke-féle szemantikát, azonban annak teljes, formálisan megadott változata és részletes leírása további munka tárgyát képezheti.
+\item Iterátor implementáció és inicialitás bizonyítása: Bár a dolgozatban a szintaxist iniciális modellként konstruáltuk meg, az iniciális tulajdonság teljes, formális bizonyítása — vagyis annak kimutatása, hogy bármely más modellbe egy és csak egy homomorfizmus létezik, azaz ha van egy bizonyításunk a szintaxisban, akkor azt bármelyik modelben ki lehet értékelni — még hátravan.
+\end{itemize}
+
+A dolgozat eredményeként létrejött formalizáció egy stabil és bővíthető alapot biztosít az elsőrendű logika algebrai szemléletű vizsgálatához Agdában. A kidolgozott szintaxis és modellek lehetővé teszik a logikai rendszerek pontos és strukturált kezelését. A munka során megjelölt továbbfejlesztési irányok — például a Kripke szemantika részletesebb kidolgozása, az inicialitás formális bizonyítása — a rendszer további mélyítését és általános használhatóságának növelését célozzák.

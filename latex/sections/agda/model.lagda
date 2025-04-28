@@ -16,7 +16,7 @@ record Model {i}{j}{k}{l} : Set (lsuc (i ⊔ j ⊔ k ⊔ l)) where
 
 \section{Kategória}
 
-A modell fogalom első elemeként megadunk egy kontextusok és behelyettesítések által alkotott kategóriát. A kategória objektumait a kontextusok reprezentálják és a \AgdaField{Con} szort határozza meg. A morfizmusai pedig a behelyettesítések lesznek, amelyeket a \AgdaField{Sub} szort ad meg.
+A modellfogalom első elemeként megadunk egy kontextusok és behelyettesítések által alkotott kategóriát. A kategória objektumait a kontextusok reprezentálják és a \AgdaField{Con} szort határozza meg. A morfizmusai pedig a behelyettesítések lesznek, amelyeket a \AgdaField{Sub} szort ad meg.
 \begin{code}
       Con : Set i
       Sub : Con → Con → Set (k ⊔ l)
@@ -78,7 +78,7 @@ Fontos megadjuk a redukciós szabályokat is (β, η), hogy biztosítsuk az azon
 
 \subsection{De Bruijn-indexek}
 
-A De Bruijn-indexek a változók lambda-kalkulus vagy logikai kifejezésekben való ábrázolásának egy módja. Fő előnye, hogy nem használ változóneveket. Ahelyett, hogy egy változóra névvel hivatkoznánk, minden változót egy számmal reprezentálunk, amely megadja, hogy hány kötőelemet (például kvantorokat) kell felfelé haladnunk a kifejezésfában, hogy megtaláljuk a változó értékét. A De Bruijn-indexek használata megkönnyíti a kifejezések manipulálását és egyszerűsíti a bizonyításokat, mivel nem fordul elő névütközés vagy változó-újradefiniálás.
+A De Bruijn-indexek a változók lambda-kalkulus vagy logikai kifejezésekben való ábrázolásának egy módja. Fő előnye, hogy nem használ változóneveket. Ahelyett, hogy egy változóra névvel hivatkoznánk, minden változót egy számmal reprezentálunk, amely megadja, hogy hány kötőelemet (például kvantorokat) kell felfelé haladnunk a kifejezésfában, hogy megtaláljuk a változót kötő operátort. A De Bruijn-indexek használata megkönnyíti a kifejezések manipulálását és egyszerűsíti a bizonyításokat, mivel nem fordul elő névütközés vagy változó-újradefiniálás.
 
 Egy egyszerű példa:
 
@@ -128,15 +128,16 @@ Az olyan rendszerek, mint az Agda, a Coq vagy a logikát belsőleg implementál�
 \end{itemize}
 
 Az univerzális kvantor szignatúrája tipikusan a következőképpen nézne ki:
-\begin{lstlisting}
-∀_ : Formula → Formula
-\end{lstlisting}
+
+\texttt{
+∀\_ : Formula → Formula
+}
 
 De szemantikusan, a De Bruijn-indexelt környezetben, a ∀ köt egy változót a formulában, ami azt eredményezi, hogy egyel kevesebb szabad változó lesz benne, ami a szignatúrában is látszik:
 
-\begin{lstlisting}
+\texttt{
 ∀ : (A : For (Γ ▹ₜ)) → For Γ
-\end{lstlisting}
+}
 
 Összességében esetünkben nagyban megkönnyíti a munkát a
 \begin{itemize}
@@ -172,7 +173,7 @@ A formulákra is tekinthetünk funktorként, így hasonlóan a termekhez a köve
 
 \section{Bizonyítások}
 
-A bizonyításokat már egy kicsivel bonyolultabban adjuk meg, ugyanis egy \AgdaField{For} feletti dependáns funktronak is nevezhetnénk. Ha vesszük például a Γ ⊢ A szokásos logikai (bizonyításelméleti) jelölést, akkor a \AgdaDatatype{p} : \AgdaField{Pf} Γ A azt jelenti, hogy \AgdaDatatype{p} bizonyítja az A állítást, ahol a szabad változók Γ-ban vannak.
+A bizonyításokat már egy kicsivel bonyolultabban adjuk meg, ugyanis egy \AgdaField{For} feletti függő funktornak is nevezhetnénk. Ha vesszük például a Γ ⊢ A szokásos logikai (bizonyításelméleti) jelölést, akkor a \AgdaDatatype{p} : \AgdaField{Pf} Γ A azt jelenti, hogy \AgdaDatatype{p} bizonyítja az A állítást, ahol a szabad változók Γ-ban vannak.
 \begin{code}
       Pf  : (Γ : Con) → For Γ → Prop l
       _[_]ᵖ : ∀{Γ Δ A} → Pf Γ A → (γ : Sub Δ Γ) → Pf Δ (A [ γ ]ᶠ)
@@ -188,11 +189,15 @@ A bizonyítás-változókat a termváltozók esetében is használt operációkh
              → γa ≡ (pₚ ∘ γa ,ₚ substP (Pf Δ) ([∘]ᶠ ⁻¹) (qₚ [ γa ]ᵖ))
 \end{code}
 
-\noindent
-\raggedright
+% do somethign with this to appear correctly in the pdf
+\todo{fix this}
 \texttt{
 ((p∘\_),(q[\_])) : Sub Δ (Γ▹ₚA) ≅ (γ: Sub Δ Γ) × Pf Δ (A[γ]ᶠ) : \_,ₚ\_
 }
+
+\section{Különböző változók kezelése}
+
+Mint láthattuk a modellfogalomban a egységesen kezeljük a term- és a bizonyítás-változókat. Ezt a későbbiekben a \hyperref[ch:syntax]{szintaxis}ban ketté fogjuk bontani és egy külön adjuk meg a term- és bizonyítás-kontextust valamint az ezekhez tartozó helyettesítéseket.
 
 \section{Reláció- és függvényszimbólumok}
 
@@ -205,6 +210,17 @@ A modell a függvények és a relációk aritásával van felparaméterezve, ezt
       fun[] : ∀{Γ n}{ar : funar n}{ts : Tm Γ ^ n}{Δ}{γ : Sub Δ Γ}
               → fun ar ts [ γ ]ᵗ ≡ fun ar (map _[ γ ]ᵗ ts)
 \end{code}
+Láthatóan itt megjelennek már a helyettesítési szabályok is. A \AgdaField{Rel[]} szabály a relációk helyettesítését, míg a \AgdaField{fun[]} a függvények helyettesítését végzi el.
+
+\subsection{Helyettesítési szabályok}
+
+A helyettesítési szabályok az elsőrendű logikában azokat a műveleteket szabályozzák, amelyek során egy változót egy másik kifejezésre cserélünk. Ezek az egyenlőségek a logikai műveletek és a helyettesítés közötti interakciót biztosítják.
+
+Egy művelet és a helyettesítés között - kategóriaelméleti szavakkal mondva - természetességi kapcsolat van. Ez azt jelenti, hogy a művelet kompatibilis a helyettesítéssel, azaz ha először végezzük el a műveletet, majd utána a helyettesítést, az ugyanazt az eredményt adja, mintha először végeznénk el a helyettesítést, majd utána a műveletet. Ez biztosítja, hogy a művelet és a helyettesítés nem befolyásolják egymás működését, függetlenül az alkalmazás sorrendjétől.
+
+Ezekre a szabályokra tekinthetünk a helyettesítés implementációjaként is, legyen az egy rekurzív függvény, amely az operátorok szerinti rekurzióval van megadva, vagy mintaillesztés egy adattípusra. Azonban ezekre a megadásokra ebben az esetben nincs lehetőségünk, mivel egy record adatstruktúrát fogalmazunk meg.
+
+A további műveleteknél is lesznek ilyen helyettesítési5 szabályok, ott már ezt nem részletezzük.
 
 \section{Logikai összekötők}
 
@@ -214,6 +230,8 @@ Az A ⊃ B jelentése: "ha A igaz, akkor B is igaz".
 \begin{code}
       _⊃_   : ∀{Γ} → For Γ → For Γ → For Γ
 \end{code}
+
+Az implikáció helyettesítési szabálya:
 \begin{code}
       ⊃[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ⊃ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
 \end{code}
@@ -233,6 +251,8 @@ Az A ∧ B azt jelenti, hogy mind A, mind B igaz.
 \begin{code}
       _∧_   : ∀{Γ} → For Γ → For Γ → For Γ
 \end{code}
+
+Az konjunkció helyettesítési szabálya:
 \begin{code}
       ∧[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∧ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∧ B [ γ ]ᶠ
 \end{code}
@@ -254,6 +274,8 @@ Az A ∨ B jelentése, hogy legalább az egyik (A vagy B) igaz.
 \begin{code}
       _∨_   : ∀{Γ} → For Γ → For Γ → For Γ
 \end{code}
+
+Az diszjunkció helyettesítési szabálya:
 \begin{code}
       ∨[]   : ∀{Γ A B Δ}{γ : Sub Δ Γ} → (A ∨ B) [ γ ]ᶠ ≡ A [ γ ]ᶠ ∨ B [ γ ]ᶠ
 \end{code}
@@ -276,6 +298,8 @@ A \AgdaField{⊤} egy mindig igaz állítást jelöl.
 \begin{code}
       ⊤     : ∀{Γ} → For Γ
 \end{code}
+
+A \AgdaField{⊤} helyettesítési szabálya:
 \begin{code}
       ⊤[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊤ [ γ ]ᶠ ≡ ⊤
 \end{code}
@@ -291,6 +315,8 @@ Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
 \begin{code}
       ⊥     : ∀{Γ} → For Γ
 \end{code}
+
+A \AgdaField{⊥} helyettesítési szabálya:
 \begin{code}
       ⊥[]   : ∀{Γ Δ}{γ : Sub Δ Γ} → ⊥ [ γ ]ᶠ ≡ ⊥
 \end{code}
@@ -311,6 +337,8 @@ Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás mi
 \begin{code}
       Forall : ∀{Γ} → For (Γ ▹ₜ) → For Γ
 \end{code}
+
+Az univerzális kvantor helyettesítési szabálya:
 \begin{code}
       Forall[] : ∀{Γ A Δ}{γ : Sub Δ Γ}
                  → Forall A [ γ ]ᶠ ≡ Forall (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
@@ -332,6 +360,8 @@ Az egzisztenciális kvantor azt fejezi ki, hogy létezik legalább egy olyan ele
 \begin{code}
       ∃ : ∀{Γ} → For (Γ ▹ₜ ) → For Γ
 \end{code}
+
+Az egzisztenciális kvantor helyettesítési szabálya:
 \begin{code}
       ∃[] : ∀{Γ A Δ}{γ : Sub Δ Γ} → ∃ A [ γ ]ᶠ ≡ ∃ (A [ γ ∘ pₜ ,ₜ qₜ ]ᶠ)
 \end{code}

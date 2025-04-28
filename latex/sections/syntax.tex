@@ -1,8 +1,29 @@
 \chapter{Szintaxis}
 \label{ch:syntax}
 
+Ebben a fejezetben az elsőrendű logika szintaxisának megadását ismertetjük. Definiáljuk a szükséges szortokat és azok konstruktorait, valamint bemutatjuk, hogyan építjük fel a termek, formulák és bizonyítások struktúráját induktív adattípusokkal, ezáltal megadva szintaxist egyenlőségek, azaz kvóciensek nélkül.
+
 A szintaxis az egyik specifikus algebrája az algebrai struktúrának, más néven iniciális algebrának is nevezzük. Az összes többi algebrát szemantikának nevezzük, erre láthatunk majd példát a \hyperref[ch:models]{következő fejezet}ben.
 
-% meg tudjuk adni egyenlőségek nélküli adattípusokkal, azaz kvóciensek nélkül
+Az elsőrendű logika iniciális modelljének implementációját algebrai adattípusokkal adjuk meg, miközben biztosítjuk, hogy az egyenlőségek is teljesüljenek. Ez hasonló megközelítést igényel, mint amit a \hyperref[ch:intro]{bevezetésben} a monoidok esetében láttunk, ahol a listákat használtuk reprezentációként, így kvóciensek nélkül megadva a szintaxist.
+
+\section{Az implementáció alapelvei}
+
+A formulák létrehozó operátorait a \AgdaDatatype{For} adattípus konstruktorai adják meg, kivéve a helyettesítést, amit rekurzívan definiálunk. A termek esetében a konstruktorokat a \AgdaDatatype{Tm} adattípus tartalmazza, és itt is rekurzívan adjuk meg a helyettesítést. A bizonyítások hasonlóan a \AgdaDatatype{Pf} adattípussal vannak megadva, azonban ebben az esetben a helyettesítés egyenlőségei is konstruktorok lesznek, amire lentebb láthatunk részletesebb magyarázatot.
+
+\subsection{A helyettesítések kezelése}
+
+A helyettesítések kezelésére a következő megközelítést alkalmazzuk:
+
+\begin{itemize}
+\item A helyettesítést rekurzívan definiáljuk a termek és formulák esetében.
+\item Többlépcsős megközelítés: Először a változókra definiáljuk a helyettesítést, majd ezt kiterjesztjük az összes formulára és termre
+\end{itemize}
+
+Ez a technika teszi lehetővé, hogy kvóciensek nélkül tudjuk megadni a szintaxist.
+
+A bizonyítások esetében már nincs szükség rekurzív helyettesítésre, mivel ezek a \AgdaDatatype{Prop} típusban vannak, nem pedig \AgdaDatatype{Set}-ben. A kettő között az a különbség, hogy az utóbbi \textit{proof-irrelevant}, ami röviden azt jelenti, hogy egy \AgdaDatatype{Prop}-ban lévő típusnak minden eleme definicionálisan egyenlőnek tekinthető. Itt tehát elegendő a helyettesítési egyenlőségeket egyszerű konstruktorként megadni a \AgdaDatatype{Prop} típus sajátosságai miatt, mivel minden egyenlőség triviálisan igaz lesz.
+
+Összefoglalva, az iniciális modell algebrai adattípusokkal van megadva, az egyenlőségekhez pedig rekurziót használunk, kivéve a bizonyítások esetében.
 
 \input{sections/agda/latex/Syntax.tex}

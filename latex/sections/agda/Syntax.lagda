@@ -25,6 +25,8 @@ infixr 8 _∧_
 infixr 7 _∨_
 \end{code}
 
+\section{Szortok}
+
 A szortokat algebrai adattípusokkal definiáljuk:
 \begin{code}
 data Con  : Set
@@ -49,6 +51,14 @@ data For where
   ∃      : ∀{Γ} → For (Γ ▹ₜ) → For Γ
   Rel    : ∀{Γ}{n : ℕ} → relar n → Tm Γ ^ n → For Γ
 \end{code}
+
+\section{Változók}
+
+Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyítás-változókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyítás-kontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
+
+A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyítás-kontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
+
+\section{Termváltozók}
 
 Mivel a nyelvünk változókat is tartalmazhat, ezért be kell vezetnünk két további adattípust, a termváltozókat és a hozzá tartozó behelyettesítésteket:
 \begin{code}
@@ -88,6 +98,8 @@ wkvs {Δ} {.(_ ▹ₜ)} {γ ,ᵥ x₁} {vs x} = wkvs {x = x}
 _⁺ᵛ : ∀{Γ Δ} → VSub Δ Γ → VSub (Δ ▹ₜ) (Γ ▹ₜ)
 γ ⁺ᵛ = wkVSub γ ,ᵥ vz
 \end{code}
+
+\section{Termek és behelyettesítések}
 
 Az előbbiek segítségével már meg tudjuk adni a \AgdaField{Tm} és \AgdaField{Sub} szortokat is:
 \begin{code}
@@ -270,6 +282,8 @@ f[id]ᶠ {Γ} {∃ A} = cong (λ a → ∃ a) (cong (λ x → A [ x ]ᶠ) id+≡
 f[id]ᶠ {Γ} {Rel ar ts} = cong (λ x → Rel ar x) t[id]ᵗs
 \end{code}
 
+\section{Bizonyítások kontextusa és azok behelyettesítése}
+
 A bizonyítások miatt azonban szükségünk van mégegy összetevőre, ez lesz a bizonyítások kontextusa:
 \begin{code}
 data Conp : Con → Set where
@@ -303,7 +317,11 @@ data Subp : (Γ : Con) → Conp Γ → Conp Γ → Prop where
   _∘ₚ_ : ∀{Ξ Θₚ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → Subp Ξ Θₚ Δₚ → Subp Ξ Θₚ Γₚ
   _[_]ᵖ : ∀{Ξ Ψ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → (ξ : Sub Ψ Ξ)
           → Subp Ψ (Δₚ [ ξ ]Conp) (Γₚ [ ξ ]Conp)
+\end{code}
 
+\section{Bizonyítások}
+
+\begin{code}
 data Pf where
   _[_]ᵖ  : ∀{Γ Γₚ Δ A} → Pf Γ Γₚ A → (γ : Sub Δ Γ)
            → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
@@ -333,6 +351,8 @@ cong, refl = refl
 
 open import model funar relar
 \end{code}
+
+\section{Iniciális modell}
 
 Az iniciális modell tehát a következőképpen néz ki:
 \begin{code}
@@ -415,3 +435,5 @@ I = record
             → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ)) idr w) p
   }
 \end{code}
+
+Láthatjuk, hogy a kontextus és a helyettesítés a korábban is említett különválasztott term- és bizonyítás-kontextus valamint a term- és bizonyítás-helyettesítés párok fogják megadni, ebből adódik a további részek kicsivel összetettebb megadása.

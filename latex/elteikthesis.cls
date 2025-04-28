@@ -576,8 +576,11 @@
 
 \usepackage{listings}
 
+\def\arraystretch{1.5}
+
 \usepackage{agda}
 \usepackage{newunicodechar}
+\usepackage{bbold}
 
 \newunicodechar{₀}{\ensuremath{{}_0}}
 \newunicodechar{₁}{\ensuremath{{}_1}}
@@ -649,3 +652,4 @@
 \newunicodechar{⟨}{\ensuremath{\langle}}
 \newunicodechar{⟩}{\ensuremath{\rangle}}
 \newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{∷}{\ensuremath{::}}

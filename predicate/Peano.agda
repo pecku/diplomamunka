@@ -145,4 +145,39 @@ module workInBool where
   lem {Γ} {A} γ with A γ
   ... | false = refl
   ... | true = refl
-   
+
+  A⊃B⊃A : {A B : For ◇} → Pf (◇) (A ⊃ B ⊃ A)
+  A⊃B⊃A {A} {B} γ with A γ | B γ
+  ... | false | false = refl
+  ... | false | true = refl
+  ... | true | false = refl
+  ... | true | true = refl
+
+  ∀P∧Q⊃∀P∧∀Q : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall (P ∧ Q)) ⊃ (Forall P ∧ Forall Q))
+  ∀P∧Q⊃∀P∧∀Q {P} {Q} γ with P (γ , 0) in eq1 | Q (γ , 0) in eq2 | lem {(Σ 𝟙 (λ _ → ℕ))} {P} (γ , zero) | lem {(Σ 𝟙 (λ _ → ℕ))} {Q} (γ , zero)
+  ... | false | false | refl | refl = {!  !}
+  ... | false | true | refl | refl = {!   !}
+  ... | true | false | refl | refl = {!   !}
+  ... | true | true | refl | refl = {!   !}
+
+  ∀P∧Q⊃∀P∧∀Q' : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall (P ∧ Q)) ⊃ (Forall P ∧ Forall Q))
+  ∀P∧Q⊃∀P∧∀Q' {P} {Q} γ = {!   !}
+
+
+module workInFamily where
+  ℕfun : (n : ℕ) → funar n → (i : ℕ) → ℕ ^ n → ℕ
+  ℕfun _ zero _ _ = zero
+  ℕfun _ suc _ (n , _) = suc n
+  ℕfun _ +' _ (m , n , _) = m + n
+
+  ℕRel : (n : ℕ) → relar n → (i : ℕ) → ℕ ^ n → Prop
+  ℕRel _ eq _ (m , n , _) = m ≡ n
+
+  import Family funar relar ℕ (λ I → ℕ) ℕfun ℕRel as F
+  open Model F.F
+
+  A⊃B⊃A : {A B : For ◇} → Pf (◇) (A ⊃ B ⊃ A)
+  A⊃B⊃A i γ a b = a   
+
+  ∀P∧Q⊃∀P∧∀Q : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall (P ∧ Q)) ⊃ (Forall P ∧ Forall Q))
+  ∀P∧Q⊃∀P∧∀Q i γ x = (λ d → fst (x d)) ,p λ d → snd (x d)  

@@ -4,9 +4,13 @@
 \AgdaKeyword{OPTIONS}\AgdaSpace{}%
 \AgdaPragma{--prop}\AgdaSpace{}%
 \AgdaSymbol{\#-\}}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{misc}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
 \end{code}
 
-\newcommand{\miscUniversalQuantifier}{%
+\newcommand{\miscUniversalQuantifier}{
 \begin{code}%
 \>[0]\AgdaOperator{\AgdaFunction{∀̂\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -30,7 +34,7 @@
 \AgdaBound{x}\<%
 \end{code}}
 
-\newcommand{\miscExistentialQuantifier}{%
+\newcommand{\miscExistentialQuantifier}{
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{∃}\AgdaSpace{}%
@@ -61,7 +65,7 @@
 \AgdaBound{B}\<%
 \end{code}}
 
-\newcommand{\miscConjunction}{%
+\newcommand{\miscConjunction}{
 \begin{code}%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{\AgdaUnderscore{}Σ\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -91,7 +95,7 @@
 \AgdaBound{B}\<%
 \end{code}}
 
-\newcommand{\miscDisjunction}{%
+\newcommand{\miscDisjunction}{
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⊎\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -122,7 +126,7 @@
 \AgdaBound{B}\<%
 \end{code}}
 
-\newcommand{\miscImplication}{%
+\newcommand{\miscImplication}{
 \begin{code}%
 \>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}→̂\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -149,7 +153,7 @@
 \AgdaPrimitive{Set}\<%
 \end{code}
 
-\newcommand{\miscNegation}{%
+\newcommand{\miscNegation}{
 \begin{code}%
 \>[0]\AgdaOperator{\AgdaFunction{¬\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -165,7 +169,7 @@
 \AgdaPostulate{⊥}\<%
 \end{code}}
 
-\newcommand{\miscEquality}{%
+\newcommand{\miscEquality}{
 \begin{code}%
 \>[0]\AgdaKeyword{postulate}\<%
 \\
@@ -183,11 +187,11 @@
 \AgdaPrimitive{Set}\<%
 \end{code}}
 
-\newcommand{\miscExLemma}{%
+\newcommand{\miscExLemma}{
 \begin{code}%
 \>[0]\AgdaFunction{lemma}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[110I]\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\>[112I]\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaPrimitive{Set}\AgdaSymbol{\}}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{x}\AgdaSpace{}%
@@ -201,7 +205,7 @@
 \AgdaPrimitive{Set}\AgdaSymbol{\}}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[110I]%
+\>[.][@{}l@{}]\<[112I]%
 \>[8]\AgdaSymbol{(∀}\AgdaSpace{}%
 \AgdaBound{x}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -232,4 +236,4 @@
 \AgdaBound{x}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
 \AgdaBound{x}\AgdaSymbol{)}\<%
-\end{code}}
+\end{code}} 

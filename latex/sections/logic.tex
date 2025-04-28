@@ -1,15 +1,17 @@
 \chapter{Logika}
 \label{ch:logic}
 
+Ez a fejezet a logika alapfogalmait ismerteti, különös tekintettel a nulladrendű és elsőrendű logikára. Bemutatjuk az alapvető logikai műveleteket, a kvantorokat, valamint a klasszikus és konstruktív logika közötti különbségeket, amelyek ismerete szükséges a későbbi formalizáláshoz.
+
 \section{Bevezetés a logikába}
 
 A logika a helyes következtetés és érvelés tudománya. Matematikai szempontból a logika egy olyan formális nyelv vagy rendszer, amely lehetővé teszi az állítások precíz leírását, valamint ezek igazságértékének és egymáshoz való viszonyának vizsgálatát. A formális logika célja, hogy matematikailag megragadható módon írjon le következtetéseket, amelyek objektív, jól meghatározott szabályokon alapulnak.
 
-A különböző típusú logikák eltérő kifejezőerővel rendelkeznek. A legegyszerűbb formális logikai rendszer a nulladrendű logika, más néven propozíciós logika, amelyet a predikátumlogika vagy elsőrendű logika követ, amely már képes az egyedekről és azok tulajdonságairól is beszélni.
+A különböző típusú logikák eltérő kifejezőerővel rendelkeznek. A legegyszerűbb formális logikai rendszer a nulladrendű logika, más néven propozíciós logika, vagy ítéletlogika, amelyet a predikátumlogika vagy elsőrendű logika követ, amely már képes az egyedekről és azok tulajdonságairól is beszélni.
 
-\subsection{Propozíciós (nulladrendű) logika}
+\subsection{Ítéletlogika (nulladrendű logika)}
 
-A propozíciós logika olyan állításokkal dolgozik, amelyek teljes egészükben igazak vagy hamisak, és nem bonthatók tovább kisebb részekre anélkül, hogy elveszítenék jelentésüket. Ezeket az állításokat propozícióknak nevezzük, és általában kisbetűkkel jelöljük, például p, q, r.
+Az ítéletlogika olyan állításokkal dolgozik, amelyek teljes egészükben igazak vagy hamisak, és nem bonthatók tovább kisebb részekre anélkül, hogy elveszítenék jelentésüket. Ezeket az állításokat propozícióknak nevezzük, és általában kisbetűkkel jelöljük, például p, q, r.
 
 A propozíciókhoz logikai műveletek tartoznak, mint például:
 
@@ -21,11 +23,11 @@ A propozíciókhoz logikai műveletek tartoznak, mint például:
 \item Ekvivalencia (p ↔ q) – "p akkor és csak akkor, ha q"
 \end{itemize}
 
-A propozíciós logika célja annak eldöntése, hogy bizonyos formulák egy adott logikai rendszerben igazak-e, illetve hogy egyes állítások logikailag következnek-e másokból.
+A ítéletlogika célja annak eldöntése, hogy bizonyos formulák egy adott logikai rendszerben igazak-e, illetve hogy egyes állítások logikailag következnek-e másokból.
 
 \subsection{Predikátumlogika (elsőrendű logika)}
 
-Az elsőrendű logika tovább lép a propozíciós logika korlátain. Itt már nem csupán állításokat vizsgálunk, hanem azok belső szerkezetét is feltárjuk. A predikátumlogika képes kifejezni olyan állításokat, mint:
+Az elsőrendű logika tovább lép a nulladrendű logika korlátain. Itt már nem csupán állításokat vizsgálunk, hanem azok belső szerkezetét is feltárjuk. A predikátumlogika képes kifejezni olyan állításokat, mint:
 
 \begin{itemize}
 \item "Minden ember halandó"
@@ -55,26 +57,26 @@ formalizálva így néz ki:
 ∀x. Ember(x) → Halandó(x)
 \end{quote}
 
-\subsection{A propozíciós és az elsőrendű logika közötti különbség}
+\subsection{A nulladrendű és az elsőrendű logika közötti különbség}
 
 A két logikai rendszer között a fő különbség az elemzési mélységben és kifejezőerőben rejlik:
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Tulajdonság} & \textbf{Propozíciós logika} & \textbf{Elsőrendű logika} \\ \hline
+\textbf{Tulajdonság} & \textbf{Nulladrendű logika} & \textbf{Elsőrendű logika} \\ \hline
 Alapegység & Egész állítások (pl. "esik az eső") & Egyedek, tulajdonságok és relációk \\ \hline
 Belső szerkezet & Nem vizsgálja & Vizsgálja és kezeli \\ \hline
 Kvantorok & Nincsenek & Vannak (∀, ∃) \\ \hline
 Kifejezőerő & Korlátozott & Sokkal gazdagabb \\ \hline
 Példa & \(p \to q\) & \(\forall x. \text{Ember}(x) \to \text{Halandó}(x)\) \\ \hline
 \end{tabular}
-\caption{A propozíciós és az elsőrendű logika közötti különbségek.}
+\caption{A nulladrendű és az elsőrendű logika közötti különbségek.}
 \label{tab:logic_comparison}
 \end{table}
 
-A propozíciós logika tehát alkalmas egyszerű állítások kezelésére, míg az elsőrendű logika képes összetettebb szerkezeteket és általános állításokat is kezelni. Ennek következtében az elsőrendű logika az automatikus bizonyítás, formális verifikáció és matematikai elméletek formalizálásának is egyik alapja. Például Agdában is ezen alapul a legtöbb formális modell.
+Az ítéletlogika tehát alkalmas egyszerű állítások kezelésére, míg az elsőrendű logika képes összetettebb szerkezeteket és általános állításokat is kezelni. Ennek következtében az elsőrendű logika az automatikus bizonyítás, formális verifikáció és matematikai elméletek formalizálásának is egyik alapja. Például Agdában is ezen alapul a legtöbb formális modell.
 
 
 \subsection{Eldönthetőség}
@@ -83,9 +85,9 @@ A logikai rendszerek egyik központi kérdése az eldönthetőség. Egy logikai 
 
 Ez különösen fontos a formális verifikációban és az automatikus tételbizonyításban, ahol azt szeretnénk, hogy egy gép automatikusan meg tudja mondani, hogy egy adott logikai állítás igaz-e vagy sem.
 
-\subsubsection{Eldönthetőség a propozíciós logikában}
+\subsubsection{Eldönthetőség a nulladrendű logikában}
 
-A propozíciós logika eldönthető: létezik algoritmus, amely képes eldönteni bármely propozíciós formula esetén, hogy az logikailag érvényes-e. Az egyik ilyen algoritmus például az igazságtábla-módszer, amely minden lehetséges értékkombinációt kipróbál.
+A nulladrendű logika eldönthető: létezik algoritmus, amely képes eldönteni bármely propozíciós formula esetén, hogy az logikailag érvényes-e. Az egyik ilyen algoritmus például az igazságtábla-módszer, amely minden lehetséges értékkombinációt kipróbál.
 
 Vegyük például az alábbi formulát:  
 \begin{quote}
@@ -102,7 +104,7 @@ Ez a híres Church–Turing-tétel egyik következménye, amely kimondja, hogy a
 
 Vannak azonban esetek, ahol eldönthetőség biztosítható, ha valamilyen formában korlátokat vezetünk be, például formulakészletek szűkítése, vagy véges struktúrákra korlátozott értelmezések esetén.
 
-Az eldönthetőség hiánya azt jelenti, hogy az elsőrendű logikában nem mindig lehet automatizálni a bizonyítást. Egy automatikus tételbizonyító rendszer, például egy Agdához hasonló típuselmélet-alapú nyelv, nem garantálhatja, hogy minden helyes állítást képes lesz levezetni. Az ilyen rendszerek gyakran fél-automaták: bizonyos esetekben képesek segíteni vagy teljesen elvégezni a bizonyítást, de általános megoldás nem létezik.
+Az eldönthetőség hiánya azt jelenti, hogy az elsőrendű logikában nem mindig lehet automatizálni a bizonyítást. Egy automatikus tételbizonyító rendszer, mint például a Z3 \cite{z3}, nem garantálhatja, hogy minden helyes állítást képes lesz levezetni. Az ilyen rendszerek gyakran fél-automaták: bizonyos esetekben képesek segíteni vagy teljesen elvégezni a bizonyítást, de általános megoldás nem létezik.
 
 \subsection{Klasszikus és konstruktív logika}
 
@@ -136,9 +138,9 @@ A konstruktív logika nem fogadja el automatikusan a kizárt harmadik elvét, se
 
 Ez a logika különösen jól illeszkedik a kategóriaelmélethez, típuselmélethez és a formális bizonyítási rendszerekhez. Ezekben a rendszerekben egy állítás bizonyítása gyakran azt jelenti, hogy megadunk egy konkrét értéket vagy programot, amely megfelel az állításnak.
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|p{6cm}|}
 \hline
 \textbf{Állítás} & \textbf{Klasszikus logika szerint} & \textbf{Konstruktív logika szerint} \\ \hline
 \(P \lor \neg P\) & Mindig igaz & Nem mindig igaz (bizonyíték kell valamelyik ágra) \\ \hline

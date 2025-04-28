@@ -1,51 +1,90 @@
-@book{dahl1972structured,
-	editor = {Dahl, O. J. and Dijkstra, E. W. and Hoare, C. A. R.},
-	title = {Structured Programming},
-	year = {1972},
-	isbn = {0-12-200550-3},
-	source = {Library of Congress Catalog Card Number: 72-84452},
-	publisher = {Academic Press Ltd.},
-	address = {London, UK, UK},
+@mastersthesis{fenyvesi2022,
+  author    = {Róbert Fenyvesi},
+  title     = {Formalization of Mathematical Logic},
+  school    = {Eötvös Loránd Tudományegyetem},
+  year      = {2021},
 }
 
-@book{cormen2009algorithms,
-	author = {Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford},
-	title = {Introduction to Algorithms, Third Edition},
-	year = {2009},
-	isbn = {978-0-262-53305-8},
-	edition = {3rd},
-	publisher = {The MIT Press},
+@techreport{avrillon2023,
+  author    = {Samy Avrillon},
+  title     = {Logic as a Second-Order Generalized Algebraic Theory},
+  institution = {Faculty of Informatics, ELTE},
+  year      = {2023},
+  url       = {https://github.com/MysaaJava/m1-internship/releases/download/project-report/Avrillon-02.pdf},
 }
 
-@incollection{dijkstra1979goto,
-	author = {Dijkstra, E.},
-	chapter = {Go to Statement Considered Harmful},
-	title = {Classics in Software Engineering},
-	editor = {Yourdon, Edward Nash},
-	year = {1979},
-	isbn = {0-917072-14-6},
-	pages = {27--33},
-	numpages = {7},
-	url = {http://dl.acm.org/citation.cfm?id=1241515.1241518},
-	acmid = {1241518},
-	publisher = {Yourdon Press},
-	address = {Upper Saddle River, NJ, USA},
+@InProceedings{altenkirch1995,
+  	author="Altenkirch, Thorsten
+	and Hofmann, Martin
+	and Streicher, Thomas",
+	editor="Pitt, David
+	and Rydeheard, David E.
+	and Johnstone, Peter",
+  	title="Categorical reconstruction of a reduction free normalization proof",
+  	booktitle="Category Theory and Computer Science",
+	year="1995",
+	publisher="Springer Berlin Heidelberg",
+	address="Berlin, Heidelberg",
+	pages="182--199",
+	isbn="978-3-540-44661-3",
+	series="Lecture Notes in Computer Science",
+	volume="953",
+	doi="10.1007/3-540-60164-3_27"
 }
 
-@article{krasner1988mvc,
-	author = {Krasner, Glenn E. and Pope, Stephen T.},
-	title = {A Cookbook for Using the Model-View-Controller User Interface Paradigm in Smalltalk-80},
-	journal = {J. Object Oriented Program.},
-	issue_date = {Aug./Sept. 1988},
-	volume = {1},
-	number = {3},
-	month = aug,
-	year = {1988},
-	issn = {0896-8438},
-	pages = {26--49},
-	numpages = {24},
-	url = {http://dl.acm.org/citation.cfm?id=50757.50759},
-	acmid = {50759},
-	publisher = {SIGS Publications},
-	address = {Denville, NJ, USA},
-} 
+@misc{awodeybauer2020,
+  author    = {Steve Awodey and Andrej Bauer},
+  title     = {Introduction to Categorical Logic},
+  year      = {2020},
+  url 		= {http://mathieu.anel.free.fr/mat/80514-814/Awodey-Bauer-catlog(2019).pdf},
+}
+
+
+@InProceedings{coq1st,
+	author="Forster, Yannick
+	and Kirst, Dominik
+	and Wehr, Dominik",
+	editor="Artemov, Sergei
+	and Nerode, Anil",
+	title="Completeness Theorems for First-Order Logic Analysed in Constructive Type Theory",
+	booktitle="Logical Foundations of Computer Science",
+	year="2020",
+	publisher="Springer International Publishing",
+	address="Cham",
+	pages="47--74",
+	abstract="We study various formulations of the completeness of first-order logic phrased in constructive type theory and mechanised in the Coq proof assistant. Specifically, we examine the completeness of variants of classical and intuitionistic natural deduction and sequent calculi with respect to model-theoretic, algebraic, and game semantics. As completeness with respect to standard model-theoretic semantics is not readily constructive, we analyse the assumptions necessary for particular syntax fragments and discuss non-standard semantics admitting assumption-free completeness. We contribute a reusable Coq library for first-order logic containing all results covered in this paper.",
+	isbn="978-3-030-36755-8",
+	doi="10.1007/978-3-030-36755-8_4"
+}
+
+@InProceedings{coq0th,
+	author="Gilbert, Ga{\"e}tan
+	and Hermant, Olivier",
+	editor="Davis, Martin
+	and Fehnker, Ansgar
+	and McIver, Annabelle
+	and Voronkov, Andrei",
+	title="Normalisation by Completeness with Heyting Algebras",
+	booktitle="Logic for Programming, Artificial Intelligence, and Reasoning",
+	year="2015",
+	publisher="Springer Berlin Heidelberg",
+	address="Berlin, Heidelberg",
+	pages="469--482",
+	abstract="Usual normalization by evaluation techniques have a strong relationship with completeness with respect to Kripke structures. But Kripke structures is not the only semantics that fits intuitionistic logic: Heyting algebras are a more algebraic alternative.",
+	isbn="978-3-662-48899-7",
+	doi="10.1007/978-3-662-48899-7_33"
+}
+
+@inproceedings{z3,
+  author    = {Leonardo de Moura and Nikolaj Bj{\o}rner},
+  title     = {Z3: An Efficient SMT Solver},
+  editor	= {Ramakrishnan, C. R. and Rehof, Jakob},
+  booktitle = {Tools and Algorithms for the Construction and Analysis of Systems},
+  year      = {2008},
+  pages     = {337--340},
+  doi 		= {10.1007/978-3-540-78800-3_24},
+  isbn		= {978-3-540-78800-3},
+  abstract  = {Satisfiability Modulo Theories (SMT) problem is a decision problem for logical first order formulas with respect to combinations of background theories such as: arithmetic, bit-vectors, arrays, and uninterpreted functions. Z3 is a new and efficient SMT Solver freely available from Microsoft Research. It is used in various software verification and analysis applications.},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg}
+}

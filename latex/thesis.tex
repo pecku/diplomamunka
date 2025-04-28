@@ -28,7 +28,7 @@
 % University's metadata
 \university{Eötvös Loránd Tudományegyetem} % university's name
 \faculty{Informatikai Kar} % faculty's name
-\department{Programozái Nyelvek és Fordítóprogramok\\ Tanszék} % department's name
+\department{Programozási Nyelvek és Fordítóprogramok\\ Tanszék} % department's name
 \city{Budapest} % city
 \logo{elte_cimer_szines} % logo
 
@@ -54,8 +54,14 @@
 \tableofcontents
 \cleardoublepage
 
+\input{sections/thanks.tex}
+\cleardoublepage
+
 % Main content
 \input{sections/intro.tex}
+\cleardoublepage
+
+\input{sections/related_work.tex}
 \cleardoublepage
 
 \input{sections/stuff.tex}
@@ -73,12 +79,11 @@
 \input{sections/models.tex}
 \cleardoublepage
 
-\input{sections/summary.tex}
+\input{sections/proofs.tex}
 \cleardoublepage
 
-
-\todo{Related work}
-\todo{model.lagda behelyettesítési szabályok magyarázat}
+\input{sections/summary.tex}
+\cleardoublepage
 
 % Acknowledgements (optional) - in case your thesis received funding or would like to express special thanks to someone
 % \chapter*{\acklabel}
@@ -91,10 +96,10 @@
 % \cleardoublepage
 
 % Bibliography (mandatory)
-% \phantomsection
-% \addcontentsline{toc}{chapter}{\biblabel}
-% \printbibliography[title=\biblabel]
-% \cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\biblabel}
+\printbibliography[title=\biblabel]
+\cleardoublepage
 
 % List of figures (optional) - useful over 3-5 figures
 % \phantomsection
