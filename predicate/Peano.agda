@@ -155,13 +155,39 @@ module workInBool where
 
   ∀P∧Q⊃∀P∧∀Q : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall (P ∧ Q)) ⊃ (Forall P ∧ Forall Q))
   ∀P∧Q⊃∀P∧∀Q {P} {Q} γ with P (γ , 0) in eq1 | Q (γ , 0) in eq2 | lem {(Σ 𝟙 (λ _ → ℕ))} {P} (γ , zero) | lem {(Σ 𝟙 (λ _ → ℕ))} {Q} (γ , zero)
-  ... | false | false | refl | refl = {!  !}
+  ... | false | false | refl | refl = {!!}
   ... | false | true | refl | refl = {!   !}
   ... | true | false | refl | refl = {!   !}
   ... | true | true | refl | refl = {!   !}
 
+  t&&t→t₁ : ∀{a b} → a && b ≡ true → a ≡ true
+  t&&t→t₁ {true} {true} refl = refl
+  t&&t→t₂ : ∀{a b} → a && b ≡ true → b ≡ true
+  t&&t→t₂ {true} {true} refl = refl
+
   ∀P∧Q⊃∀P∧∀Q' : {P Q : For (◇ ▹ₜ)} → Pf (◇) ((Forall (P ∧ Q)) ⊃ (Forall P ∧ Forall Q))
-  ∀P∧Q⊃∀P∧∀Q' {P} {Q} γ = {!   !}
+  ∀P∧Q⊃∀P∧∀Q' {P} {Q} γ = ind⊎p (λ x → case (λ _ → true) (λ _ → false) x => (Forall P ∧ Forall Q) γ ≡ true)
+    (λ h₁ → ind⊎p (λ x → true  => (case (λ _ → true) (λ _ → false) x && Forall Q γ) ≡ true)
+      (λ h₂ → ind⊎p (λ x → true => (true  && case (λ _ → true) (λ _ → false) x) ≡ true)
+        (λ h₃ → refl)
+        (λ h₃ → exfalsop (h₃ λ d → t&&t→t₂ (h₁ d)))
+        (B.lem ((d : ℕ) → Q (γ , d) ≡ true)))
+      (λ h₂ → ind⊎p (λ x → true => (false && case (λ _ → true) (λ _ → false) x) ≡ true)
+        (λ h₃ → exfalsop (h₂ λ d → t&&t→t₁ (h₁ d)))
+        (λ h₃ → exfalsop (h₃ λ d → t&&t→t₂ (h₁ d)))
+        (B.lem ((d : ℕ) → Q (γ , d) ≡ true)))
+      (B.lem ((d : ℕ) → P (γ , d) ≡ true)))
+    (λ h₁ → ind⊎p (λ x → false => (case (λ _ → true) (λ _ → false) x && Forall Q γ) ≡ true)
+      (λ h₂ → ind⊎p (λ x → false => (true && case (λ _ → true) (λ _ → false) x) ≡ true)
+        (λ h₃ → refl)
+        (λ h₃ → refl)
+        (B.lem ((d : ℕ) → Q (γ , d) ≡ true)))
+      (λ h₂ → ind⊎p (λ x → false => (false && case (λ _ → true) (λ _ → false) x) ≡ true)
+        (λ h₃ → refl)
+        (λ h₃ → refl)
+        (B.lem ((d : ℕ) → Q (γ , d) ≡ true)))
+      (B.lem ((d : ℕ) → P (γ , d) ≡ true)))
+    (B.lem ((d : ℕ) → (P (γ , d) && Q (γ , d)) ≡ true))
 
 
 module workInFamily where
