@@ -103,9 +103,8 @@ postulate
 \newcommand{\bmForall}{
 \begin{code}
 Forall : {Γ : Set} → (Γ × D → Bool) → Γ → Bool
-Forall F γ with lem ((d : D) → F(γ , d) ≡ true)
-... | inl x = true
-... | inr x = false
+Forall F γ = case (λ _ → true) (λ _ → false)
+               (lem ((d : D) → F(γ , d) ≡ true))
 \end{code}}
 
 \begin{code}[hide]
@@ -115,7 +114,7 @@ Forall[]' {Γ} {A} {Δ} {γ} δ with lem ((d : D) → A(γ δ , d) ≡ true)
 ... | inr x = refl
 
 Forall[] : {Γ : Set} {A : Γ × D → Bool} {Δ : Set} {γ : Δ → Γ} → (λ δ → Forall A (γ δ)) ≡ Forall (λ δ → A (γ (fst δ) , snd δ))
-Forall[] = funext Forall[]'
+Forall[] {Γ}{A}{Δ}{γ} = funext (Forall[]' {Γ}{A}{Δ}{γ})
 
 ∀in : {Γ : Set} {A : Γ × D → Bool} → ((γ : Γ × D) → A γ ≡ true) → (γ : Γ) → Forall A γ ≡ true
 ∀in {A = A} a γ with lem ((d : D) → A (γ , d) ≡ true)
@@ -133,9 +132,8 @@ Forall[] = funext Forall[]'
 \newcommand{\bmExists}{
 \begin{code}
 ∃ : {Γ : Set} → (Γ × D → Bool) → Γ → Bool
-∃ A γ with lem ((Σsp D λ d → A (γ , d) ≡ true))
-... | inl x = true
-... | inr x = false
+∃ A γ = case (λ _ → true) (λ _ → false)
+          (lem ((Σsp D λ d → A (γ , d) ≡ true)))
 \end{code}}
 
 \begin{code}[hide]
@@ -145,7 +143,7 @@ Forall[] = funext Forall[]'
 ... | inr x = refl
 
 ∃[] : {Γ : Set} {A : Γ × D → Bool} {Δ : Set} {γ : Δ → Γ} → (λ δ → ∃ A (γ δ)) ≡ ∃ (λ δ → A (γ (fst δ) , snd δ))
-∃[] = funext ∃[]'
+∃[] {Γ}{A}{Δ}{γ} = funext (∃[]' {Γ}{A}{Δ}{γ})
 
 ∃in : {Γ : Set} {A : Γ × D → Bool} (t : Γ → D) → ((γ : Γ) → A (γ , t γ) ≡ true) → (γ : Γ) → ∃ A γ ≡ true
 ∃in {Γ} {A} t a γ with lem ((Σsp D λ d → A (γ , d) ≡ true))
@@ -258,7 +256,7 @@ B = record
      ; Forall = Forall
 \end{code}
 \begin{code}[hide]
-     ; Forall[] = Forall[]
+     ; Forall[] = λ {Γ}{A}{Δ}{γ} → Forall[] {Γ}{A}{Δ}{γ}
      ; ∀in = ∀in
      ; ∀out = ∀out
 \end{code}
@@ -266,7 +264,7 @@ B = record
      ; ∃ = ∃
 \end{code}
 \begin{code}[hide]
-     ; ∃[] = ∃[]     
+     ; ∃[] = λ {Γ}{A}{Δ}{γ} → ∃[] {Γ}{A}{Δ}{γ}
      ; ∃in = ∃in
      ; ∃out = ∃out
 \end{code}

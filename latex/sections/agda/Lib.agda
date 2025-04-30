@@ -92,6 +92,14 @@ case : ∀{ℓ}{A B : Prop}{C : Set ℓ} → (A → C) → (B → C) → A ⊎ B
 case f g (inl a) = f a
 case f g (inr b) = g b
 
+ind⊎ : ∀{ℓ}{A B : Prop}(C : A ⊎ B → Set ℓ) → ((a : A) → C (inl a)) → ((b : B) → C (inr b)) → (ab : A ⊎ B) → C ab
+ind⊎ C f g (inl a) = f a
+ind⊎ C f g (inr a) = g a
+
+ind⊎p : ∀{ℓ}{A B : Prop}(C : A ⊎ B → Prop ℓ) → ((a : A) → C (inl a)) → ((b : B) → C (inr b)) → (ab : A ⊎ B) → C ab
+ind⊎p C f g (inl a) = f a
+ind⊎p C f g (inr a) = g a
+
 casep : {A B C : Prop} → (A → C) → (B → C) → A ⊎p B → C
 casep f g (inl a) = f a
 casep f g (inr b) = g b

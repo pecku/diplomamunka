@@ -9,7 +9,7 @@ A dolgozat célja az elsőrendű logika formalizálása Agdában, mint mélyen b
 
 \input{sections/agda/latex/algebraic_theory.tex}
 
-A fő kontribúció abban rejlik, hogy az iniciális algebrát kvóciensek nélkül (induktív adattípusokkal) adjuk meg. Erre egy jó példa lehet az \textit{A} feletti monoid, ami egy egyenlőséges algebrai elmélet, de meg tudjuk adni a szintaxisát egyenlőségek nélkül.
+Bizonyos algebrai elméletek szintaxisát kvócienek nélkül, egyszerű induktív típusokkal meg lehet adni. A félcsoporton túl egy jó példa erre az \textit{A} feletti monoid, ami egy egyenlőséges algebrai elmélet, de meg tudjuk adni a szintaxisát egyenlőségek nélkül.
 
 \input{sections/agda/latex/monoid.tex}
 
@@ -19,11 +19,11 @@ A következő konstrukció ellenpéldaként szolgál, nevezhetjük rendezetlen p
 
 \input{sections/agda/latex/up.tex}
 
-Ahhoz, hogy megadjuk a rendezetlen pár szintaxisát, egy kiegészítő egyenletre van szükség, amely biztosítja a kommutativitást (a, b) ≡ (b, a). Ebben az esetben az iniciális algebra nem adható meg egyenlőségek nélkül, mert ha megbóbálnánk az előbbi példa alapján \AgdaKeyword{data}-val megadni, az \AgdaField{eq}-t már nem tudnánk, az Agda nem fogadná el.
+Ahhoz, hogy megadjuk a rendezetlen pár szintaxisát, egy kiegészítő egyenletre van szükség, amely biztosítja a kommutativitást (a, b) ≡ (b, a). Ebben az esetben az iniciális algebra nem adható meg egyenlőségek nélkül, mert ha megpróbálnánk az előbbi példa alapján \AgdaKeyword{data}-val megadni, az \AgdaField{eq}-t már nem tudnánk, az Agda nem fogadná el.
 
-Míg bizonyos algebrai struktúrák iniciális modelljei definiálhatók egyenlőségek megadása nélkül, algbrai adattípusokkal és rekurzív függvények megadásával, másokhoz további egyenletek szükségesek a kívánt tulajdonságok kikényszerítésére.
+Míg bizonyos algebrai struktúrák iniciális modelljei definiálhatók egyenlőségek megadása nélkül, algebrai adattípusokkal és rekurzív függvények megadásával, másokhoz további egyenletek szükségesek a kívánt tulajdonságok kikényszerítésére.
 
-Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modell fogalmat többszortú módon adjuk, amelyek indexelve vannak egymás felett. A szortok (fajták) a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reperezántálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
+Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modell fogalmat többszortú módon adjuk, amelyek indexelve vannak egymás felett. A szortok (fajták) a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reprezentálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
 
 \section{Elsőrendű logika Agdában}
 
@@ -52,7 +52,7 @@ Az egzisztenciális kvantor $ ∃ x. P(x) $ megfeleltethető a függő pár típ
 \subsection{Logikai összekötők, mint meglévő típuskonstruktorok}
 
 \begin{itemize}
-    \item \textbf{Konjunkció} ($\land$) - szorzat típus ($\Sigma$-types):
+    \item \textbf{Konjunkció} ($\land$) - szorzat típus:
 \miscConjunction
     \item \textbf{Disjunkció} ($\lor$) - összeg típus:
 \miscDisjunction

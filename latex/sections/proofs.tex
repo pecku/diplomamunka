@@ -1,28 +1,128 @@
 \chapter{Bizonyítás különböző modellekben}
 \label{chap:proofs}
 
+\input{sections/agda/latex/Peano.tex}
+
 Ebben a fejezetben példákon keresztül szemléltetjük, hogyan lehet konkrét logikai állításokat bizonyítani az egyes megadott modellekben. Egyszerűbb és összetettebb formulák esetén is megvizsgáljuk, hogyan néz ki a bizonyítás a szintaxis szintjén, illetve hogyan értelmezhetők a különböző szemantikai modellekben (Bool, Tarski, Family). Külön hangsúlyt fektetünk arra, hogy az egyes modellekben való bizonyítás mennyiben könnyebb vagy mikben tér el.
 
 \section{Egyszerűbb formula}
 
+Egyszerű formulának a következőt választottuk:
+\begin{align*}
+\texttt{A ⊃ B ⊃ A}
+\end{align*}
+
 \subsection{Informális bizonyítás}
+
+\[
+\infer[\text{⊃in}]{\vdash A ⊃ (B ⊃ A)}{
+  \infer[\text{⊃in}]{A \vdash B ⊃ A}{
+    \infer[\text{\small W-L}]{A, B \vdash A}{
+        A \vdash A \quad \text{\small [Ax]}
+    }
+  }
+}
+\]
 
 \subsection{Bizonyítás a szintaxisban}
 
+A szintaktikai megközelítés a formális logika alapelveit követi, ahol a bizonyítás lényege a levezetési szabályok alkalmazása. Ez a módszer nem azzal foglalkozik, hogy mit "jelentenek" a logikai állítások, hanem inkább azzal, hogyan lehet őket levezetni más állításokból a rendszer szabályai szerint. Itt láthatjuk a legtöbb hasonlóságot az informális bizonyítással.
+
+\pSynE
+
 \subsection{Bizonyítás a Bool modellben}
+
+A Bool modell a klasszikus igazságérték-alapú megközelítést képviseli. Ebben a modellben a bizonyítás lényege, hogy minden lehetséges igazságérték-kombinációt megvizsgálunk, akárcsak egy igazságtáblán. Agdában tehát e modell esetében sokszor elegendő mintát illeszteni a formulákra.
+
+\pBooE
 
 \subsection{Bizonyítás a Tarski modellben}
 
+A Tarski modellbeli bizonyításnál láthatjuk, hogy implikáció definíciója miatt - azaz mivel az Agda beépített függvény típusát használtuk - könnyű dolgunk lesz. Bármilyen \textit{γ} kontextusban, ha kapunk egy \textit{a} értéket (amely az A formula γ kontextusbeli értéke), valamint egy \textit{b} értéket (a B formula γ kontextusbeli értéke), akkor egyszerűen visszaadjuk az \textit{a} értéket. Ez pontosan azt fejezi ki, hogy "ha A, akkor (ha B, akkor A)" - vagyis függetlenül B értékétől, az eredmény mindig A értéke lesz. A Tarski modell ereje abban rejlik, hogy matematikai tisztasággal, absztrakt módon ragadja meg a logikai összefüggéseket, ami különösen összetettebb formuláknál válik előnyössé a Bool modellhez képest.
+
+\pTarE
+
 \subsection{Bizonyítás a Family modellben}
+
+A Family modellben megadott bizonyítás nagyon hasonlít a Tarski modellbeli bizonyításhoz, de kapunk egy extra \textit{i} paramétert. A bizonyítás lényegében ugyanazon az elven alapul, mint a Tarski modellben: függetlenül B értékétől, az eredmény mindig A értéke lesz.
+
+\pFamE
+
+\subsection{Bizonyítás bármely modellben}
+
+A "bármely modellben" történő bizonyítás a legáltalánosabb és egyben a legösszetettebb is.úgy kell megfogalmaznunk a bizonyítást, hogy az minden modellben érvényes legyen. Ez a megközelítés különösen értékes elméleti szempontból, hiszen rávilágít a különböző logikai rendszerek közötti összefüggésekre.
+
+\pAnyE
 
 \section{Összetettebb formula}
 
+Az választott összetettebb formula:
+\begin{align*}
+\texttt{∀(P ∧ Q) ⊃ ∀P ∧ ∀Q}
+\end{align*}
+
 \subsection{Informális bizonyítás}
+
+\[
+\infer[⊃in]{\vdash ∀x(P(x) ∧ Q(x)) ⊃ (∀x\,P(x) ∧ ∀x\,Q(x))}{
+  \infer[∧in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,P(x) ∧ ∀x\,Q(x)}{
+    \infer[∀in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,P(x)}{
+      \infer[∧out₁]{∀ x(P(x) ∧ Q(x)) \vdash P(x)}{
+        \infer[∀out]{∀ x(P(x) ∧ Q(x)) \vdash P(x) ∧ Q(x)}{
+            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{\small [Ax]}
+        }
+      }
+    }
+    &
+    \infer[∀in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,Q(x)}{
+      \infer[∧out₂]{∀x(P(x) ∧ Q(x)) \vdash Q(x)}{
+        \infer[∀out]{∀x(P(x) ∧ Q(x)) \vdash P(x) ∧ Q(x)}{
+            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{\small [Ax]}
+        }
+      }
+    }
+  }
+}
+\]
+
 
 \subsection{Bizonyítás a szintaxisban}
 
+Itt szintén láthatjuk, hogy a szintaxisbeli bizonyítás tükrözi a fenti informális levezetést.
+
+\pSynC
+
 \subsection{Bizonyítás a Bool modellben}
+
+Ennek a megközelítésnek az előnye, hogy pontosan látjuk, hogyan működik a formula minden esetben. A hátránya viszont nyilvánvalóvá válik, amikor összetettebb formulákkal dolgozunk. Jelen példa is rendkívül hosszú és bonyolult, tele van esetszétválasztásokkal és feltételes állításokkal. Ez jól mutatja, hogy bár a Bool modell intuitív, a gyakorlatban nehézkessé válhat.
+
+\pBooC
 
 \subsection{Bizonyítás a Tarski modellben}
 
+A Tarski modell tiszta matematikai absztrakciója itt különösen jól látható. A bizonyítás a metaelmélet eszközeit használja, ami jelentősen egyszerűsíti a munkát. Lehetővé teszi, hogy ahelyett, hogy minden eseten végigmennénk (mint a Bool modellben), egyszerűen megadjuk azt a függvényt, amely az állítás igazságát konstruálja. A metaelmélet konstruktorait alkalmazva közvetlenül építhetjük fel a bizonyítást, ami tömörebb és átláthatóbb eredményt ad.
+
+\pTarC
+
 \subsection{Bizonyítás a Family modellben}
+
+A Family modellben az összetettebb formula bizonyítása szintén nagyon hasonlít a Tarski modellbeli megfelelőjére, de itt is megjelenik az extra \textit{i} paraméter.
+
+\pFamC
+
+\subsection{Bizonyítás bármely modellben}
+
+Az összetettebb formulánál az \textit{any model} bizonyításunk nagyon absztrakt és számos transformációt (substP) használ, mert arra törekszik, hogy minden lehetséges szemantikai értelmezésben egyaránt érvényes legyen a bizonyítás. A kód komplexitása jól mutatja, milyen kihívásokkal jár egy teljesen általános bizonyítás megalkotása, amely nem támaszkodhat egyik specifikus modell előnyeire sem. Ugyanakkor ez a megközelítés biztosítja, hogy a bizonyítás valóban univerzális legyen.
+
+\pAnyC
+
+
+\section{Összehasonlítás}
+
+A bemutatott példák jól szemléltetik, hogy a különböző szemantikák más-más filozófiai alapokon nyugszanak, de ugyanarra az eredményre vezetnek, valamint a bizonyítások formája és komplexitása eltér. A szintaktikai bizonyítás a formális szabályokat hangsúlyozza, a Bool modell az igazságértékekre koncentrál, míg a Tarski és Family modellek absztraktabb, matematikai struktúrákat követnek.
+
+A bármely modellben történő bizonyítás a legjobb olyan szempontból, hogy ha itt sikerül megadnunk egy bizonyítást, akkor az minden lehetséges modellben érvényes lesz. Ez az univerzalitás azonban komoly nehézségekkel jár a gyakorlati kivitelezés során. A fő probléma abban rejlik, hogy az egyenlőségek ebben a megközelítésben pusztán posztulált formában jelennek meg, nem pedig definíció szerint teljesülnek. Ez jelentősen megnehezíti a bizonyítások kidolgozását.
+
+A szintaxisban történő bizonyítás már kedvezőbb, mivel itt már legalább a helyettesítési egyenlőségek definíció szerint teljesülnek. Ugyanakkor korlátos abban az értelemben, hogy még nem adtuk meg az inicialitását, így jelenleg nem elég praktikus a használata összetettebb esetekben. Az inicialitás kidolgozása további kutatási feladat marad.
+
+A Tarski modellel a legkönnyebb dolgoznunk, mivel itt minden egyenlőség definíció szerint teljesül, csak a metaelmélet eszköztárát tudjuk használni. Hátránya viszont, hogy a Tarski modell nem biztosít automatikus konverziót más modellekbe. Ezért ha egy formulát bizonyítottunk a Tarski modellben, az nem jelenti azt, hogy rendelkezünk a formula bizonyításával például a Bool modellben is.

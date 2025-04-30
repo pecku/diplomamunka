@@ -36,9 +36,9 @@ cong f refl = refl
   ; _∙_ = _+_
   ; associativity = +-assoc
   }
-\end{code} 
+\end{code}
 
-A szintaxist definiálhatjuk egy olyan modellként, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni. A 0 elemű halmazon meg tudunk adni mintaillesztéssel tetszőleges más halmazba függvényt, amely triviálisan megőrzi az összes operátort. 
+A szintaxis egy olyan modell, amelyből minden más modellbe megy egy függvény megőrizve az operátorokat. A félcsoport szintaxisát a 0 elemű halmazzal tudjuk megadni. A 0 elemű halmazon meg tudunk adni mintaillesztéssel tetszőleges más halmazba függvényt, amely triviálisan megőrzi az összes operátort. 
 \begin{code}
 data C : Set where
 

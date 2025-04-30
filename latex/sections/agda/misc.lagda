@@ -50,8 +50,8 @@ postulate ⊥ : Set
 
 \newcommand{\miscEquality}{
 \begin{code}
-postulate
-  _≡_ : {A : Set} → A → A → Set
+data _≡_ {a} {A : Set a} (x : A) : A → Set a where
+  instance refl : x ≡ x
 \end{code}}
 
 \newcommand{\miscExLemma}{

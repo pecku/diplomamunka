@@ -578,6 +578,8 @@
 
 \def\arraystretch{1.5}
 
+\usepackage{proof}
+
 \usepackage{agda}
 \usepackage{newunicodechar}
 \usepackage{bbold}
