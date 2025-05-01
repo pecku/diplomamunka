@@ -3,13 +3,13 @@
 
 Ebben a fejezetben az elsőrendű logika szintaxisának megadását ismertetjük. Definiáljuk a szükséges szortokat és azok konstruktorait, valamint bemutatjuk, hogyan építjük fel a termek, formulák és bizonyítások struktúráját induktív adattípusokkal, ezáltal megadva szintaxist egyenlőségek, azaz kvóciensek nélkül.
 
-A szintaxis az egyik specifikus algebrája az algebrai struktúrának, más néven iniciális algebrának is nevezzük. Az összes többi algebrát szemantikának nevezzük, erre láthatunk majd példát a \hyperref[ch:models]{következő fejezet}ben.
+A szintaxis az egyik specifikus algebrája az algebrai struktúrának, más néven iniciális algebra. Az összes többi algebrát szemantikának nevezzük, erre láthatunk majd példát a \hyperref[ch:models]{következő fejezet}ben.
 
 Az elsőrendű logika iniciális modelljének implementációját algebrai adattípusokkal adjuk meg, miközben biztosítjuk, hogy az egyenlőségek is teljesüljenek. Ez hasonló megközelítést igényel, mint amit a \hyperref[ch:intro]{bevezetésben} a monoidok esetében láttunk, ahol a listákat használtuk reprezentációként, így kvóciensek nélkül megadva a szintaxist.
 
 \section{Az implementáció alapelvei}
 
-A formulák létrehozó operátorait a \AgdaDatatype{For} adattípus konstruktorai adják meg, kivéve a helyettesítést, amit rekurzívan definiálunk. A termek esetében a konstruktorokat a \AgdaDatatype{Tm} adattípus tartalmazza, és itt is rekurzívan adjuk meg a helyettesítést. A bizonyítások hasonlóan a \AgdaDatatype{Pf} adattípussal vannak megadva, azonban ebben az esetben a helyettesítés egyenlőségei is konstruktorok lesznek, amire lentebb láthatunk részletesebb magyarázatot.
+A formulák létrehozó operátorait a \AgdaDatatype{For} adattípus konstruktorai adják meg, kivéve a helyettesítést, amit rekurzívan definiálunk. A termek esetében a konstruktorokat a \AgdaDatatype{Tm} adattípus tartalmazza, és itt is rekurzívan adjuk meg a helyettesítést. A bizonyítások hasonlóan a \AgdaDatatype{Pf} adattípussal vannak megadva, azonban ebben az esetben a helyettesítés egyenlőségei is konstruktorok lesznek, amire később láthatunk részletesebb magyarázatot.
 
 \subsection{A helyettesítések kezelése}
 

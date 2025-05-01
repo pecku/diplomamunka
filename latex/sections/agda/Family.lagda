@@ -27,7 +27,6 @@ $i i ds γ = map (λ x → x i γ) ds
 
 \newcommand{\fmFamily}{
 \begin{AgdaAlign}
-\vspace{1\baselineskip}
 \AgdaNoSpaceAroundCode{}
 \begin{code}
 F : Model funar relar

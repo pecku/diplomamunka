@@ -6,8 +6,8 @@ module misc where
 
 \newcommand{\miscUniversalQuantifier}{
 \begin{code}
-∀̂_ : {A : Set} → (A → Prop) → Prop
-∀̂ P = ∀ x → P x
+∀'_ : {A : Set} → (A → Prop) → Prop
+∀' P = ∀ x → P x
 \end{code}}
 
 \newcommand{\miscExistentialQuantifier}{
@@ -34,8 +34,8 @@ data _⊎_ (A B : Set) : Set where
 
 \newcommand{\miscImplication}{
 \begin{code}
-_→̂_ : Set → Set → Set
-A →̂  B = A → B  -- Az Agda függvény típusa
+_→'_ : Set → Set → Set
+A →' B = A → B  -- Az Agda függvény típusa
 \end{code}}
 
 \begin{code}[hide]

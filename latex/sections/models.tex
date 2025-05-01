@@ -36,14 +36,14 @@ A modell megadásához a következő paraméterekre lesz szükségünk:
 \hline
 \textbf{Paraméter} & \textbf{Jelentés} \\
 \hline
-\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\texttt{funar} & A függvényszimbólumok halmaza aritás szerint \\
 \hline
-\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\texttt{relar} & A relációszimbólumok halmaza aritás szerint \\
 \hline
 \texttt{D} & Az alap halmaz (a modell tartománya) \\
 \hline
-\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\ \hline
-\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\texttt{fun} & A függvényszimbólumok értelmezése (szemantikai jelentés) \\ \hline
+\texttt{Rel} & A relációszimbólumok értelmezése (szemantikai jelentés) \\
 \hline
 \end{tabular}
 \caption{Bool modell modulparaméterek}
@@ -51,7 +51,7 @@ A modell megadásához a következő paraméterekre lesz szükségünk:
 \end{table}
 
 
-Ezt a modellt viszonylag egyszerű implementálni, azonban a klasszikus metaelmélet miatt szükségünk lesz a kizárt harmadik elvére, amit meg kell mondanunk az Agdának is hogy létezik, hogy meg tudjuk adni a kvantorok implementációját.
+Ezt a modellt viszonylag egyszerű implementálni, azonban a klasszikus metaelmélet miatt szükségünk lesz a kizárt harmadik elvére, amit meg kell mondanunk az Agdának is, hogy létezik, hogy meg tudjuk adni a kvantorok implementációját.
 
 \bmLem
 
@@ -91,15 +91,15 @@ A modell megadásához a következő paraméterekre lesz szükségünk:
 \hline
 \textbf{Paraméter} & \textbf{Jelentés} \\
 \hline
-\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\texttt{funar} & A függvényszimbólumok halmaza aritás szerint \\
 \hline
-\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\texttt{relar} & A relációszimbólumok halmaza aritás szerint \\
 \hline
 \texttt{D} & Az alap halmaz (a modell tartománya) \\
 \hline
-\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\
+\texttt{fun} & A függvényszimbólumok értelmezése (szemantikai jelentés) \\
 \hline
-\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\texttt{Rel} & A relációszimbólumok értelmezése (szemantikai jelentés) \\
 \hline
 \end{tabular}
 \caption{Tarski modell modulparaméterek}
@@ -121,13 +121,13 @@ A Kripke modell teljes, de túl bonyolult, ezért csak egy speciális esetét, a
 \item Indexelés mint lehetséges világok: A Family modellben szereplő I indexhalmaz elemei megfeleltethetők a Kripke szemantika lehetséges világainak.
 \item Az elérhetőségi reláció implicit módon adott vagy triviális.
 \item A D(i) tartományok explicit módon specifikáltak minden i indexre.
-\item A logikai operátorok szemantikája hasonlóan van definiálva, de a modell szerkezete egyszerűbb és célorientáltabb.
 \end{itemize}
 
 Ahogyan a Kripke-modellben minden lehetséges világban kiértékeljük a formulákat, a Family modellben minden indexhez tartozó struktúrán értelmezzük a kifejezéseket és formulákat.
-Elérhetőségi reláció hiánya: A Kripke-modellekben alapvető szerepet játszik a világok közötti elérhetőségi reláció (R), amely meghatározza a modális operátorok szemantikáját. A Family modell nem specifikál explicit elérhetőségi relációt az indexek között, ami egyszerűsíti a struktúrát.
 
-Minden predikátum egy típuscsalád, amely a domain elemeihez típusokat rendel. A logikai konnektívák típuskonstruktorokként lesznek implementálva (pl. függő összeg és szorzat típusok). A kvantorok függő típusokként jelennek meg (Π és Σ típusok). A bizonyítások a megfelelő típusok értékei.
+Elérhetőségi reláció hiánya: a Kripke-modellekben alapvető szerepet játszik a világok közötti elérhetőségi reláció, amely meghatározza a modális operátorok szemantikáját. A Family modell nem specifikál explicit elérhetőségi relációt az indexek között, ami egyszerűsíti a struktúrát.
+
+Minden predikátum egy típuscsalád, amely a domain elemeihez típusokat rendel. A logikai konnektívák típuskonstruktorokként lesznek implementálva. A kvantorok függő típusokként jelennek meg (Π és Σ típusok). A bizonyítások a megfelelő típusok értékei.
 
 Ez a modell részhalmaz-modellként is értelmezhető: tehát az állítások I-nek a részhalmazai.
 
@@ -140,22 +140,22 @@ A modell megadásához a következő paraméterekre lesz szükségünk:
 \hline
 \textbf{Paraméter} & \textbf{Jelentés} \\
 \hline
-\texttt{funar} & A függvény szimbólumok halmaza aritás szerint \\
+\texttt{funar} & A függvényszimbólumok halmaza aritás szerint \\
 \hline
-\texttt{relar} & A relációs szimbólumok halmaza aritás szerint \\
+\texttt{relar} & A relációszimbólumok halmaza aritás szerint \\
 \hline
 \texttt{I} & Az index halmaz \\
 \hline
 \texttt{D} & Az alap halmaz (a modell tartománya) \\
 \hline
-\texttt{fun} & A függvény szimbólumok értelmezése (szemantikai jelentés) \\
+\texttt{fun} & A függvényszimbólumok értelmezése (szemantikai jelentés) \\
 \hline
-\texttt{Rel} & A relációs szimbólumok értelmezése (szemantikai jelentés) \\
+\texttt{Rel} & A relációszimbólumok értelmezése (szemantikai jelentés) \\
 \hline
 \end{tabular}
 \caption{Family modell modulparaméterek}
 \label{tab:family_module_params}
 \end{table}
 
-Majd ezek alapján a modellünk:
+A modell implementációja a következőképpen néz ki:
 \fmFamily

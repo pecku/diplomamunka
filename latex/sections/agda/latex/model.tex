@@ -212,7 +212,7 @@ A terminális objektum egy olyan objektum, amelyhez minden más objektumból lé
 
 \section{Termek}
 
-A termeket (\AgdaField{Tm}) egy funktorként adjuk meg. Úgy is mondhatjuk, hogy egy kontextustól függenek, mivel lehetnek benne termváltozók, amikbe be tudunk majd helyettesíteni, így értéket adva a szabad változóknak. Ehhez szükségünk lesz termekbe való behelyettesítésre, másnéven egy morfizmusok feletti akcióra. Egy funktornak teljesítenie kell két feltételt is: a kompozícióval való kompatibilitást és az identitással való kompatibilitást. Ezeket az \AgdaField{[∘]ᵗ} és \AgdaField{[id]ᵗ} egyenlőségek biztosítják.
+A termeket (\AgdaField{Tm}) egy funktorként adjuk meg. Úgy is mondhatjuk, hogy egy kontextustól függenek, mivel lehetnek benne termváltozók, amikbe be tudunk majd helyettesíteni, így értéket adva a szabad változóknak. Ehhez szükségünk lesz a termekbe való behelyettesítésre, másnéven egy morfizmusok feletti akcióra. Egy funktornak teljesítenie kell két feltételt is: a kompozícióval való kompatibilitást és az identitással való kompatibilitást. Ezeket az \AgdaField{[∘]ᵗ} és \AgdaField{[id]ᵗ} egyenlőségek biztosítják.
 \begin{code}%
 %
 \>[6]\AgdaField{Tm}%
@@ -416,7 +416,7 @@ Fontos megadjuk a redukciós szabályokat is (β, η), hogy biztosítsuk az azon
 
 \subsection{De Bruijn-indexek}
 
-A De Bruijn-indexek a változók lambda-kalkulus vagy logikai kifejezésekben való ábrázolásának egy módja. Fő előnye, hogy nem használ változóneveket. Ahelyett, hogy egy változóra névvel hivatkoznánk, minden változót egy számmal reprezentálunk, amely megadja, hogy hány kötőelemet (például kvantorokat) kell felfelé haladnunk a kifejezésfában, hogy megtaláljuk a változót kötő operátort. A De Bruijn-indexek használata megkönnyíti a kifejezések manipulálását és egyszerűsíti a bizonyításokat, mivel nem fordul elő névütközés vagy változó-újradefiniálás.
+A De Bruijn-indexek a változók lambda-kalkulusban vagy logikai kifejezésekben való ábrázolásának egy módja. Fő előnye, hogy nem használ változóneveket: ahelyett, hogy egy változóra névvel hivatkoznánk, minden változót egy számmal reprezentálunk, amely megadja, hogy hány kötőelemet (például kvantort) kell felfelé haladnunk a kifejezésfában, hogy megtaláljuk a változót kötő operátort. A De Bruijn-indexek használata megkönnyíti a kifejezések manipulálását és egyszerűsíti a bizonyításokat, mivel nem fordul elő névütközés vagy változó-újradefiniálás.
 
 Egy egyszerű példa:
 
@@ -441,7 +441,7 @@ Tehát:
 \end{itemize}
 
 \subsubsection{Miért "jobbak" a De Bruijn-indexek?}
-Különösen az olyan formális rendszerekben, mint jelen esetben az elsőrendű logikai implementáció, a De Bruijn-indexek segítenek a következőkben:
+Különösen az olyan formális rendszerekben, mint jelen esetben az elsőrendű logika implementációja, a De Bruijn-indexek segítenek a következőkben:
 
 \begin{itemize}
 \item A változónevek ütközésének elkerülése
@@ -618,7 +618,7 @@ A bizonyításokat már egy kicsivel bonyolultabban adjuk meg, ugyanis egy \Agda
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
 \end{code}
-A bizonyítás-változókat a termváltozók esetében is használt operációkhoz hasonlóan valósítjuk meg:
+A bizonyításváltozókat a termváltozók esetében is használt operációkhoz hasonlóan valósítjuk meg:
 \begin{code}%
 %
 \>[6]\AgdaOperator{\AgdaField{\AgdaUnderscore{}▹ₚ\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -745,15 +745,15 @@ A bizonyítás-változókat a termváltozók esetében is használt operációkh
 \AgdaOperator{\AgdaField{]ᵖ}}\AgdaSymbol{))}\<%
 \end{code}
 
-% do somethign with this to appear correctly in the pdf
-\todo{fix this}
-\texttt{
-((p∘\_),(q[\_])) : Sub Δ (Γ▹ₚA) ≅ (γ: Sub Δ Γ) × Pf Δ (A[γ]ᶠ) : \_,ₚ\_
-}
+\begin{verbatim}
+((p∘_),(q[_])) :
+            Sub Δ (Γ▹ₚA) ≅ (γ: Sub Δ Γ) × Pf Δ (A[γ]ᶠ)
+                                                      : _,ₚ_
+\end{verbatim}
 
 \section{Különböző változók kezelése}
 
-Mint láthattuk a modellfogalomban a egységesen kezeljük a term- és a bizonyítás-változókat. Ezt a későbbiekben a \hyperref[ch:syntax]{szintaxis}ban ketté fogjuk bontani és egy külön adjuk meg a term- és bizonyítás-kontextust valamint az ezekhez tartozó helyettesítéseket.
+Mint láthattuk, a modellfogalomban egységesen kezeljük a term- és a bizonyításváltozókat. Ezt a későbbiekben a \hyperref[ch:syntax]{szintaxis}ban ketté fogjuk bontani és külön adjuk meg a term- és bizonyításkontextust valamint az ezekhez tartozó helyettesítéseket.
 
 \section{Reláció- és függvényszimbólumok}
 
@@ -873,9 +873,9 @@ A helyettesítési szabályok az elsőrendű logikában azokat a műveleteket sz
 
 Egy művelet és a helyettesítés között - kategóriaelméleti szavakkal mondva - természetességi kapcsolat van. Ez azt jelenti, hogy a művelet kompatibilis a helyettesítéssel, azaz ha először végezzük el a műveletet, majd utána a helyettesítést, az ugyanazt az eredményt adja, mintha először végeznénk el a helyettesítést, majd utána a műveletet. Ez biztosítja, hogy a művelet és a helyettesítés nem befolyásolják egymás működését, függetlenül az alkalmazás sorrendjétől.
 
-Ezekre a szabályokra tekinthetünk a helyettesítés implementációjaként is, legyen az egy rekurzív függvény, amely az operátorok szerinti rekurzióval van megadva, vagy mintaillesztés egy adattípusra. Azonban ezekre a megadásokra ebben az esetben nincs lehetőségünk, mivel egy record adatstruktúrát fogalmazunk meg.
+Ezekre a szabályokra tekinthetünk a helyettesítés implementációjaként is, legyen az egy rekurzív függvény, amely az operátorok szerinti rekurzióval van megadva, vagy mintaillesztés egy adattípusra, azonban ezekre a megadásokra ebben az esetben nincs lehetőségünk, mivel egy record adatstruktúrát (algebrai elméletet) fogalmazunk meg.
 
-A további műveleteknél is lesznek ilyen helyettesítési5 szabályok, ott már ezt nem részletezzük.
+A további műveleteknél is lesznek ilyen helyettesítési szabályok, ott már ezt nem részletezzük.
 
 \section{Logikai összekötők}
 
@@ -898,7 +898,8 @@ Az A ⊃ B jelentése: "ha A igaz, akkor B is igaz".
 \AgdaBound{Γ}\<%
 \end{code}
 
-Az implikáció helyettesítési szabálya:
+\begin{itemize}
+\item Az implikáció helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{⊃[]}%
@@ -929,7 +930,6 @@ Az implikáció helyettesítési szabálya:
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
 \end{code}
-\begin{itemize}
 \item Az implikáció bevezető szabálya (\AgdaField{⊃in}): Ha tudjuk bizonyítani, hogy B igaz egy olyan kontextusban, ahol A feltételezett, akkor van egy bizonyításunk A ⊃ B-re is.
 \begin{code}%
 %
@@ -997,7 +997,8 @@ Az A ∧ B azt jelenti, hogy mind A, mind B igaz.
 \AgdaBound{Γ}\<%
 \end{code}
 
-Az konjunkció helyettesítési szabálya:
+\begin{itemize}
+\item A konjunkció helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{∧[]}%
@@ -1028,7 +1029,6 @@ Az konjunkció helyettesítési szabálya:
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
 \end{code}
-\begin{itemize}
 \item A konjunkció bevezető szabálya (\AgdaField{∧in}): Ha A és B külön-külön bizonyítható, akkor A ∧ B is igaz.
 \begin{code}%
 %
@@ -1052,8 +1052,8 @@ Az konjunkció helyettesítési szabálya:
 \AgdaOperator{\AgdaField{∧}}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSymbol{)}\<%
 \end{code}
-\item Az konjunkció kivezető szabálya (\AgdaField{∧out₁}): Az A ∧ B-ből következik A.
-\item Az konjunkció kivezető szabálya (\AgdaField{∧out₂}): Az A ∧ B-ből következik B.
+\item A konjunkció egyik kivezető szabálya (\AgdaField{∧out₁}): Az A ∧ B-ből következik A.
+\item A konjunkció másik kivezető szabálya (\AgdaField{∧out₂}): Az A ∧ B-ből következik B.
 \begin{code}%
 %
 \>[6]\AgdaField{∧out₁}\AgdaSpace{}%
@@ -1109,7 +1109,8 @@ Az A ∨ B jelentése, hogy legalább az egyik (A vagy B) igaz.
 \AgdaBound{Γ}\<%
 \end{code}
 
-Az diszjunkció helyettesítési szabálya:
+\begin{itemize}
+\item A diszjunkció helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{∨[]}%
@@ -1140,9 +1141,8 @@ Az diszjunkció helyettesítési szabálya:
 \AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\<%
 \end{code}
-\begin{itemize}
-\item A diszjunkció bevezető szabálya (\AgdaField{∨in₁}): Ha A igaz, akkor A ∨ B is igaz.
-\item A diszjunkció bevezető szabálya (\AgdaField{∨in₂}): Ha B igaz, akkor A ∨ B is igaz.
+\item A diszjunkció egyik bevezető szabálya (\AgdaField{∨in₁}): Ha A igaz, akkor A ∨ B is igaz.
+\item A diszjunkció másik bevezető szabálya (\AgdaField{∨in₂}): Ha B igaz, akkor A ∨ B is igaz.
 \begin{code}%
 %
 \>[6]\AgdaField{∨in₁}%
@@ -1178,7 +1178,7 @@ Az diszjunkció helyettesítési szabálya:
 \AgdaOperator{\AgdaField{∨}}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSymbol{)}\<%
 \end{code}
-\item A diszjunkció kivezető szabálya (\AgdaField{∨out}): Ha tudjuk, hogy A ∨ B igaz, és abból is következik, ha A igaz, de abból is, ha B igaz, akkor C igaz.
+\item A diszjunkció kivezető szabálya (\AgdaField{∨out}): Ha tudjuk, hogy A ∨ B igaz, és azt is tudjuk, hogy C igaz, ha A igaz, valamint C igaz akkor is, ha B igaz, akkor tudjuk, hogy C igaz.
 \begin{code}%
 %
 \>[6]\AgdaField{∨out}%
@@ -1232,7 +1232,8 @@ A \AgdaField{⊤} egy mindig igaz állítást jelöl.
 \AgdaBound{Γ}\<%
 \end{code}
 
-A \AgdaField{⊤} helyettesítési szabálya:
+\begin{itemize}
+\item A \AgdaField{⊤} helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{⊤[]}%
@@ -1251,7 +1252,6 @@ A \AgdaField{⊤} helyettesítési szabálya:
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaField{⊤}\<%
 \end{code}
-\begin{itemize}
 \item Az \textit{igaz} bevezető szabálya (\AgdaField{⊤in}): Minden kontextusban igaz.
 \begin{code}%
 %
@@ -1266,7 +1266,7 @@ A \AgdaField{⊤} helyettesítési szabálya:
 \end{itemize}
 
 \subsection{Konstans hamis (⊥)}
-Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
+A \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
 \begin{code}%
 %
 \>[6]\AgdaField{⊥}%
@@ -1277,7 +1277,8 @@ Az \AgdaField{⊥} egy ellentmondást vagy hamis állítást jelöl.
 \AgdaBound{Γ}\<%
 \end{code}
 
-A \AgdaField{⊥} helyettesítési szabálya:
+\begin{itemize}
+\item A \AgdaField{⊥} helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{⊥[]}%
@@ -1296,7 +1297,6 @@ A \AgdaField{⊥} helyettesítési szabálya:
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaField{⊥}\<%
 \end{code}
-\begin{itemize}
 \item A \textit{hamis} kivezető szabálya (\AgdaField{⊥out}): Ha egy bizonyítás során elérünk egy ellentmondást (\AgdaField{⊥}), akkor bármilyen tetszőleges állítást igaznak vehetünk (\textit{ex falso quodlibet}).
 \begin{code}%
 %
@@ -1336,7 +1336,8 @@ Az univerzális kvantor segítségével tudjuk kifejezni, hogy egy állítás mi
 \AgdaBound{Γ}\<%
 \end{code}
 
-Az univerzális kvantor helyettesítési szabálya:
+\begin{itemize}
+\item Az univerzális kvantor helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{Forall[]}\AgdaSpace{}%
@@ -1367,7 +1368,6 @@ Az univerzális kvantor helyettesítési szabálya:
 \AgdaField{qₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
 \end{code}
-\begin{itemize}
 \item Az univerzális kvantor bevezető szabálya (\AgdaField{∀in}):
 \begin{code}%
 %
@@ -1426,7 +1426,8 @@ Az egzisztenciális kvantor azt fejezi ki, hogy létezik legalább egy olyan ele
 \AgdaBound{Γ}\<%
 \end{code}
 
-Az egzisztenciális kvantor helyettesítési szabálya:
+\begin{itemize}
+\item Az egzisztenciális kvantor helyettesítési szabálya:
 \begin{code}%
 %
 \>[6]\AgdaField{∃[]}\AgdaSpace{}%
@@ -1455,7 +1456,6 @@ Az egzisztenciális kvantor helyettesítési szabálya:
 \AgdaField{qₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
 \end{code}
-\begin{itemize}
 \item Az egzisztenciális kvantor bevezető szabálya (\AgdaField{∃in}):
 \begin{code}%
 %
@@ -1486,8 +1486,8 @@ Az egzisztenciális kvantor helyettesítési szabálya:
 \item Az egzisztenciális kvantor kivezető szabálya (\AgdaField{∃out}):
 \begin{code}%
 %
-\>[6]\AgdaField{∃out}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
+\>[6]\AgdaField{∃out}%
+\>[951I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -1502,8 +1502,10 @@ Az egzisztenciális kvantor helyettesítési szabálya:
 \AgdaField{pₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{∘}}\AgdaSpace{}%
 \AgdaField{pₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaOperator{\AgdaField{]ᶠ}}\AgdaSymbol{)}\<%
+\\
+\>[951I][@{}l@{\AgdaIndent{0}}]%
+\>[12]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaField{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaField{∃}\AgdaSpace{}%

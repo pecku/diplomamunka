@@ -28,11 +28,11 @@ _++_ : ∀ {A} → List A → List A → List A
 
 assoc : ∀{A}{x y z : List A} → (x ++ y) ++ z ≡ x ++ (y ++ z)
 assoc {A} {[]} {y} {z} = refl
-assoc {A} {x ∷ x₁} {y} {z} = cong (x ∷_) (assoc {A} {x₁})
+assoc {A} {x ∷ xs} {y} {z} = cong (x ∷_) (assoc {A} {xs})
 
 idr : ∀{A}{x : List A} → x ++ [] ≡ x
 idr {A} {[]} = refl
-idr {A} {x ∷ x₁} = cong (x ∷_) (idr {A} {x₁})
+idr {A} {x ∷ xs} = cong (x ∷_) (idr {A} {xs})
 
 I : {A : Set} → Monoid {A}
 I {A} = record

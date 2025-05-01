@@ -3,7 +3,7 @@ open import Agda.Builtin.Equality
 module algebraic_theory where
 \end{code}
 
-Egy algebrai elméletet szortok, operátorok és egyenletek határoznak meg. Egy elmélet modelljeit vagy algebráit algebrai struktúrának is szokás nevezni, ez minden szorthoz egy halmazt, az operátorokhoz függvényeket, az egyenletekhez pedig egyenlőséget rendel.
+Egy algebrai elméletet szortok, operátorok és egyenletek határoznak meg. Egy elmélet modelljeit vagy algebráit algebrai struktúrának is szokás nevezni, ez minden szorthoz egy halmazt, az operátorokhoz függvényeket, az egyenletekhez pedig egyenlőségeket rendel.
 
 Például a félcsoport egy olyan algebrai struktúra, amely egy halmazból és a rajta értelmezett asszociatív bináris műveletből áll. Ebben az esetben az asszociativitás lesz az az egyenlőség, amelyet a félcsoportnak teljesítenie kell.
 

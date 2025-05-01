@@ -54,9 +54,9 @@ data For where
 
 \section{Változók}
 
-Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyítás-változókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyítás-kontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
+Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyításváltozókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyításkontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
 
-A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyítás-kontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
+A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyításkontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
 
 \section{Termváltozók}
 
@@ -312,20 +312,25 @@ data Pf : (Γ : Con)(Γₚ : Conp Γ) → For Γ → Prop
 data Subp : (Γ : Con) → Conp Γ → Conp Γ → Prop where
   idp : ∀{Γ Γₚ} → Subp Γ Γₚ Γₚ
   ε  : ∀{Γ Γₚ} → Subp Γ Γₚ ◇ₚ
-  _,ₚ_ : ∀{Δ Γₚ Δₚ A} → Subp Δ Δₚ Γₚ → Pf Δ Δₚ A → Subp Δ Δₚ (Γₚ ▹ₚ A)
+  _,ₚ_ : ∀{Δ Γₚ Δₚ A} → Subp Δ Δₚ Γₚ → Pf Δ Δₚ A
+          → Subp Δ Δₚ (Γₚ ▹ₚ A)
   pₚ : ∀{Γ Γₚ A} → Subp Γ (Γₚ ▹ₚ A) (Γₚ [ idₜ ]Conp)
-  _∘ₚ_ : ∀{Ξ Θₚ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → Subp Ξ Θₚ Δₚ → Subp Ξ Θₚ Γₚ
+  _∘ₚ_ : ∀{Ξ Θₚ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → Subp Ξ Θₚ Δₚ
+          → Subp Ξ Θₚ Γₚ
   _[_]ᵖ : ∀{Ξ Ψ Δₚ Γₚ} → Subp Ξ Δₚ Γₚ → (ξ : Sub Ψ Ξ)
           → Subp Ψ (Δₚ [ ξ ]Conp) (Γₚ [ ξ ]Conp)
 \end{code}
 
 \section{Bizonyítások}
 
+A bizonyítások teljes definíciója:
+
 \begin{code}
 data Pf where
   _[_]ᵖ  : ∀{Γ Γₚ Δ A} → Pf Γ Γₚ A → (γ : Sub Δ Γ)
-           → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
-  _[_]ᵖᵖ : ∀{Ξ Γₚ Δₚ A} → Pf Ξ Γₚ A → (γₚ : Subp Ξ Δₚ Γₚ) → Pf Ξ Δₚ A
+            → Pf Δ (Γₚ [ γ ]Conp) (A [ γ ]ᶠ)
+  _[_]ᵖᵖ : ∀{Ξ Γₚ Δₚ A} → Pf Ξ Γₚ A → (γₚ : Subp Ξ Δₚ Γₚ)
+            → Pf Ξ Δₚ A
   qₚ    : ∀{Γ Γₚ A} → Pf Γ (Γₚ ▹ₚ A) A
   ⊃in   : ∀{Γ Γₚ A B} → Pf Γ (Γₚ ▹ₚ A) B → Pf Γ Γₚ (A ⊃ B)
   ⊃out  : ∀{Γ Γₚ A B} → Pf Γ Γₚ (A ⊃ B) → Pf Γ Γₚ A → Pf Γ Γₚ B
@@ -336,13 +341,14 @@ data Pf where
   ∨in₁  : ∀{Γ Γₚ A B} → Pf Γ Γₚ A → Pf Γ Γₚ (A ∨ B)
   ∨in₂  : ∀{Γ Γₚ A B} → Pf Γ Γₚ B → Pf Γ Γₚ (A ∨ B)
   ∨out  : ∀{Γ Γₚ A B C} → Pf Γ (Γₚ ▹ₚ A) (C) → Pf Γ (Γₚ ▹ₚ B) (C)
-          → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C
+            → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C
   ⊥out  : ∀{Γ Γₚ A} → Pf Γ Γₚ ⊥ → Pf Γ Γₚ A
   ∀in : ∀{Γ Γₚ A} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A → Pf Γ Γₚ (Forall A)
   ∀out : ∀{Γ Γₚ A} → Pf Γ Γₚ (Forall A) → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp) A
-  ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ idₜ ,ₜ t ]ᶠ) → Pf Γ Γₚ (∃ A)
+  ∃in : ∀{Γ Γₚ A} → (t : Tm Γ) → Pf Γ Γₚ (A [ idₜ ,ₜ t ]ᶠ)
+          → Pf Γ Γₚ (∃ A)
   ∃out : ∀{Γ Γₚ A C} → Pf (Γ ▹ₜ) (Γₚ [ pₜ ]Conp ▹ₚ A) (C [ pₜ ]ᶠ)
-         → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
+          → Pf Γ Γₚ (∃ A) → Pf Γ Γₚ C
 \end{code}
 
 \begin{code}[hide]
@@ -360,9 +366,9 @@ I : Model
 I = record
   { Con = Σ Con Conp
   ; Sub = λ (Δ , Δₚ) (Γ , Γₚ)
-          → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
+      → Σ (Sub Δ Γ) λ γ → Lift (Subp Δ Δₚ (Γₚ [ γ ]Conp))
   ; _∘_ = λ {(Γ , Γₚ) (Δ , Δₚ) (Θ , Θₚ)}(γ , mk γₚ) (δ , mk δₚ)
-          → (γ ∘ δ) , mk (substP (Subp Θ Θₚ) ([∘]Conp ⁻¹) ((γₚ [ δ ]ᵖ) ∘ₚ δₚ))
+      → (γ ∘ δ) , mk (substP (Subp Θ Θₚ) ([∘]Conp ⁻¹) ((γₚ [ δ ]ᵖ) ∘ₚ δₚ))
   ; ass = cong, ass
   ; id = λ {(Γ , Γₚ)} → idₜ , mk (substP (λ x → Subp Γ Γₚ x) ([id]Conp ⁻¹) idp)
   ; idl = cong, idl
@@ -376,8 +382,8 @@ I = record
   ; [id]ᵗ = t[id]ᵗ
   ; _▹ₜ = λ (Γ , Γₚ) → Γ ▹ₜ , Γₚ [ pₜ ]Conp
   ; _,ₜ_ = λ (γ , mk γₚ) t
-          → (γ ,ₜ t) ,
-            mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
+      → (γ ,ₜ t) ,
+        mk (substP (Subp _ _) (cong (_ [_]Conp) (▹ₜβ₁ ⁻¹) ◾ [∘]Conp) γₚ)
   ; pₜ = pₜ , mk idp
   ; qₜ = qₜ
   ; ▹ₜβ₁ = cong, ▹ₜβ₁
@@ -416,9 +422,8 @@ I = record
   ; ∨[] = refl
   ; ∨in₁ = ∨in₁
   ; ∨in₂ = ∨in₂
-  ; ∨out =  λ {(Γ , Γₚ)} {A} {B} {C} a b
-            → substP (λ C → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C)
-                     f[id]ᶠ (∨out a b)
+  ; ∨out = λ {(Γ , Γₚ)} {A} {B} {C} a b
+      → substP (λ C → Pf Γ Γₚ (A ∨ B) → Pf Γ Γₚ C) f[id]ᶠ (∨out a b)
   ; ⊥ = ⊥
   ; ⊥[] = refl
   ; ⊥out = ⊥out
@@ -430,10 +435,13 @@ I = record
   ; ∃[] = cong (λ z → ∃ (_ [ z ,ₜ var vz ]ᶠ)) (∘p ⁻¹)
   ; ∃in = ∃in
   ; ∃out = λ {(Γ , Γₚ)}{A}{C} w p
-          → ∃out {Γ}{Γₚ}{A}{C}
-            (substP (λ z
-            → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ)) idr w) p
+            → ∃out {Γ}{Γₚ}{A}{C}
+              (substP
+                (λ z → Pf (Γ ▹ₜ) ((Γₚ [ pₜ ]Conp) ▹ₚ A) (C [ z ]ᶠ))
+                idr
+                w)
+              p
   }
 \end{code}
 
-Láthatjuk, hogy a kontextus és a helyettesítés a korábban is említett különválasztott term- és bizonyítás-kontextus valamint a term- és bizonyítás-helyettesítés párok fogják megadni, ebből adódik a további részek kicsivel összetettebb megadása.
+Láthatjuk, hogy a kontextust és a helyettesítést a korábban is említett különválasztott term- és bizonyításkontextus, valamint a term- és bizonyításhelyettesítés párok adják meg, ebből adódik a további részek kicsivel összetettebb megadása.

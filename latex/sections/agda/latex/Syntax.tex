@@ -252,9 +252,9 @@ A konstruktorokat megadjuk intuitívan a \AgdaField{Con} és \AgdaField{For} szo
 
 \section{Változók}
 
-Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyítás-változókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyítás-kontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
+Korábban már szó volt róla, hogy a modellfogalomban egységesen kezeljük a term- és bizonyításváltozókat, itt viszont szükség lesz arra, hogy a hozzájuk tartozó kontextust és helyettesítést külön valósítsuk meg. Így lesz majd egy termkontextusunk és egy bizonyításkontextusunk, valamint egy termhelyettesítésünk és egy bizonyításhelyettesítésünk is.
 
-A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyítás-kontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
+A nehézség csak az lesz, hogy ez a két rész nem független egymástól, ugyanis egy bizonyításkontextus kiterjesztése függeni fog egy formulától, a formulák viszont a termkontextustól függenek. Ez azt jelenti tehát, hogy a bizonyítások kontextusa függeni fog a termek kontextusától.
 
 \section{Termváltozók}
 
@@ -2805,8 +2805,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \\
 %
 \>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},ₚ\AgdaUnderscore{}}}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Δ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[2183I]\AgdaSymbol{∀\{}\AgdaBound{Δ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -2819,8 +2819,10 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Δ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
-\AgdaBound{A}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+\>[2183I][@{}l@{\AgdaIndent{0}}]%
+\>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaBound{Δ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
@@ -2847,8 +2849,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \\
 %
 \>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}∘ₚ\AgdaUnderscore{}}}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[2218I]\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Θₚ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -2861,8 +2863,10 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Θₚ}\AgdaSpace{}%
-\AgdaBound{Δₚ}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{Δₚ}\<%
+\\
+\>[2218I][@{}l@{\AgdaIndent{0}}]%
+\>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Θₚ}\AgdaSpace{}%
@@ -2871,7 +2875,7 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 %
 \>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}[\AgdaUnderscore{}]ᵖ}}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[2239I]\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
+\>[2237I]\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Ψ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -2887,7 +2891,7 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaBound{Ψ}\AgdaSpace{}%
 \AgdaBound{Ξ}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2239I]%
+\>[.][@{}l@{}]\<[2237I]%
 \>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaBound{Ψ}\AgdaSpace{}%
@@ -2903,6 +2907,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 
 \section{Bizonyítások}
 
+A bizonyítások teljes definíciója:
+
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
@@ -2911,7 +2917,7 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}[\AgdaUnderscore{}]ᵖ}}%
 \>[9]\AgdaSymbol{:}%
-\>[2266I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\>[2264I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{Δ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -2927,8 +2933,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaBound{Δ}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2266I]%
-\>[11]\AgdaSymbol{→}\AgdaSpace{}%
+\>[2264I][@{}l@{\AgdaIndent{0}}]%
+\>[12]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Δ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{Γₚ}\AgdaSpace{}%
@@ -2942,8 +2948,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \\
 %
 \>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}[\AgdaUnderscore{}]ᵖᵖ}}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[2290I]\AgdaSymbol{∀\{}\AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -2958,8 +2964,10 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
-\AgdaBound{Γₚ}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{Γₚ}\AgdaSymbol{)}\<%
+\\
+\>[2290I][@{}l@{\AgdaIndent{0}}]%
+\>[12]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Ξ}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSpace{}%
@@ -3145,7 +3153,7 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 %
 \>[2]\AgdaInductiveConstructor{∨out}%
 \>[8]\AgdaSymbol{:}%
-\>[2455I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\>[2452I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSpace{}%
 \AgdaBound{B}\AgdaSpace{}%
@@ -3165,8 +3173,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaBound{B}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{C}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2455I]%
-\>[10]\AgdaSymbol{→}\AgdaSpace{}%
+\>[2452I][@{}l@{\AgdaIndent{0}}]%
+\>[12]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
@@ -3242,8 +3250,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \\
 %
 \>[2]\AgdaInductiveConstructor{∃in}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[2534I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSymbol{\}}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -3260,8 +3268,10 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaFunction{idₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,ₜ}}\AgdaSpace{}%
 \AgdaBound{t}\AgdaSpace{}%
-\AgdaOperator{\AgdaFunction{]ᶠ}}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶠ}}\AgdaSymbol{)}\<%
+\\
+\>[2534I][@{}l@{\AgdaIndent{0}}]%
+\>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
@@ -3271,7 +3281,7 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 %
 \>[2]\AgdaInductiveConstructor{∃out}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[2562I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
+\>[2558I]\AgdaSymbol{∀\{}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
 \AgdaBound{A}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -3290,8 +3300,8 @@ Továbbá szükségünk lesz még a \AgdaDatatype{Conp} behelyettesítésére is
 \AgdaFunction{pₜ}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{]ᶠ}}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2562I]%
-\>[9]\AgdaSymbol{→}\AgdaSpace{}%
+\>[2558I][@{}l@{\AgdaIndent{0}}]%
+\>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
@@ -3370,10 +3380,10 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaRecord{Model}\<%
 \\
 \>[0]\AgdaFunction{I}%
-\>[2639I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[2635I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaKeyword{record}\<%
 \\
-\>[.][@{}l@{}]\<[2639I]%
+\>[.][@{}l@{}]\<[2635I]%
 \>[2]\AgdaSymbol{\{}\AgdaSpace{}%
 \AgdaField{Con}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
@@ -3382,10 +3392,10 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaDatatype{Conp}\<%
 \\
 %
-\>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaField{Sub}\AgdaSpace{}%
-\AgdaSymbol{=}%
-\>[2648I]\AgdaSymbol{λ}\AgdaSpace{}%
+\>[2]\AgdaSymbol{;}%
+\>[2642I]\AgdaField{Sub}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{Δ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Δₚ}\AgdaSymbol{)}\AgdaSpace{}%
@@ -3393,8 +3403,8 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2648I]%
-\>[10]\AgdaSymbol{→}\AgdaSpace{}%
+\>[2642I][@{}l@{\AgdaIndent{0}}]%
+\>[6]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaRecord{Σ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaDatatype{Sub}\AgdaSpace{}%
 \AgdaBound{Δ}\AgdaSpace{}%
@@ -3412,10 +3422,10 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaOperator{\AgdaFunction{]Conp}}\AgdaSymbol{))}\<%
 \\
 %
-\>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaOperator{\AgdaField{\AgdaUnderscore{}∘\AgdaUnderscore{}}}\AgdaSpace{}%
-\AgdaSymbol{=}%
-\>[2672I]\AgdaSymbol{λ}\AgdaSpace{}%
+\>[2]\AgdaSymbol{;}%
+\>[2666I]\AgdaOperator{\AgdaField{\AgdaUnderscore{}∘\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaBound{)}\AgdaSpace{}%
@@ -3433,8 +3443,8 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaInductiveConstructor{mk}\AgdaSpace{}%
 \AgdaBound{δₚ}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[2672I]%
-\>[10]\AgdaSymbol{→}\AgdaSpace{}%
+\>[2666I][@{}l@{\AgdaIndent{0}}]%
+\>[6]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{∘}}\AgdaSpace{}%
 \AgdaBound{δ}\AgdaSymbol{)}\AgdaSpace{}%
@@ -3597,9 +3607,9 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaOperator{\AgdaFunction{]Conp}}\<%
 \\
 %
-\>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaOperator{\AgdaField{\AgdaUnderscore{},ₜ\AgdaUnderscore{}}}%
-\>[2813I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[2]\AgdaSymbol{;}%
+\>[2808I]\AgdaOperator{\AgdaField{\AgdaUnderscore{},ₜ\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
@@ -3607,15 +3617,15 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaBound{γₚ}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{t}\<%
 \\
-\>[2813I][@{}l@{\AgdaIndent{0}}]%
-\>[10]\AgdaSymbol{→}%
-\>[2820I]\AgdaSymbol{(}\AgdaBound{γ}\AgdaSpace{}%
+\>[2808I][@{}l@{\AgdaIndent{0}}]%
+\>[6]\AgdaSymbol{→}%
+\>[2816I]\AgdaSymbol{(}\AgdaBound{γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,ₜ}}\AgdaSpace{}%
 \AgdaBound{t}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\<%
 \\
-\>[.][@{}l@{}]\<[2820I]%
-\>[12]\AgdaInductiveConstructor{mk}\AgdaSpace{}%
+\>[.][@{}l@{}]\<[2816I]%
+\>[8]\AgdaInductiveConstructor{mk}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{substP}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaDatatype{Subp}\AgdaSpace{}%
 \AgdaSymbol{\AgdaUnderscore{}}\AgdaSpace{}%
@@ -3889,7 +3899,7 @@ Az iniciális modell tehát a következőképpen néz ki:
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{⊃in}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[3025I]\AgdaSymbol{λ}\AgdaSpace{}%
+\>[3021I]\AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaBound{)}\AgdaSpace{}%
@@ -3907,7 +3917,7 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaBound{A}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{x}\<%
 \\
-\>[.][@{}l@{}]\<[3025I]%
+\>[.][@{}l@{}]\<[3021I]%
 \>[10]\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
@@ -3998,10 +4008,10 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaInductiveConstructor{∨in₂}\<%
 \\
 %
-\>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaField{∨out}\AgdaSpace{}%
-\AgdaSymbol{=}%
-\>[12]\AgdaSymbol{λ}\AgdaSpace{}%
+\>[2]\AgdaSymbol{;}%
+\>[3086I]\AgdaField{∨out}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaBound{)}\AgdaSymbol{\}}\AgdaSpace{}%
@@ -4011,10 +4021,10 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\<%
 \\
-%
-\>[12]\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaFunction{substP}%
-\>[3101I]\AgdaSymbol{(λ}\AgdaSpace{}%
+\>[3086I][@{}l@{\AgdaIndent{0}}]%
+\>[6]\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{substP}\AgdaSpace{}%
+\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
@@ -4027,10 +4037,8 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaBound{Γ}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaSpace{}%
-\AgdaBound{C}\AgdaSymbol{)}\<%
-\\
-\>[.][@{}l@{}]\<[3101I]%
-\>[21]\AgdaFunction{f[id]ᶠ}\AgdaSpace{}%
+\AgdaBound{C}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaFunction{f[id]ᶠ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{∨out}\AgdaSpace{}%
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSymbol{)}\<%
@@ -4123,27 +4131,27 @@ Az iniciális modell tehát a következőképpen néz ki:
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaField{∃out}%
-\>[3175I]\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaField{∃out}\AgdaSpace{}%
+\AgdaSymbol{=}%
+\>[3174I]\AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaBound{Γₚ}\AgdaBound{)}\AgdaSymbol{\}\{}\AgdaBound{A}\AgdaSymbol{\}\{}\AgdaBound{C}\AgdaSymbol{\}}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaBound{p}\<%
 \\
-\>[3175I][@{}l@{\AgdaIndent{0}}]%
-\>[10]\AgdaSymbol{→}%
-\>[3182I]\AgdaInductiveConstructor{∃out}\AgdaSpace{}%
+\>[3174I][@{}l@{\AgdaIndent{0}}]%
+\>[12]\AgdaSymbol{→}%
+\>[3180I]\AgdaInductiveConstructor{∃out}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{Γ}\AgdaSymbol{\}\{}\AgdaBound{Γₚ}\AgdaSymbol{\}\{}\AgdaBound{A}\AgdaSymbol{\}\{}\AgdaBound{C}\AgdaSymbol{\}}\<%
 \\
-\>[.][@{}l@{}]\<[3182I]%
-\>[12]\AgdaSymbol{(}\AgdaFunction{substP}\AgdaSpace{}%
-\AgdaSymbol{(λ}\AgdaSpace{}%
-\AgdaBound{z}\<%
+\>[.][@{}l@{}]\<[3180I]%
+\>[14]\AgdaSymbol{(}\AgdaFunction{substP}\<%
 \\
-%
-\>[12]\AgdaSymbol{→}\AgdaSpace{}%
+\>[14][@{}l@{\AgdaIndent{0}}]%
+\>[16]\AgdaSymbol{(λ}\AgdaSpace{}%
+\AgdaBound{z}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Pf}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{Γ}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{▹ₜ}}\AgdaSymbol{)}\AgdaSpace{}%
@@ -4156,13 +4164,19 @@ Az iniciális modell tehát a következőképpen néz ki:
 \AgdaSymbol{(}\AgdaBound{C}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
 \AgdaBound{z}\AgdaSpace{}%
-\AgdaOperator{\AgdaFunction{]ᶠ}}\AgdaSymbol{))}\AgdaSpace{}%
-\AgdaFunction{idr}\AgdaSpace{}%
-\AgdaBound{w}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaBound{p}\<%
+\AgdaOperator{\AgdaFunction{]ᶠ}}\AgdaSymbol{))}\<%
+\\
+%
+\>[16]\AgdaFunction{idr}\<%
+\\
+%
+\>[16]\AgdaBound{w}\AgdaSymbol{)}\<%
+\\
+%
+\>[14]\AgdaBound{p}\<%
 \\
 %
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
 
-Láthatjuk, hogy a kontextus és a helyettesítés a korábban is említett különválasztott term- és bizonyítás-kontextus valamint a term- és bizonyítás-helyettesítés párok fogják megadni, ebből adódik a további részek kicsivel összetettebb megadása.
+Láthatjuk, hogy a kontextust és a helyettesítést a korábban is említett különválasztott term- és bizonyításkontextus, valamint a term- és bizonyításhelyettesítés párok adják meg, ebből adódik a további részek kicsivel összetettebb megadása.

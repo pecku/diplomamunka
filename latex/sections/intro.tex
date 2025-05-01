@@ -9,7 +9,7 @@ A dolgozat célja az elsőrendű logika formalizálása Agdában, mint mélyen b
 
 \input{sections/agda/latex/algebraic_theory.tex}
 
-Bizonyos algebrai elméletek szintaxisát kvócienek nélkül, egyszerű induktív típusokkal meg lehet adni. A félcsoporton túl egy jó példa erre az \textit{A} feletti monoid, ami egy egyenlőséges algebrai elmélet, de meg tudjuk adni a szintaxisát egyenlőségek nélkül.
+Bizonyos algebrai elméletek szintaxisát kvóciensek nélkül, egyszerű induktív típusokkal meg lehet adni. A félcsoporton túl egy jó példa erre az \textit{A} feletti monoid, ami egy egyenlőséges algebrai elmélet, de meg tudjuk adni a szintaxisát egyenlőségek nélkül.
 
 \input{sections/agda/latex/monoid.tex}
 
@@ -23,13 +23,13 @@ Ahhoz, hogy megadjuk a rendezetlen pár szintaxisát, egy kiegészítő egyenlet
 
 Míg bizonyos algebrai struktúrák iniciális modelljei definiálhatók egyenlőségek megadása nélkül, algebrai adattípusokkal és rekurzív függvények megadásával, másokhoz további egyenletek szükségesek a kívánt tulajdonságok kikényszerítésére.
 
-Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modell fogalmat többszortú módon adjuk, amelyek indexelve vannak egymás felett. A szortok (fajták) a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reprezentálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
+Ebben a dolgozatban az elsőrendű logika egy általánosított algebrai elméletként (GAT) lett megvalósítva, így a modellfogalmat többszortú módon adjuk meg, amelyek indexelve vannak egymás felett. A szortok (fajták) a következők lesznek: \AgdaField{Tm}, \AgdaField{For}, \AgdaField{Pf}. Így reprezentálva a kifejezéseket, formulákat, és bizonyításokat. A változók miatt pedig a \AgdaField{Con} és \AgdaField{Sub} szortokat vezetjük be, ábrázolva a környezeteket és a közöttük való átjárást.
 
 \section{Elsőrendű logika Agdában}
 
 Az Agda egy függően típusozott funkcionális nyelv, amelyet bizonyításokra is tudunk használni, ezzel megmutatva a logika kapcsolatát a típuselmélettel. Továbbá egy teljes nyelv is, ami azt jelenti, hogy minden program terminál és mintaillesztés során is minden esetet kötelező lekezelni.
 
-Ahogy már korábban szó volt róla, az elsőrendű logikát mint nyelvet sekély módon is be lehet ágyazni az Agda rendszerébe, mivel ehhez minden eszköz adott a meglévő típusok és műveletek által.
+Ahogy már korábban szó volt róla, az elsőrendű logikát, mint nyelvet, sekély módon is be lehet ágyazni az Agda rendszerébe, mivel ehhez minden eszköz adott a meglévő típusok és műveletek által.
 
 Az elsőrendű logika sekély beágyazásának megvalósítása Agdában meglehetősen könnyedén elérhető.
 

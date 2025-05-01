@@ -38,7 +38,7 @@ A Bool modell a klasszikus igazságérték-alapú megközelítést képviseli. E
 
 \subsection{Bizonyítás a Tarski modellben}
 
-A Tarski modellbeli bizonyításnál láthatjuk, hogy implikáció definíciója miatt - azaz mivel az Agda beépített függvény típusát használtuk - könnyű dolgunk lesz. Bármilyen \textit{γ} kontextusban, ha kapunk egy \textit{a} értéket (amely az A formula γ kontextusbeli értéke), valamint egy \textit{b} értéket (a B formula γ kontextusbeli értéke), akkor egyszerűen visszaadjuk az \textit{a} értéket. Ez pontosan azt fejezi ki, hogy "ha A, akkor (ha B, akkor A)" - vagyis függetlenül B értékétől, az eredmény mindig A értéke lesz. A Tarski modell ereje abban rejlik, hogy matematikai tisztasággal, absztrakt módon ragadja meg a logikai összefüggéseket, ami különösen összetettebb formuláknál válik előnyössé a Bool modellhez képest.
+A Tarski modellbeli bizonyításnál láthatjuk, hogy az implikáció definíciója miatt - azaz mivel az Agda beépített függvény típusát használtuk - könnyű dolgunk lesz. Bármilyen \textit{γ} kontextusban, ha kapunk egy \textit{a} értéket (amely az A formula γ kontextusbeli értéke), valamint egy \textit{b} értéket (a B formula γ kontextusbeli értéke), akkor egyszerűen visszaadjuk az \textit{a} értéket. Ez pontosan azt fejezi ki, hogy "ha A, akkor (ha B, akkor A)" - vagyis függetlenül B értékétől, az eredmény mindig A értéke lesz. A Tarski modell ereje abban rejlik, hogy matematikai tisztasággal, absztrakt módon ragadja meg a logikai összefüggéseket, ami különösen összetettebb formuláknál válik előnyössé a Bool modellhez képest.
 
 \pTarE
 
@@ -50,7 +50,7 @@ A Family modellben megadott bizonyítás nagyon hasonlít a Tarski modellbeli bi
 
 \subsection{Bizonyítás bármely modellben}
 
-A "bármely modellben" történő bizonyítás a legáltalánosabb és egyben a legösszetettebb is.úgy kell megfogalmaznunk a bizonyítást, hogy az minden modellben érvényes legyen. Ez a megközelítés különösen értékes elméleti szempontból, hiszen rávilágít a különböző logikai rendszerek közötti összefüggésekre.
+A "bármely modellben" történő bizonyítás a legáltalánosabb és egyben a legösszetettebb is. Úgy kell megfogalmaznunk a bizonyítást, hogy az minden modellben érvényes legyen. Ez a megközelítés különösen értékes elméleti szempontból, hiszen rávilágít a különböző logikai rendszerek közötti összefüggésekre.
 
 \pAnyE
 
@@ -63,13 +63,14 @@ Az választott összetettebb formula:
 
 \subsection{Informális bizonyítás}
 
+{\fontsize{10pt}{10pt}\selectfont
 \[
 \infer[⊃in]{\vdash ∀x(P(x) ∧ Q(x)) ⊃ (∀x\,P(x) ∧ ∀x\,Q(x))}{
   \infer[∧in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,P(x) ∧ ∀x\,Q(x)}{
     \infer[∀in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,P(x)}{
       \infer[∧out₁]{∀ x(P(x) ∧ Q(x)) \vdash P(x)}{
         \infer[∀out]{∀ x(P(x) ∧ Q(x)) \vdash P(x) ∧ Q(x)}{
-            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{\small [Ax]}
+            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{[Ax]}
         }
       }
     }
@@ -77,14 +78,14 @@ Az választott összetettebb formula:
     \infer[∀in]{∀x(P(x) ∧ Q(x)) \vdash ∀x\,Q(x)}{
       \infer[∧out₂]{∀x(P(x) ∧ Q(x)) \vdash Q(x)}{
         \infer[∀out]{∀x(P(x) ∧ Q(x)) \vdash P(x) ∧ Q(x)}{
-            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{\small [Ax]}
+            ∀x(P(x) ∧ Q(x)) \vdash ∀x(P(x) ∧ Q(x) \quad \text{[Ax]}
         }
       }
     }
   }
 }
 \]
-
+}
 
 \subsection{Bizonyítás a szintaxisban}
 
