@@ -1,0 +1,146 @@
+\documentclass{beamer}
+
+\usepackage{presentation}
+
+\usepackage{minted}
+\setminted{
+  fontsize=\scriptsize,
+  breaklines=true,
+}
+
+\title{Elsőrendű logika, mint algebrai elmélet formalizálása Agdában}
+\author{Szilágyi Péter \\[1ex] \small Témavezető: Kaposi Ambrus}
+\institute{ELTE IK – Programtervező informatikus MSc}
+\date{2025}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{A dolgozat célja és motiváció}
+  Az elsőrendű logika
+  \begin{itemize}
+    \item formalizálása Agdában
+    \item algebrai elméletként megadva
+        \begin{itemize}
+        \item algebrai elmélet = szortok, operátorok, egyenletek
+        \item szintaxis = iniciális modell
+            \begin{itemize}
+            \item kvóciensek nélkül megadható
+            \end{itemize}
+        \end{itemize}
+    \item több példa szemantikával
+        \begin{itemize}
+            \item Bool modell: igaz / hamis
+            \item Tarski modell: klasszikus értelmezés
+            \item Family modell: típuscsalád alapú szemantika
+        \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Modellfogalom}
+    \begin{minted}{agda}
+Con     : Set
+Sub     : Con → Con → Set
+Tm      : Con → Set
+For     : Con → Set
+Pf      : (Γ : Con) → For Γ → Prop
+_[_]ᵗ   : Tm Γ → Sub Δ Γ → Tm Δ
+_[_]ᶠ   : For Γ → Sub Δ Γ → For Δ
+_[_]ᵖ   : Pf Γ A → (γ : Sub Δ Γ) → Pf Δ (A [ γ ]ᶠ)
+_▹ₜ     : Con → Con
+_▹ₚ_    : (Γ : Con) → For Γ → Con
+...
+_⊃_     : For Γ → For Γ → For Γ
+⊃[]     : (A ⊃ B) [ γ ]ᶠ = (A [ γ ]ᶠ) ⊃ (B [ γ ]ᶠ)
+⊃in     : Pf (Γ ▹ₚ A) (B [ pₚ ]ᶠ) → Pf Γ (A ⊃ B)
+⊃out    : Pf Γ (A ⊃ B) → Pf Γ A → Pf Γ B
+...
+∀       : For (Γ ▹ₜ) → For Γ
+∀[]     : (∀ A) [ γ ]ᶠ = ∀ (A [ (γ ∘ pₜ) ,ₜ qₜ ]ᶠ)
+∀in     : Pf (Γ ▹ₜ) A → Pf Γ (∀ A)
+∀out    : Pf Γ (∀ A) → Pf (Γ ▹ₜ ) A
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Szintaxis}
+    \begin{minted}{agda}
+data Cont : Set
+  _▹ₜ     : Cont → Cont
+data Tm   : Cont → Set
+  var     : VTm Γ → Tm Γ
+  fun     : funar n → Tm Γ ^ n → Tm Γ
+data Subt : Cont → Cont → Set
+  _,ₜ_     : Subt Δ Γ → Tm Δ → Subt Δ (Γ ▹ₜ)
+_[_]ᵗ     : Tm Γ → Subt Δ Γ → Tm Δ
+var vz [ γ ,ₜ a ]ᵗ = a
+var (vs x) [ γ ,ₜ a ]ᵗ = var x [ γ ]ᵗ
+fun ar ts [ γ ]ᵗ = fun ar (ts [ γ ]ᵗs)
+data For  : Cont → Set
+  _⊃_     : For Γ → For Γ → For Γ
+  ∀       : For (Γ ▹ₜ) → For Γ
+_[_]ᶠ     : For Γ → Subt Δ Γ → For Δ
+(A ⊃ B) [ γ ]ᶠ = A [ γ ]ᶠ ⊃ B [ γ ]ᶠ
+∀ A [ γ ]ᶠ = ∀ (A [ γ ⁺ ]ᶠ)
+data Conp : Cont → Set
+  _▹ₚ_    : Conp Γ → For Γ → Conp Γ
+data Pf   : (Γ : Cont)(Γₚ : Conp Γ) → For Γ → Prop
+data Subp : (Γ : Cont) → Conp Γ → Conp Γ → Prop
+Con = Σ Cont Conp
+Sub = λ (Δ,Δₚ) (Γ,Γₚ) → Σ(γ : Subt Δ Γ).Subp Δ Δₚ (Γₚ [ γ ]Conp)
+    \end{minted}
+\end{frame}
+
+\begin{frame}{Összegzés}
+  \begin{itemize}
+    \item Absztrakt módon formalizált elsőrendű logika.
+    \item Kvóciensek nélküli szintaxis.
+    \item Több szemantika.
+  \end{itemize}
+  \vspace{1cm}
+  További munkák:
+  \begin{itemize}
+    \item További szemantikák: pl. Kripke.
+    \item Iterátor implementációja és inicialitás bizonyítása.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Bizonyítás példa}
+  \vspace*{-1.5em}
+  \begin{align*}
+    \texttt{A ⊃ B ⊃ A}
+  \end{align*}
+  Informális bizonyítás:
+  {\fontsize{8pt}{8pt}\selectfont
+    \[
+    \infer[\text{⊃in}]{\vdash A ⊃ (B ⊃ A)}{
+    \infer[\text{⊃in}]{A \vdash B ⊃ A}{
+        \infer[\text{\tiny W-L}]{A, B \vdash A}{
+            A \vdash A \quad \text{\tiny [Ax]}
+        }
+    }
+    }
+    \]
+  }
+
+  Bizonyítás a szintaxisban:
+  \begin{minted}{agda}
+    A⊃B⊃A : {A B : For ◇} → Pf ◇ (A ⊃ B ⊃ A)
+    A⊃B⊃A = ⊃in (⊃in (qₚ [ pₚ ]ᵖ))
+  \end{minted}
+  Bizonyítás bármely modellben:
+  \begin{minted}{agda}
+    A⊃B⊃A : {A B : For ◇} → Pf ◇ (A ⊃ B ⊃ A)
+    A⊃B⊃A {A}{B} =
+      ⊃in (
+        substP 
+          (λ x → Pf (◇ ▹ₚ A) (x))
+          (⊃[] ⁻¹)
+          (⊃in {◇ ▹ₚ A}{B [ pₚ ]ᶠ}{A [ pₚ ]ᶠ} (qₚ [ pₚ ]ᵖ))
+      )
+  \end{minted}
+\end{frame}
+
+\end{document}
